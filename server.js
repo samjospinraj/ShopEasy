@@ -33,8 +33,8 @@ app.use(session({
 
 
 // Engine Setup
-app.set('view engine' , 'ejs' );
-app.set('views' , path.resolve(__dirname , 'Views'));
+app.set('views', path.join(__dirname, 'Views'));
+app.set('view engine', 'ejs');
 
 // Required to parse JSON bodies
 app.use(bodyParser.json());

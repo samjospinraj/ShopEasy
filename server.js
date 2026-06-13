@@ -13,7 +13,7 @@ const adminProfileRouter = require('./Router/Admin/profileRouter');
 const OrderRouter = require('./Router/User/orderRouter');
 const reviewRouter = require('./Router/User/reviewRouter');
 const mongoose = require('./Database/dataBase');
-const  bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 config();
 const app = express();
@@ -21,7 +21,7 @@ const PORT = process.env.PORT;
 
 // Session 
 app.use(session({
-    secret : 'your-secret-key', // Change this to a strong secret
+    secret : process.env.SESSION_SECRET, // Change this to a strong secret
     resave : false,
     saveUninitialized : false,
     cookie : {

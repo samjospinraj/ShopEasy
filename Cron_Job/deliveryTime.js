@@ -2,7 +2,7 @@ const cron = require("node-cron");
 const { Product } = require("../Model/Admin/productModel");
 const Order = require("../Model/User/orderModel");
 
-const deliveryTime_cron = cron.schedule("0 0 0 * * *", async () => {
+const deliveryTime_cron = cron.schedule("0 0 0 * *", async () => {
   try {
     const products = await Product.find();
 
@@ -28,7 +28,7 @@ const deliveryTime_cron = cron.schedule("0 0 0 * * *", async () => {
   }
 });
 
-const productQuantityCron = cron.schedule("*/5 * * * * *", async () => {
+const productQuantityCron = cron.schedule("*/5 * * * * ", async () => {
   try {
 
     const orders = await Order.find();
@@ -112,179 +112,3 @@ const productQuantityCron = cron.schedule("*/5 * * * * *", async () => {
     console.error("Cron Error:", error);
   }
 });
-
-// const productQuantityCron = cron.schedule("*/5 * * * * *", async () => {
-//   try {
-//     const orders = await Order.find({
-//       stockProcessed: false,
-//     });
-
-//     console.log(`Orders Found: ${orders.length}`);
-
-//     for (const order of orders) {
-//       let stockUpdated = false;
-
-//       for (const item of order.items) {
-//         let stockChange = 0;
-
-//         // CONFIRMED
-//         if (order.orderStatus === "confirmed") {
-//           stockChange = -item.quantity;
-//         }
-
-//         // CANCELLED
-//         else if (order.orderStatus === "cancelled") {
-//           stockChange = item.quantity;
-//         }
-
-//         // RETURNED
-//         else if (order.orderStatus === "returned") {
-//           if (
-//             order.returnStatus === "approved" ||
-//             order.returnStatus === "accepted"
-//           ) {
-//             stockChange = item.quantity;
-//           } else if (order.returnStatus === "rejected") {
-//             stockChange = 0;
-//           }
-//         }
-
-//         if (stockChange === 0) continue;
-
-//         await Product.updateOne(
-//           {
-//             _id: item.productId,
-//           },
-//           {
-//             $inc: {
-//               stockQuantity: stockChange,
-//             },
-//           }
-//         );
-
-//         stockUpdated = true;
-
-//         console.log(
-//           `Product ${item.productId} updated by ${stockChange}`
-//         );
-//       }
-
-//       if (stockUpdated) {
-//         await Order.updateOne(
-//           { _id: order._id },
-//           {
-//             $set: {
-//               stockProcessed: true,
-//             },
-//           }
-//         );
-
-//         console.log(`Order ${order._id} marked as processed`);
-//       }
-
-//     }
-//   } catch (error) {
-//     console.error("Cron Error:", error);
-//   }
-// });
-
-
-
-
-// const productQuantityCron = cron.schedule('*/10 * * * * *', async () => {
-//   try {
-//     while (true) {
-//       // 1. Atomically pick ONE unprocessed order and lock it
-//       const order = await Order.findOneAndUpdate(
-//         {
-//           stockUpdated: { $ne: true },
-//           'stockFlags.processing': { $ne: true }
-//         },
-//         {
-//           $set: { 'stockFlags.processing': true }
-//         },
-//         {
-//           new: true
-//         }
-//       ).lean();
-
-//       if (!order) {
-//         console.log('No pending orders to process');
-//         break;
-//       }
-
-//       console.log(`Processing order ${order._id}`);
-
-//       try {
-//         // 2. Process items
-//         for (const item of order.items) {
-//           let incValue = 0;
-//           let action = '';
-
-//           if (order.orderStatus === 'confirmed') {
-//             incValue = -item.quantity;
-//             action = 'reduced';
-//           } else if (order.orderStatus === 'cancelled') {
-//             incValue = item.quantity;
-//             action = 'increased (cancel)';
-//           } else if (order.orderStatus === 'returned') {
-//             if (order.returnStatus === 'rejected') {
-//               incValue = -item.quantity;
-//               action = 'reduced (return rejected)';
-//             } else {
-//               incValue = item.quantity;
-//               action = 'increased (return)';
-//             }
-//           } else if (order.returnStatus === 'rejected') {
-//             incValue = -item.quantity;
-//             action = 'reduced (return rejected)';
-//           } else {
-//             console.log(`SKIP product ${item.productId}`);
-//             continue;
-//           }
-
-//           await Product.updateOne(
-//             { _id: item.productId },
-//             [
-//               {
-//                 $set: {
-//                   stockQuantity: {
-//                     $max: [0, { $add: ['$stockQuantity', incValue] }]
-//                   }
-//                 }
-//               }
-//             ]
-//           );
-
-//           console.log(
-//             `✓ ${action.toUpperCase()} product ${item.productId} by ${Math.abs(incValue)}`
-//           );
-//         }
-
-//         // 3. Mark order as processed
-//         await Order.updateOne(
-//           { _id: order._id },
-//           {
-//             $set: {
-//               stockUpdated: true,
-//               stockProcessedAt: new Date()
-//             },
-//             $unset: { 'stockFlags.processing': '' }
-//           }
-//         );
-
-//         console.log(`✅ Order ${order._id} completed`);
-//       } catch (err) {
-//         // release lock on failure
-//         await Order.updateOne(
-//           { _id: order._id },
-//           { $unset: { 'stockFlags.processing': '' } }
-//         );
-
-//         console.error(`❌ Order failed ${order._id}`, err);
-//       }
-//     }
-//   } catch (err) {
-//     console.error('Cron Error:', err);
-//   }
-// });

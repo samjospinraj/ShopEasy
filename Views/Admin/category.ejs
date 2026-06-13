@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+    <title>ShopMaster · Deep Category Manager 2026</title>
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        :root {
+            --bg-deep: #060b1f;
+            --bg-card: rgba(12, 20, 40, 0.7);
+            --bg-sidebar: rgba(7, 11, 28, 0.82);
+            --bg-header: rgba(9, 14, 32, 0.7);
+            --primary: #4dabf7;
+            --primary-glow: #339af0;
+            --accent-cyan: #38bdf8;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --accent-orange: #fb923c;
+            --text-primary: #e8ecf4;
+            --text-secondary: #b0bdd0;
+            --text-muted: #7b8ca6;
+            --description-color: #b9c7dd;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(77, 171, 247, 0.3);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+            --shadow-glow: 0 0 40px rgba(77, 171, 247, 0.18);
+            --radius-xl: 22px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(ellipse at 20% 20%, #0b1430 0%, #060b1f 45%, #04091a 70%, #020617 100%);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #nuranCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-sidebar);
+            backdrop-filter: blur(26px);
+            -webkit-backdrop-filter: blur(26px);
+            position: fixed;
+            height: 100vh;
+            z-index: 1050;
+            border-right: 1px solid var(--border-subtle);
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.35s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 18px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e8ecf4, #a0c8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-subtext {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .toggle-sidebar {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-sidebar:hover {
+            background: rgba(77, 171, 247, 0.15);
+            border-color: var(--border-glow);
+            color: var(--accent-cyan);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 13px 20px;
+            margin: 3px 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: 0.2s;
+        }
+
+        .menu-item:hover,
+        .menu-item.active-menu {
+            background: rgba(77, 171, 247, 0.13);
+            color: #fff;
+            border-color: rgba(77, 171, 247, 0.35);
+        }
+
+        .menu-item.active-menu {
+            position: relative;
+        }
+
+        .menu-item.active-menu::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 22px;
+            border-radius: 0 4px 4px 0;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 14px var(--accent-cyan);
+        }
+
+        .menu-item i {
+            width: 24px;
+            font-size: 1.15rem;
+            margin-right: 14px;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main-content {
+            margin-left: 280px;
+            padding: 22px 30px;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        .header {
+            backdrop-filter: blur(22px);
+            background: var(--bg-header);
+            border-radius: 50px;
+            padding: 14px 26px;
+            margin-bottom: 28px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+        }
+
+        .search-bar {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50px;
+            padding: 8px 20px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(77, 171, 247, 0.5);
+        }
+
+        .notification-btn {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 3px;
+            background: var(--accent-red);
+            font-size: 0.6rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+        }
+
+        /* ── CARDS ── */
+        .quick-actions .action-card {
+            background: linear-gradient(135deg, rgba(12, 22, 48, 0.8), rgba(18, 30, 60, 0.7));
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-xl);
+            padding: 22px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: 0.35s;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .action-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+            border-color: var(--border-glow);
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            color: #fff;
+        }
+
+        /* ── CATEGORY CARD (improved shaping) ── */
+        .category-card {
+            background: linear-gradient(145deg, rgba(18, 28, 52, 0.8) 0%, rgba(14, 22, 42, 0.85) 100%);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+            transition: 0.35s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(56, 189, 248, 0.55);
+            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25);
+        }
+
+        .category-card .card-img-top {
+            height: 160px;               /* slightly taller image */
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 17px 17px 0 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .category-card .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem 1.25rem 1rem;
+        }
+
+        .category-card .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-card .card-text {
+            color: var(--description-color) !important;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .category-card .badge-status {
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+        }
+
+        .category-card .action-buttons .btn-icon {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: 0.2s;
+        }
+
+        .category-card .action-buttons .btn-icon:hover {
+            background: rgba(77, 171, 247, 0.15);
+            border-color: var(--border-glow);
+            color: #fff;
+        }
+
+        .badge-active {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .badge-inactive {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+
+        .table-wrapper {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .table-img-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .nav-pills .nav-link {
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            border-radius: 40px;
+            background: transparent;
+        }
+
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #4dabf7, #339af0);
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4dabf7, #339af0);
+            border: none;
+        }
+
+        .btn-outline-light {
+            border-color: var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(77, 171, 247, 0.15);
+            border-color: var(--border-glow);
+            color: #fff;
+        }
+
+        .toast-notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: rgba(14, 22, 45, 0.92);
+            backdrop-filter: blur(12px);
+            border-left: 4px solid var(--accent-cyan);
+            z-index: 9999;
+            animation: toastPopIn 0.3s ease;
+            border-radius: 16px;
+        }
+
+        @keyframes toastPopIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .quick-actions .col-12 {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="nuranCanvas"></canvas>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div>
+                <div class="logo-text">ShopMaster</div>
+                <div class="logo-subtext">admin · 2026</div>
+            </div>
+            <button class="toggle-sidebar" id="toggleSidebarBtn"><i class="fas fa-chevron-left"></i></button>
+        </div>
+        <div class="sidebar-menu d-flex flex-column">
+            <a href="/Admin/dashboard" class="menu-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            <a href="/Admin/product" class="menu-item"><i class="fas fa-box"></i><span>Products</span></a>
+            <a href="/Admin/category" class="menu-item active-menu"><i class="fas fa-tags"></i><span>Categories</span></a>
+            <a href="/Admin/order" class="menu-item"><i class="fas fa-shopping-cart"></i><span>Orders</span></a>
+            <a href="/Admin/customer" class="menu-item"><i class="fas fa-users"></i><span>Customers</span></a>
+            <a href="/Admin/review" class="menu-item "><i class="fas fa-star"></i> Reviews</a>
+            <a href="/Admin/analytics" class="menu-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+            <a href="/Admin/profile" class="menu-item"><i class="fas fa-id-badge"></i><span>Profile</span></a>
+            <a href="/Admin/setting" class="menu-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        <!-- HEADER -->
+        <div class="header d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <button class="menu-toggle d-lg-none" id="menuToggleBtn"><i class="fas fa-bars"></i></button>
+            <div class="search-bar d-flex align-items-center flex-grow-1">
+                <i class="fas fa-search me-2 text-muted"></i>
+                <input type="text" id="searchInput" class="form-control border-0 bg-transparent text-white" placeholder="Search categories..." />
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="notification-btn"><i class="fas fa-bell"></i><span class="notification-badge d-flex align-items-center justify-content-center">3</span></button>
+                <div class="user-info d-flex align-items-center gap-2 bg-dark bg-opacity-10 rounded-pill px-3 py-1">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=4dabf7&color=fff" alt="admin" />
+                    <div class="d-none d-sm-block">
+                        <h6 class="mb-0 small">Admin User</h6>
+                        <small class="text-muted">Administrator</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK ACTIONS (stack on small devices) -->
+        <div class="row g-4 mb-4 quick-actions">
+            <div class="col-12 col-md-3">
+                <div class="action-card text-center" id="addMainCatBtn">
+                    <div class="action-icon bg-primary"><i class="fas fa-folder-plus"></i></div>
+                    <h5>Add Main</h5>
+                    <p class="text-muted">Create level 1</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="action-card text-center" id="addSubCatBtn">
+                    <div class="action-icon bg-success"><i class="fas fa-folder-open"></i></div>
+                    <h5>Add Sub</h5>
+                    <p class="text-muted">Link to main</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="action-card text-center" id="addSubSubBtn">
+                    <div class="action-icon bg-warning"><i class="fas fa-sitemap"></i></div>
+                    <h5>Add Sub‑Sub</h5>
+                    <p class="text-muted">Deepest level</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="action-card text-center" id="exportBtn">
+                    <div class="action-icon" style="background: linear-gradient(135deg, #a78bfa, #7c3aed);"><i class="fas fa-download"></i></div>
+                    <h5>Export</h5>
+                    <p class="text-muted">CSV simulation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABS + VIEW TOGGLE -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between bg-dark bg-opacity-10 p-3 rounded-4 mb-4 border border-light-subtle">
+            <ul class="nav nav-pills gap-2" id="categoryTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="pill" data-tab="main"><i class="fas fa-folder me-1"></i> Main <span class="badge ms-1" id="mainCount">0</span></button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="pill" data-tab="sub"><i class="fas fa-folder-open me-1"></i> Subcategories <span class="badge ms-1" id="subCount">0</span></button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="pill" data-tab="subsub"><i class="fas fa-sitemap me-1"></i> Sub‑Sub <span class="badge ms-1" id="subsubCount">0</span></button>
+                </li>
+            </ul>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-light active" id="viewCardBtn"><i class="fas fa-th-large"></i> Cards</button>
+                <button class="btn btn-outline-light" id="viewTableBtn"><i class="fas fa-table"></i> Table</button>
+            </div>
+        </div>
+
+        <!-- TAB PANES -->
+        <div id="mainTabPane">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4><i class="fas fa-folder text-primary"></i> Main Categories</h4>
+                <button class="btn btn-primary" id="addMainFromMain"><i class="fas fa-plus"></i> Add Main</button>
+            </div>
+            <div id="mainCardsContainer" class="row g-4"></div>
+            <div id="mainTableContainer" class="table-wrapper d-none">
+                <table class="table table-dark table-hover mb-0">
+                    <thead><tr><th>Image</th><th>Name</th><th>Icon</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="mainTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="subTabPane" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4><i class="fas fa-folder-open text-success"></i> Subcategories</h4>
+                <button class="btn btn-primary" id="addSubFromSub"><i class="fas fa-plus"></i> Add Subcategory</button>
+            </div>
+            <div id="subCardsContainer" class="row g-4"></div>
+            <div id="subTableContainer" class="table-wrapper d-none">
+                <table class="table table-dark table-hover mb-0">
+                    <thead><tr><th>Image</th><th>Name</th><th>Parent Main</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="subTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="subsubTabPane" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4><i class="fas fa-sitemap text-warning"></i> Sub‑Subcategories</h4>
+                <button class="btn btn-primary" id="addSubSubFromTab"><i class="fas fa-plus"></i> Add Sub‑Sub</button>
+            </div>
+            <div id="subsubCardsContainer" class="row g-4"></div>
+            <div id="subsubTableContainer" class="table-wrapper d-none">
+                <table class="table table-dark table-hover mb-0">
+                    <thead><tr><th>Image</th><th>Name</th><th>Main Parent</th><th>Sub Parent</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="subsubTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            // ═══════════ NURAN PARTICLE BACKGROUND (mouse splatter) ═══════════
+            const canvas = document.getElementById('nuranCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let mouseX = -999, mouseY = -999, targetMouseX = -999, targetMouseY = -999;
+            const SPLATTER_RADIUS = 190, CONNECTION_DIST = 140, PARTICLE_COUNT = window.innerWidth < 768 ? 80 : 140;
+            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            resize(); window.addEventListener('resize', () => { resize(); const nc = window.innerWidth<768?80:140; while(particles.length<nc) particles.push(createParticle()); while(particles.length>nc) particles.pop(); });
+            function createParticle() {
+                const cols = ['rgba(77,171,247,','rgba(56,189,248,','rgba(167,139,250,','rgba(139,92,246,','rgba(45,212,191,','rgba(96,165,250,','rgba(192,132,252,','rgba(52,211,153,'];
+                const c = cols[Math.floor(Math.random()*cols.length)];
+                return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.7, vy:(Math.random()-0.5)*0.7, size:1.8+Math.random()*3.5, color:c, glowAlpha:0.5+Math.random()*0.5, pulsePhase:Math.random()*Math.PI*2, pulseSpeed:0.008+Math.random()*0.025, baseSize:1.8+Math.random()*3.5 };
+            }
+            for(let i=0;i<PARTICLE_COUNT;i++) particles.push(createParticle());
+            document.addEventListener('mousemove',e=>{ targetMouseX=e.clientX; targetMouseY=e.clientY; });
+            document.addEventListener('mouseleave',()=>{ targetMouseX=-999; targetMouseY=-999; });
+            document.addEventListener('touchmove',e=>{ if(e.touches.length>0){ targetMouseX=e.touches[0].clientX; targetMouseY=e.touches[0].clientY; } },{passive:true});
+            document.addEventListener('touchend',()=>{ targetMouseX=-999; targetMouseY=-999; });
+            function animate(ts) {
+                mouseX+=(targetMouseX-mouseX)*0.18; mouseY+=(targetMouseY-mouseY)*0.18;
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                const time=ts*0.001;
+                for(let p of particles) {
+                    p.vx+=Math.sin(time*0.7+p.pulsePhase)*0.025; p.vy+=Math.cos(time*0.6+p.pulsePhase+1.3)*0.025;
+                    if(mouseX>-500&&mouseY>-500){ const dx=p.x-mouseX,dy=p.y-mouseY,dist=Math.sqrt(dx*dx+dy*dy); if(dist<SPLATTER_RADIUS&&dist>0.5){ const force=(1-dist/SPLATTER_RADIUS)*4.5; p.vx+=(dx/dist)*force; p.vy+=(dy/dist)*force; p.glowAlpha=Math.min(1,p.glowAlpha+0.06); } }
+                    p.x+=p.vx; p.y+=p.vy; p.vx*=0.94; p.vy*=0.94;
+                    const sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy); if(sp>6){ p.vx=(p.vx/sp)*6; p.vy=(p.vy/sp)*6; }
+                    if(p.x<-30)p.x=canvas.width+30; if(p.x>canvas.width+30)p.x=-30; if(p.y<-30)p.y=canvas.height+30; if(p.y>canvas.height+30)p.y=-30;
+                    p.size=p.baseSize+Math.sin(time*p.pulseSpeed*10+p.pulsePhase)*0.7;
+                    p.glowAlpha+=(0.6-p.glowAlpha)*0.03;
+                }
+                for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++) {
+                    const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+                    if(dist<CONNECTION_DIST){ const alpha=(1-dist/CONNECTION_DIST)*0.28, pulse=Math.sin(ts*0.003+i*0.4+j*0.3)*0.5+0.5; ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.strokeStyle=`rgba(120,170,230,${alpha*(0.5+pulse*0.5)})`; ctx.lineWidth=0.6; ctx.stroke(); }
+                }
+                for(let p of particles) {
+                    const grad=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*3.5);
+                    grad.addColorStop(0,p.color+(p.glowAlpha*0.7)+')'); grad.addColorStop(0.35,p.color+(p.glowAlpha*0.25)+')'); grad.addColorStop(1,p.color+'0)');
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.size*3.5,0,Math.PI*2); ctx.fillStyle=grad; ctx.fill();
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.size*0.65,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${0.7+p.glowAlpha*0.3})`; ctx.fill();
+                }
+                if(mouseX>-500&&mouseY>-500){ const mg=ctx.createRadialGradient(mouseX,mouseY,0,mouseX,mouseY,SPLATTER_RADIUS*0.7); mg.addColorStop(0,'rgba(120,180,240,0.08)'); mg.addColorStop(0.5,'rgba(100,150,220,0.03)'); mg.addColorStop(1,'rgba(0,0,0,0)'); ctx.beginPath(); ctx.arc(mouseX,mouseY,SPLATTER_RADIUS*0.7,0,Math.PI*2); ctx.fillStyle=mg; ctx.fill(); }
+                requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+
+            // ═══════════ CATEGORY MANAGER LOGIC (with cache) ═══════════
+            const CATEGORY_API = "/Admin/allCategory";
+            const SUBCATEGORY_API = "/Admin/allsubCategory";
+            const SUB_SUB_API = "/Admin/allsub_subCategory";
+            const DEL_CAT = "/Admin/deletecategoryForm";
+            const DEL_SUB = "/Admin/deletesubcategoryForm";
+            const DEL_SS = "/Admin/deletesub_subcategoryForm";
+
+            let mainCategories = [], subcategories = [], subsubcategories = [];
+            let currentView = 'card';
+            let currentTab = 'main';
+            let globalSearchTerm = '';
+
+            const CACHE_KEY = 'shopmaster_categories_cache';
+            const CACHE_TTL = 5 * 60 * 1000;
+
+            function getCachedData() {
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (!cached) return null;
+                const { timestamp, data } = JSON.parse(cached);
+                if (Date.now() - timestamp < CACHE_TTL) return data;
+                localStorage.removeItem(CACHE_KEY);
+                return null;
+            }
+
+            function setCachedData(data) {
+                localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+            }
+
+            function getFallbackImageUrl() {
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="160" viewBox="0 0 400 160">
+                    <rect width="400" height="160" fill="#1a2332" rx="8"/>
+                    <g transform="translate(180,50)">
+                        <path d="M4 4h16l4 6h16v28H4z" fill="#2d3748" stroke="#4a5568" stroke-width="2"/>
+                        <text x="22" y="55" text-anchor="middle" fill="#718096" font-family="sans-serif" font-size="12">No Image</text>
+                    </g>
+                </svg>`;
+                return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+            }
+            const PLACEHOLDER_IMG = getFallbackImageUrl();
+
+            function getImageUrl(entity, type) {
+                if (type === 'main' && entity.categoryImage?.path) return entity.categoryImage.path;
+                if (type === 'sub' && entity.subcategoryImage?.path) return entity.subcategoryImage.path;
+                if (type === 'subsub' && entity.sub_subcategoryImages?.path) return entity.sub_subcategoryImages.path;
+                return PLACEHOLDER_IMG;
+            }
+
+            function showToast(msg, icon = "check-circle") {
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification p-3 rounded-3 d-flex align-items-center gap-2';
+                toast.innerHTML = `<i class="fas fa-${icon}"></i><span>${msg}</span>`;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            }
+
+            function updateCounters() {
+                document.getElementById('mainCount').innerText = mainCategories.length;
+                document.getElementById('subCount').innerText = subcategories.length;
+                document.getElementById('subsubCount').innerText = subsubcategories.length;
+            }
+
+            function filterData(data, fields) {
+                if (!globalSearchTerm) return data;
+                return data.filter(item => fields.some(f => (item[f] || '').toLowerCase().includes(globalSearchTerm)));
+            }
+
+            function renderCurrentTab() {
+                document.getElementById('mainTabPane').classList.toggle('d-none', currentTab !== 'main');
+                document.getElementById('subTabPane').classList.toggle('d-none', currentTab !== 'sub');
+                document.getElementById('subsubTabPane').classList.toggle('d-none', currentTab !== 'subsub');
+                if (currentTab === 'main') renderMainCategories();
+                else if (currentTab === 'sub') renderSubCategories();
+                else renderSubSubCategories();
+            }
+
+            // Helper to generate compact icon buttons
+            function actionButtons(type, id) {
+                return `
+                    <div class="action-buttons d-flex gap-2">
+                        <button class="btn-icon edit-${type}" data-id="${id}" title="Edit"><i class="fas fa-pen"></i></button>
+                        <button class="btn-icon delete-${type}" data-id="${id}" title="Delete"><i class="fas fa-trash"></i></button>
+                    </div>`;
+            }
+
+            function renderMainCategories() {
+                const filtered = filterData(mainCategories, ['name', 'description']);
+                const cards = document.getElementById('mainCardsContainer');
+                const table = document.getElementById('mainTableBody');
+                if (!filtered.length) {
+                    cards.innerHTML = '<div class="col-12 text-center py-5">No categories found</div>';
+                    table.innerHTML = '<tr><td colspan="5" class="text-center">No data</td></tr>';
+                    return;
+                }
+                if (currentView === 'card') {
+                    cards.classList.remove('d-none');
+                    document.getElementById('mainTableContainer').classList.add('d-none');
+                    cards.innerHTML = filtered.map(cat => {
+                        const img = getImageUrl(cat, 'main');
+                        return `<div class="col-md-4 mb-4">
+                            <div class="category-card">
+                                <img src="${img}" class="card-img-top" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}';" alt="${escapeHtml(cat.name)}">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas ${cat.icon || 'fa-folder'} me-2"></i>${escapeHtml(cat.name)}</h5>
+                                    <p class="card-text">${escapeHtml(cat.description || 'No description available')}</p>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="badge ${cat.status === 'active' ? 'badge-active' : 'badge-inactive'}">${cat.status || 'inactive'}</span>
+                                        ${actionButtons('main', cat.id)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }).join('');
+                } else {
+                    cards.classList.add('d-none');
+                    document.getElementById('mainTableContainer').classList.remove('d-none');
+                    table.innerHTML = filtered.map(cat => {
+                        const thumb = getImageUrl(cat, 'main');
+                        return `<tr>
+                            <td><img src="${thumb}" class="table-img-preview" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}';"></td>
+                            <td><strong>${escapeHtml(cat.name)}</strong></td>
+                            <td><i class="fas ${cat.icon || 'fa-folder'}"></i></td>
+                            <td><span class="badge ${cat.status === 'active' ? 'badge-active' : 'badge-inactive'}">${cat.status}</span></td>
+                            <td>
+                                <div class="action-buttons d-flex gap-2">
+                                    <button class="btn-icon edit-main" data-id="${cat.id}" title="Edit"><i class="fas fa-pen"></i></button>
+                                    <button class="btn-icon delete-main" data-id="${cat.id}" title="Delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>`;
+                    }).join('');
+                }
+                attachMainEvents();
+            }
+
+            function renderSubCategories() {
+                const filtered = filterData(subcategories, ['name', 'parentName', 'description']);
+                const cards = document.getElementById('subCardsContainer');
+                const table = document.getElementById('subTableBody');
+                if (!filtered.length) {
+                    cards.innerHTML = '<div class="col-12 text-center py-5">No subcategories</div>';
+                    table.innerHTML = '<tr><td colspan="5" class="text-center">No data</td></tr>';
+                    return;
+                }
+                if (currentView === 'card') {
+                    cards.classList.remove('d-none');
+                    document.getElementById('subTableContainer').classList.add('d-none');
+                    cards.innerHTML = filtered.map(sub => {
+                        const img = getImageUrl(sub, 'sub');
+                        return `<div class="col-md-4 mb-4">
+                            <div class="category-card">
+                                <img src="${img}" class="card-img-top" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}';" alt="${escapeHtml(sub.name)}">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas ${sub.icon || 'fa-folder-open'} me-2"></i>${escapeHtml(sub.name)}</h5>
+                                    <p class="mb-1"><span class="badge bg-secondary">Parent: ${escapeHtml(sub.parentName || '—')}</span></p>
+                                    <p class="card-text">${escapeHtml(sub.description || 'No description')}</p>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="badge ${sub.status === 'active' ? 'badge-active' : 'badge-inactive'}">${sub.status}</span>
+                                        ${actionButtons('sub', sub.id)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }).join('');
+                } else {
+                    cards.classList.add('d-none');
+                    document.getElementById('subTableContainer').classList.remove('d-none');
+                    table.innerHTML = filtered.map(sub => {
+                        const thumb = getImageUrl(sub, 'sub');
+                        return `<tr>
+                            <td><img src="${thumb}" class="table-img-preview" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}';"></td>
+                            <td><strong>${escapeHtml(sub.name)}</strong></td>
+                            <td>${escapeHtml(sub.parentName || '—')}</td>
+                            <td><span class="badge ${sub.status === 'active' ? 'badge-active' : 'badge-inactive'}">${sub.status}</span></td>
+                            <td>
+                                <div class="action-buttons d-flex gap-2">
+                                    <button class="btn-icon edit-sub" data-id="${sub.id}" title="Edit"><i class="fas fa-pen"></i></button>
+                                    <button class="btn-icon delete-sub" data-id="${sub.id}" title="Delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>`;
+                    }).join('');
+                }
+                attachSubEvents();
+            }
+
+            function renderSubSubCategories() {
+                const filtered = filterData(subsubcategories, ['name', 'parentName', 'subParentName', 'description']);
+                const cards = document.getElementById('subsubCardsContainer');
+                const table = document.getElementById('subsubTableBody');
+                if (!filtered.length) {
+                    cards.innerHTML = '<div class="col-12 text-center py-5">No sub‑subcategories</div>';
+                    table.innerHTML = '<tr><td colspan="6" class="text-center">No data</td></tr>';
+                    return;
+                }
+                if (currentView === 'card') {
+                    cards.classList.remove('d-none');
+                    document.getElementById('subsubTableContainer').classList.add('d-none');
+                    cards.innerHTML = filtered.map(ss => {
+                        const img = getImageUrl(ss, 'subsub');
+                        return `<div class="col-md-4 mb-4">
+                            <div class="category-card">
+                                <img src="${img}" class="card-img-top" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}';" alt="${escapeHtml(ss.name)}">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-sitemap me-2"></i>${escapeHtml(ss.name)}</h5>
+                                    <p class="mb-1"><span class="badge bg-secondary">${escapeHtml(ss.parentName || '—')} → ${escapeHtml(ss.subParentName || '—')}</span></p>
+                                    <p class="card-text">${escapeHtml(ss.description || 'No description')}</p>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="badge ${ss.status === 'active' ? 'badge-active' : 'badge-inactive'}">${ss.status}</span>
+                                        ${actionButtons('ss', ss.id)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }).join('');
+                } else {
+                    cards.classList.add('d-none');
+                    document.getElementById('subsubTableContainer').classList.remove('d-none');
+                    table.innerHTML = filtered.map(ss => {
+                        const thumb = getImageUrl(ss, 'subsub');
+                        return `<tr>
+                            <td><img src="${thumb}" class="table-img-preview" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}';"></td>
+                            <td><strong>${escapeHtml(ss.name)}</strong></td>
+                            <td>${escapeHtml(ss.parentName || '—')}</td>
+                            <td>${escapeHtml(ss.subParentName || '—')}</td>
+                            <td><span class="badge ${ss.status === 'active' ? 'badge-active' : 'badge-inactive'}">${ss.status}</span></td>
+                            <td>
+                                <div class="action-buttons d-flex gap-2">
+                                    <button class="btn-icon edit-ss" data-id="${ss.id}" title="Edit"><i class="fas fa-pen"></i></button>
+                                    <button class="btn-icon delete-ss" data-id="${ss.id}" title="Delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>`;
+                    }).join('');
+                }
+                attachSubSubEvents();
+            }
+
+            async function deleteItem(url, id, type) {
+                if (!confirm(`Delete this ${type}?`)) return;
+                try {
+                    const response = await fetch(`${url}/${id}`, { method: 'DELETE' });
+                    if (response.ok) showToast(`${type} deleted`, "trash-alt");
+                    else showToast(`Failed to delete ${type}`, "exclamation-triangle");
+                    await loadAllData(true);
+                } catch (err) {
+                    showToast(`Error deleting ${type}`, "times-circle");
+                }
+            }
+
+            function attachMainEvents() {
+                document.querySelectorAll('.edit-main').forEach(btn => btn.onclick = () => window.location.href = `/Admin/editcategoryForm/${btn.dataset.id}`);
+                document.querySelectorAll('.delete-main').forEach(btn => btn.onclick = () => deleteItem(DEL_CAT, btn.dataset.id, 'Main Category'));
+            }
+            function attachSubEvents() {
+                document.querySelectorAll('.edit-sub').forEach(btn => btn.onclick = () => window.location.href = `/Admin/editsubcategoryForm/${btn.dataset.id}`);
+                document.querySelectorAll('.delete-sub').forEach(btn => btn.onclick = () => deleteItem(DEL_SUB, btn.dataset.id, 'Subcategory'));
+            }
+            function attachSubSubEvents() {
+                document.querySelectorAll('.edit-ss').forEach(btn => btn.onclick = () => window.location.href = `/Admin/editsub_subcategoryForm/${btn.dataset.id}`);
+                document.querySelectorAll('.delete-ss').forEach(btn => btn.onclick = () => deleteItem(DEL_SS, btn.dataset.id, 'Sub‑Subcategory'));
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]);
+            }
+
+            async function loadAllData(forceRefresh = false) {
+                const cached = getCachedData();
+                if (cached && !forceRefresh) {
+                    mainCategories = cached.main || [];
+                    subcategories = cached.sub || [];
+                    subsubcategories = cached.subsub || [];
+                    updateCounters();
+                    renderCurrentTab();
+                    showToast('Loaded from cache — refreshing in background', 'info');
+                } else {
+                    document.getElementById('mainCardsContainer').innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary"></div></div>';
+                }
+
+                try {
+                    const [catRes, subRes, subsubRes] = await Promise.all([
+                        fetch(CATEGORY_API), fetch(SUBCATEGORY_API), fetch(SUB_SUB_API)
+                    ]);
+                    if (!catRes.ok || !subRes.ok || !subsubRes.ok) throw new Error("API error");
+                    const catJson = await catRes.json();
+                    const subJson = await subRes.json();
+                    const subsubJson = await subsubRes.json();
+                    mainCategories = catJson.success ? catJson.data : [];
+                    subcategories = subJson.success ? subJson.data : [];
+                    subsubcategories = subsubJson.success ? subsubJson.data : [];
+                    setCachedData({ main: mainCategories, sub: subcategories, subsub: subsubcategories });
+                    updateCounters();
+                    renderCurrentTab();
+                    if (forceRefresh) showToast('Data refreshed', 'check-circle');
+                    else if (!cached) showToast(`Loaded ${mainCategories.length} main, ${subcategories.length} sub, ${subsubcategories.length} sub‑sub`, 'check-circle');
+                } catch (err) {
+                    console.error(err);
+                    if (!cached) {
+                        mainCategories = []; subcategories = []; subsubcategories = [];
+                        updateCounters();
+                        renderCurrentTab();
+                        showToast('⚠️ Failed to load data.', 'times-circle');
+                    } else {
+                        showToast('Could not refresh — using cached data', 'exclamation-triangle');
+                    }
+                }
+            }
+
+            document.getElementById('viewCardBtn').addEventListener('click', () => {
+                currentView = 'card';
+                document.getElementById('viewCardBtn').classList.add('active');
+                document.getElementById('viewTableBtn').classList.remove('active');
+                renderCurrentTab();
+            });
+            document.getElementById('viewTableBtn').addEventListener('click', () => {
+                currentView = 'table';
+                document.getElementById('viewTableBtn').classList.add('active');
+                document.getElementById('viewCardBtn').classList.remove('active');
+                renderCurrentTab();
+            });
+
+            document.querySelectorAll('#categoryTabs .nav-link').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('#categoryTabs .nav-link').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentTab = this.dataset.tab;
+                    renderCurrentTab();
+                });
+            });
+
+            document.getElementById('searchInput').addEventListener('input', e => {
+                globalSearchTerm = e.target.value.trim().toLowerCase();
+                renderCurrentTab();
+            });
+
+            document.getElementById('addMainCatBtn').onclick = () => window.location.href = '/Admin/categoryForm';
+            document.getElementById('addSubCatBtn').onclick = () => window.location.href = '/Admin/subcategoryForm';
+            document.getElementById('addSubSubBtn').onclick = () => window.location.href = '/Admin/sub_subcategoryForm';
+            document.getElementById('addMainFromMain').onclick = () => window.location.href = '/Admin/categoryForm';
+            document.getElementById('addSubFromSub').onclick = () => window.location.href = '/Admin/subcategoryForm';
+            document.getElementById('addSubSubFromTab').onclick = () => window.location.href = '/Admin/sub_subcategoryForm';
+            document.getElementById('exportBtn').onclick = () => {
+                console.log("Main:", mainCategories);
+                console.log("Sub:", subcategories);
+                console.log("Sub‑Sub:", subsubcategories);
+                showToast("Data exported to console", "info");
+            };
+
+            document.getElementById('menuToggleBtn').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('active'));
+            document.getElementById('toggleSidebarBtn').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('active'));
+
+            loadAllData();
+        })();
+    </script>
+</body>
+</html>

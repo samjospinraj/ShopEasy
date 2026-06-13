@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopMaster · Admin Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ----- reuse same design system + profile specifics ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #2c6de9;
+            --dark-blue: #1a4fb3;
+            --light-blue: #e8f1ff;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --dark-charcoal: #1f2937;
+            --medium-charcoal: #374151;
+            --light-charcoal: #f9fafb;
+            --white: #ffffff;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --border-radius: 12px;
+            --transition: all 0.25s ease;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f5fe 0%, #e9f0fa 100%);
+            color: var(--dark-charcoal);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ----- SIDEBAR (same as dashboard) ----- */
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            color: var(--dark-charcoal);
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            border-right: 1px solid rgba(0,0,0,0.05);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px 20px;
+            border-bottom: 1px solid #eef2f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            background: var(--light-blue);
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid var(--primary-blue);
+        }
+
+        .logo-text {
+            font-size: 1.7rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--primary-blue);
+        }
+
+        .logo-subtext {
+            font-size: 0.7rem;
+            color: var(--medium-charcoal);
+            letter-spacing: 0.3px;
+        }
+
+        .toggle-sidebar {
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .toggle-sidebar:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--medium-charcoal);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            font-weight: 450;
+        }
+
+        .menu-item:hover,
+        .menu-item.active-menu {
+            background: var(--light-blue);
+            border-left-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .menu-item i {
+            width: 24px;
+            font-size: 1.2rem;
+            margin-right: 14px;
+        }
+
+        .menu-text {
+            font-size: 1rem;
+        }
+
+        /* ----- MAIN CONTENT (responsive) ----- */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 20px 30px;
+            transition: margin-left 0.3s ease;
+            width: 100%;
+        }
+
+        /* ----- HEADER (same search & user) ----- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            padding: 16px 28px;
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            border: 1px solid #edf2f7;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--light-charcoal);
+            border-radius: 40px;
+            padding: 8px 20px;
+            width: min(400px, 100%);
+            border: 1px solid #dee4ed;
+            transition: var(--transition);
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(44, 109, 233, 0.2);
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            padding: 8px 10px;
+            width: 100%;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-bar i {
+            color: #7f8c9f;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: transparent;
+            border: none;
+            font-size: 1.3rem;
+            color: var(--medium-charcoal);
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 3px;
+            right: 5px;
+            background: var(--accent-red);
+            color: white;
+            font-size: 0.65rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 16px 6px 10px;
+            background: var(--light-charcoal);
+            border-radius: 40px;
+            border: 1px solid #dee4ed;
+            cursor: pointer;
+        }
+
+        .user-info img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-blue);
+            object-fit: cover;
+        }
+
+        .user-details h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: var(--medium-charcoal);
+        }
+
+        /* ----- PROFILE PAGE SPECIFIC STYLES (full responsive) ----- */
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        /* left card: avatar + basic info + stats */
+        .profile-side-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid #edf2f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-blue);
+            object-fit: cover;
+            margin-bottom: 20px;
+            background: var(--light-blue);
+        }
+
+        .profile-side-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+            color: var(--dark-charcoal);
+        }
+
+        .profile-badge {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+
+        .profile-contact {
+            width: 100%;
+            text-align: left;
+            margin: 20px 0;
+            background: var(--light-charcoal);
+            padding: 18px 16px;
+            border-radius: 20px;
+            border: 1px solid #e4eaf2;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee6f0;
+        }
+        .contact-item:last-child { border-bottom: none; }
+        .contact-item i {
+            width: 28px;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+        }
+        .contact-item span { font-weight: 500; }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .stat-bubble {
+            background: white;
+            border-radius: 18px;
+            padding: 16px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #e9eff5;
+        }
+        .stat-bubble h3 { font-size: 1.6rem; color: var(--primary-blue); }
+        .stat-bubble p { font-size: 0.8rem; color: #4b5a6e; }
+
+        /* right side: detailed info, settings, activity */
+        .profile-details-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid #edf2f9;
+        }
+
+        .detail-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 2px solid #eef2f6;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: var(--medium-charcoal);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .tab-btn.active-tab {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .detail-section {
+            display: block;
+        }
+        .detail-section.hidden {
+            display: none;
+        }
+
+        .info-row {
+            display: flex;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f4fa;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .info-label {
+            width: 140px;
+            font-weight: 600;
+            color: #4b5a6e;
+        }
+        .info-value {
+            flex: 1;
+            color: var(--dark-charcoal);
+        }
+        .edit-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .activity-list {
+            margin-top: 16px;
+        }
+        .activity-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f4fa;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .activity-icon {
+            width: 46px;
+            height: 46px;
+            background: var(--light-blue);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.3rem;
+        }
+        .activity-desc { flex: 1; }
+        .activity-time { color: #7f8c9f; font-size: 0.8rem; }
+
+        /* Security & preferences quick */
+        .pref-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f4fa;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .pref-title { font-weight: 600; }
+        .pref-desc { font-size: 0.9rem; color: #55657b; }
+        .toggle-switch {
+            width: 52px;
+            height: 28px;
+            background: #cbd5e1;
+            border-radius: 40px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .toggle-switch.active { background: var(--primary-blue); }
+        .toggle-switch::after {
+            content: '';
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: 0.2s;
+        }
+        .toggle-switch.active::after { left: 26px; }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            background: var(--primary-blue);
+            color: white;
+            font-size: 0.95rem;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+        .btn:hover { filter: brightness(1.05); transform: translateY(-2px); }
+
+        /* responsive for profile */
+        @media (max-width: 1100px) {
+            .profile-container { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .menu-toggle { display: flex; }
+        }
+
+        @media (max-width: 680px) {
+            .profile-details-card { padding: 20px; }
+            .info-row { flex-direction: column; gap: 5px; }
+            .info-label { width: auto; }
+            .header { flex-direction: column; align-items: stretch; }
+            .search-bar { width: 100%; }
+            .main-content { padding: 16px; }
+        }
+
+        @media (max-width: 480px) {
+            .header-actions { justify-content: center; }
+            .user-details { display: none; }
+            .profile-avatar { width: 110px; height: 110px; }
+        }
+
+        /* toast notification (reuse) */
+        .notification-toast {
+            position: fixed; top: 20px; right: 20px; background: white; border-left: 5px solid var(--primary-blue);
+            padding: 16px 22px; border-radius: 16px; box-shadow: 0 12px 28px rgba(0,0,0,0.1); z-index: 9999;
+            display: flex; align-items: center; gap: 12px; font-weight: 500; animation: slideIn 0.2s;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR (same as dashboard) -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div>
+                    <div class="logo-text">ShopMaster</div>
+                    <div class="logo-subtext">admin panel</div>
+                </div>
+            </div>
+            <button class="toggle-sidebar" id="toggleSidebar" aria-label="close sidebar">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+        <div class="sidebar-menu">
+            <a href="/Admin/dashboard" class="menu-item"><i class="fas fa-tachometer-alt"></i><span class="menu-text">Dashboard</span></a>
+            <a href="/Admin/product" class="menu-item"><i class="fas fa-box"></i><span class="menu-text">Products</span></a>
+            <a href="/Admin/category" class="menu-item"><i class="fas fa-tags"></i><span class="menu-text">Categories</span></a>
+            <a href="/Admin/order" class="menu-item"><i class="fas fa-shopping-cart"></i><span class="menu-text">Orders</span></a>
+            <a href="/Admin/customer" class="menu-item"><i class="fas fa-users"></i><span class="menu-text">Customers</span></a>
+            <a href="/Admin/analytics" class="menu-item"><i class="fas fa-chart-line"></i><span class="menu-text">Analytics</span></a>
+            <a href="/Admin/profile" class="menu-item active-menu"><i class="fas fa-id-badge"></i><span class="menu-text">Profile</span></a>
+            <a href="/Admin/setting" class="menu-item"><i class="fas fa-cog"></i><span class="menu-text">Settings</span></a>
+        </div>
+    </div>
+
+    <!-- MAIN PROFILE CONTENT -->
+    <div class="main-content" id="mainContent">
+        <!-- HEADER (same) -->
+        <div class="header">
+            <button class="menu-toggle" id="menuToggle" aria-label="menu"><i class="fas fa-bars"></i></button>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search orders, products...">
+            </div>
+            <div class="header-actions">
+                <button class="notification-btn"><i class="fas fa-bell"></i><span class="notification-badge">5</span></button>
+                <button class="notification-btn"><i class="fas fa-envelope"></i><span class="notification-badge">3</span></button>
+                <div class="user-info" id="profileButton">
+                    <img src="https://ui-avatars.com/api/?name=Admin+Master&background=2c6de9&color=fff&bold=true&size=42" alt="admin">
+                    <div class="user-details">
+                        <h4>Alex Master</h4>
+                        <p>Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFILE LAYOUT (two columns) -->
+        <div class="profile-container">
+            <!-- left column: avatar and contact card -->
+            <div class="profile-side-card">
+                <img src="https://ui-avatars.com/api/?name=Alex+Master&background=2c6de9&color=fff&size=140&bold=true&length=2" alt="avatar" class="profile-avatar">
+                <h2>Alex Master</h2>
+                <div class="profile-badge">Super Administrator</div>
+                <div class="profile-contact">
+                    <div class="contact-item"><i class="fas fa-envelope"></i> <span>a.master@shopmaster.com</span></div>
+                    <div class="contact-item"><i class="fas fa-phone-alt"></i> <span>+1 (555) 237-8941</span></div>
+                    <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span>New York, NY 10001</span></div>
+                    <div class="contact-item"><i class="fas fa-calendar"></i> <span>Joined Mar 2022</span></div>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-bubble"><h3>284</h3><p>orders managed</p></div>
+                    <div class="stat-bubble"><h3>12</h3><p>products added</p></div>
+                </div>
+                <button class="btn" style="margin-top: 20px; width: 100%;" id="editProfileBtn"><i class="fas fa-pen"></i> edit profile</button>
+            </div>
+
+            <!-- right column: tabs with personal, activity, security -->
+            <div class="profile-details-card">
+                <div class="detail-tabs">
+                    <button class="tab-btn active-tab" id="tabPersonal">Personal info</button>
+                    <button class="tab-btn" id="tabActivity">Activity log</button>
+                    <button class="tab-btn" id="tabSecurity">Security & prefs</button>
+                </div>
+
+                <!-- PERSONAL INFO SECTION -->
+                <div id="personalSection" class="detail-section">
+                    <div class="info-row"><span class="info-label">Full name</span><span class="info-value">Alexandre Master</span><a href="#" class="edit-link"><i class="fas fa-edit"></i> edit</a></div>
+                    <div class="info-row"><span class="info-label">Email address</span><span class="info-value">a.master@shopmaster.com</span><a href="#" class="edit-link"><i class="fas fa-edit"></i> edit</a></div>
+                    <div class="info-row"><span class="info-label">Phone (mobile)</span><span class="info-value">+1 (555) 237-8941</span><a href="#" class="edit-link"><i class="fas fa-edit"></i> edit</a></div>
+                    <div class="info-row"><span class="info-label">Department</span><span class="info-value">Administration & IT</span></div>
+                    <div class="info-row"><span class="info-label">Location</span><span class="info-value">Manhattan, NYC</span></div>
+                    <div class="info-row"><span class="info-label">Languages</span><span class="info-value">English (native), Spanish (intermediate)</span></div>
+                    <div class="info-row"><span class="info-label">Birth date</span><span class="info-value">May 14, 1988</span></div>
+                </div>
+
+                <!-- ACTIVITY SECTION (hidden) -->
+                <div id="activitySection" class="detail-section hidden">
+                    <div class="activity-list">
+                        <div class="activity-item"><div class="activity-icon"><i class="fas fa-box"></i></div><div class="activity-desc"><strong>Added new product</strong> – Sony WH-1000XM5 · <span class="activity-time">2 hours ago</span></div></div>
+                        <div class="activity-item"><div class="activity-icon"><i class="fas fa-shopping-cart"></i></div><div class="activity-desc"><strong>Processed order #SM-2384</strong> · <span class="activity-time">yesterday</span></div></div>
+                        <div class="activity-item"><div class="activity-icon"><i class="fas fa-user"></i></div><div class="activity-desc"><strong>Updated customer details</strong> for Linda Zhao · <span class="activity-time">3 days ago</span></div></div>
+                        <div class="activity-item"><div class="activity-icon"><i class="fas fa-cog"></i></div><div class="activity-desc"><strong>Changed store settings</strong> (tax rules) · <span class="activity-time">Mar 12</span></div></div>
+                        <div class="activity-item"><div class="activity-icon"><i class="fas fa-file-alt"></i></div><div class="activity-desc"><strong>Generated sales report</strong> Q1 2025 · <span class="activity-time">Mar 10</span></div></div>
+                    </div>
+                </div>
+
+                <!-- SECURITY & PREFS (hidden) -->
+                <div id="securitySection" class="detail-section hidden">
+                    <div class="pref-item"><div><div class="pref-title">Two-factor authentication</div><div class="pref-desc">Protect your account with 2FA</div></div><div class="toggle-switch active" id="toggle2FA"></div></div>
+                    <div class="pref-item"><div><div class="pref-title">Email notifications</div><div class="pref-desc">Order updates, alerts, newsletters</div></div><div class="toggle-switch active" id="toggleEmailNotif"></div></div>
+                    <div class="pref-item"><div><div class="pref-title">Session timeout</div><div class="pref-desc">Auto‑logout after 30 min</div></div><div class="toggle-switch" id="toggleTimeout"></div></div>
+                    <div style="margin-top: 28px;">
+                        <button class="btn btn-outline" style="margin-right: 12px;" id="changePwdBtn"><i class="fas fa-lock"></i> change password</button>
+                        <button class="btn btn-outline" id="apiKeysBtn"><i class="fas fa-key"></i> manage API keys</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- optional extra row: last login sessions (just design consistency) -->
+        <div style="background: white; border-radius: 24px; padding: 20px; border: 1px solid #edf2f9; margin-top: 16px;">
+            <h3 style="margin-bottom: 10px;"><i class="fas fa-history" style="color: var(--primary-blue);"></i> Active sessions</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 28px;">
+                <div><i class="fas fa-laptop"></i> Windows · Chrome <br> <small>NYC, 2 hrs ago</small></div>
+                <div><i class="fas fa-mobile-alt"></i> iPhone 15 · Safari <br> <small>current session</small></div>
+                <div><i class="fas fa-tablet"></i> iPad · <small>Mar 16, 2025</small></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // sidebar toggle (identical to dashboard)
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menuToggle');
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            function toggleSidebarFunc(e) { e.stopPropagation(); sidebar.classList.toggle('active'); }
+            if (menuToggle) menuToggle.addEventListener('click', toggleSidebarFunc);
+            if (toggleSidebar) toggleSidebar.addEventListener('click', toggleSidebarFunc);
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 992 && !sidebar.contains(e.target) && !menuToggle.contains(e.target) && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+
+            // profile tab switching
+            const tabPersonal = document.getElementById('tabPersonal');
+            const tabActivity = document.getElementById('tabActivity');
+            const tabSecurity = document.getElementById('tabSecurity');
+            const personalSec = document.getElementById('personalSection');
+            const activitySec = document.getElementById('activitySection');
+            const securitySec = document.getElementById('securitySection');
+
+            function setActiveTab(active) {
+                [tabPersonal, tabActivity, tabSecurity].forEach(t => t.classList.remove('active-tab'));
+                personalSec.classList.add('hidden');
+                activitySec.classList.add('hidden');
+                securitySec.classList.add('hidden');
+                if (active === 'personal') {
+                    tabPersonal.classList.add('active-tab');
+                    personalSec.classList.remove('hidden');
+                } else if (active === 'activity') {
+                    tabActivity.classList.add('active-tab');
+                    activitySec.classList.remove('hidden');
+                } else if (active === 'security') {
+                    tabSecurity.classList.add('active-tab');
+                    securitySec.classList.remove('hidden');
+                }
+            }
+
+            tabPersonal.addEventListener('click', () => setActiveTab('personal'));
+            tabActivity.addEventListener('click', () => setActiveTab('activity'));
+            tabSecurity.addEventListener('click', () => setActiveTab('security'));
+
+            // toggle switches demo (just visual + toast)
+            function showToast(msg) {
+                const toast = document.createElement('div');
+                toast.className = 'notification-toast';
+                toast.innerHTML = `<i class="fas fa-info-circle" style="color: var(--primary-blue);"></i><span>${msg}</span>`;
+                document.body.appendChild(toast);
+                setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(40px)'; setTimeout(() => toast.remove(), 300); }, 2000);
+            }
+
+            document.getElementById('toggle2FA')?.addEventListener('click', function(e) {
+                this.classList.toggle('active');
+                showToast(this.classList.contains('active') ? '2FA enabled' : '2FA disabled');
+            });
+            document.getElementById('toggleEmailNotif')?.addEventListener('click', function() {
+                this.classList.toggle('active');
+                showToast(this.classList.contains('active') ? 'Email notifications ON' : 'Email notifications OFF');
+            });
+            document.getElementById('toggleTimeout')?.addEventListener('click', function() {
+                this.classList.toggle('active');
+                showToast(this.classList.contains('active') ? 'Session timeout 30min' : 'Session timeout off');
+            });
+
+            // edit profile / buttons demo
+            document.getElementById('editProfileBtn')?.addEventListener('click', () => showToast('✏️ Edit profile (demo)'));
+            document.getElementById('changePwdBtn')?.addEventListener('click', () => showToast('🔐 Change password dialog'));
+            document.getElementById('apiKeysBtn')?.addEventListener('click', () => showToast('🔑 API key management'));
+            document.querySelectorAll('.edit-link').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); showToast('Edit field (demo)'); }));
+
+            // profileButton from header also hint
+            document.getElementById('profileButton')?.addEventListener('click', () => showToast('👤 Admin profile – you are here'));
+
+            // update chevron icon (just style)
+            const iconToggle = toggleSidebar?.querySelector('i');
+            if (iconToggle) {
+                const observer = new MutationObserver(() => {
+                    if (sidebar.classList.contains('active')) iconToggle.classList.replace('fa-chevron-left', 'fa-chevron-right');
+                    else iconToggle.classList.replace('fa-chevron-right', 'fa-chevron-left');
+                });
+                observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+            }
+        })();
+    </script>
+</body>
+</html>

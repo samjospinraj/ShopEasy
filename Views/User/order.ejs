@@ -1,0 +1,3408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover, maximum-scale=1.0">
+    <title>My Orders | ShopEasy 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --accent: #ffe66d;
+            --dark: #2c3e50;
+            --light: #f7f9fc;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --gradient-1: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            --gradient-2: linear-gradient(135deg, #4ecdc4, #44bd32);
+            --gradient-card: linear-gradient(135deg, #667eea, #764ba2);
+            --gradient-success: linear-gradient(135deg, #11998e, #38ef7d);
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f3f8 0%, #e8ecf1 100%);
+            color: var(--dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: particleFloat 15s infinite ease-in-out;
+            opacity: 0.3;
+        }
+
+        @keyframes particleFloat {
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(80px, -60px) rotate(90deg);
+            }
+            50% {
+                transform: translate(-40px, 40px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-70px, -30px) rotate(270deg);
+            }
+        }
+
+        /* ---------- SUCCESS OVERLAY ---------- */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        .animation-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-message {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Review animation */
+        .review-animation .paper {
+            width: 100px;
+            height: 130px;
+            background: #fff;
+            border-radius: 10px;
+            position: absolute;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: paperAppear 0.6s ease forwards;
+        }
+
+        .review-animation .star-burst {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+        }
+
+        .review-animation .star1 {
+            top: 20px;
+            left: 30px;
+            animation: starPop 0.5s 0.3s ease forwards;
+        }
+
+        .review-animation .star2 {
+            top: 50px;
+            right: 40px;
+            animation: starPop 0.5s 0.5s ease forwards;
+        }
+
+        .review-animation .star3 {
+            bottom: 30px;
+            left: 60px;
+            animation: starPop 0.5s 0.7s ease forwards;
+        }
+
+        .review-animation .pen {
+            position: absolute;
+            width: 8px;
+            height: 40px;
+            background: #f39c12;
+            border-radius: 3px;
+            transform: rotate(45deg);
+            right: 20px;
+            bottom: 20px;
+            animation: penDraw 0.8s 0.9s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes paperAppear {
+            0% {
+                transform: scale(0) rotate(10deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes starPop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes penDraw {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translate(20px, -20px);
+            }
+            100% {
+                opacity: 1;
+                transform: rotate(45deg) translate(0, 0);
+            }
+        }
+
+        /* Cancel animation */
+        .cancel-animation .circle {
+            width: 120px;
+            height: 120px;
+            border: 6px solid #e74c3c;
+            border-radius: 50%;
+            position: absolute;
+            animation: cancelPulse 0.8s ease forwards;
+        }
+
+        .cancel-animation .cross {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+        }
+
+        .cancel-animation .cross::before,
+        .cancel-animation .cross::after {
+            content: '';
+            position: absolute;
+            background: #e74c3c;
+            border-radius: 5px;
+            width: 8px;
+            height: 80px;
+            left: 26px;
+            top: -10px;
+        }
+
+        .cancel-animation .cross::before {
+            transform: rotate(45deg);
+        }
+
+        .cancel-animation .cross::after {
+            transform: rotate(-45deg);
+        }
+
+        @keyframes cancelPulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Return animation */
+        .return-animation .box {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #f1c40f, #e67e22);
+            border-radius: 15px;
+            position: absolute;
+            animation: returnFly 1.2s ease forwards;
+        }
+
+        .return-animation .arrow {
+            position: absolute;
+            font-size: 30px;
+            color: white;
+            top: 35px;
+            animation: returnArrow 0.8s 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes returnFly {
+            0% {
+                transform: translateX(-100px) rotate(-20deg);
+                opacity: 0;
+            }
+            50% {
+                transform: translateX(20px) rotate(10deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes returnArrow {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Refund animation */
+        .refund-animation .coin {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #f1c40f, #d4ac0d);
+            border-radius: 50%;
+            position: absolute;
+            border: 3px solid #fff;
+            box-shadow: 0 0 15px gold;
+            animation: coinSpin 0.8s ease forwards;
+        }
+
+        .refund-animation .coin2 {
+            width: 60px;
+            height: 60px;
+            animation-delay: 0.2s;
+            left: 20px;
+            top: 20px;
+        }
+
+        .refund-animation .coin3 {
+            width: 40px;
+            height: 40px;
+            animation-delay: 0.4s;
+            right: 10px;
+            bottom: 10px;
+        }
+
+        @keyframes coinSpin {
+            0% {
+                transform: scale(0) rotateY(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.3) rotateY(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotateY(360deg);
+                opacity: 1;
+            }
+        }
+
+        /* OTP animation */
+        .otp-animation .shield {
+            width: 120px;
+            height: 130px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            position: absolute;
+            animation: shieldAppear 0.6s ease forwards;
+        }
+
+        .otp-animation .lock {
+            position: absolute;
+            font-size: 40px;
+            color: white;
+            animation: lockUnlock 0.8s 0.6s ease forwards;
+            opacity: 1;
+        }
+
+        @keyframes shieldAppear {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes lockUnlock {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0;
+                transform: scale(1.5);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        /* .............. Rest of CSS .............. */
+        .header-premium {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            transition: var(--transition);
+        }
+
+        .header-premium.scrolled {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+        }
+
+        .brand-premium {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-icon-premium {
+            position: relative;
+            color: #666;
+            font-size: 1.2rem;
+            margin-left: 18px;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: none;
+            outline: none;
+        }
+
+        .nav-icon-premium:hover {
+            color: var(--primary);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.2);
+        }
+
+        .cart-badge-premium {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gradient-1);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.65rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu-user {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+            padding: 8px 0;
+            display: none;
+            z-index: 1050;
+            animation: dropdownIn 0.3s ease;
+        }
+
+        .dropdown-menu-user.show {
+            display: block;
+        }
+
+        @keyframes dropdownIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item-user:hover {
+            background: linear-gradient(90deg, rgba(255, 107, 107, 0.08), transparent);
+            color: var(--primary);
+            padding-left: 22px;
+        }
+
+        .dropdown-divider-user {
+            height: 1px;
+            background: #eee;
+            margin: 8px 0;
+        }
+
+        .orders-container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 12px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .page-subtitle {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 107, 107, 0.1);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-card.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.04), rgba(255, 107, 107, 0.01));
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .stat-icon-all {
+            background: var(--gradient-card);
+        }
+        .stat-icon-pending {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+        .stat-icon-confirmed {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+        }
+        .stat-icon-processing {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        .stat-icon-packed {
+            background: linear-gradient(135deg, #6366f1, #818cf8);
+        }
+        .stat-icon-shipped {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+        .stat-icon-outfordelivery {
+            background: linear-gradient(135deg, #06b6d4, #22d3ee);
+        }
+        .stat-icon-deliverycompleted {
+            background: var(--gradient-success);
+        }
+        .stat-icon-cancelled {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+        }
+        .stat-icon-return {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+        .stat-icon-returned {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+        .stat-icon-returnexpired {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        .stat-icon-returnrejected {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        .stat-icon-delivered {
+            background: linear-gradient(135deg, #6366f1, #818cf8);
+        }
+        .stat-icon-deliveryfailed {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+        }
+
+        .stat-info h5 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--dark);
+        }
+
+        .stat-info small {
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 10px 18px;
+            border-radius: 50px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-tab.active {
+            background: var(--gradient-1);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 20px;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            animation: fadeInUp 0.5s ease-out;
+            word-break: break-word;
+        }
+
+        .order-card.return-requested-card {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #fffdf5, #fffbeb);
+        }
+        .order-card.return-approved-card {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+        .order-card.return-rejected-card {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        }
+        .order-card.return-expired-card {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        }
+        .order-card.returned-card {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .order-card:hover {
+            border-color: rgba(255, 107, 107, 0.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .order-id-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .order-id {
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(255, 107, 107, 0.08);
+            padding: 6px 14px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .order-date {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .order-status-badge {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            flex-wrap: nowrap;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+            border: 1px solid #ffc107;
+        }
+        .status-confirmed {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            color: #5b21b6;
+            border: 1px solid #8b5cf6;
+        }
+        .status-processing {
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            color: #9a3412;
+            border: 1px solid #f97316;
+        }
+        .status-packed {
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+            color: #3730a3;
+            border: 1px solid #6366f1;
+        }
+        .status-shipped {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+        }
+        .status-outfordelivery {
+            background: linear-gradient(135deg, #cffafe, #a5f3fc);
+            color: #155e75;
+            border: 1px solid #06b6d4;
+        }
+        .status-deliverycompleted {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .status-delivered {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .status-deliveryfailed {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .status-cancelled {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .status-returnrequested {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+            border: 1px solid #f59e0b;
+        }
+        .status-returnapproved {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .status-returnrejected {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .status-returnexpired {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #92400e;
+            border: 1px solid #f59e0b;
+        }
+        .status-returned {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .dot-pending {
+            background: #f59e0b;
+            animation: blink 1s infinite;
+        }
+        .dot-confirmed {
+            background: #8b5cf6;
+            animation: blink 1s infinite;
+        }
+        .dot-processing {
+            background: #f97316;
+            animation: blink 1s infinite;
+        }
+        .dot-packed {
+            background: #6366f1;
+            animation: blink 1s infinite;
+        }
+        .dot-shipped {
+            background: #3b82f6;
+            animation: blink 1s infinite;
+        }
+        .dot-outfordelivery {
+            background: #06b6d4;
+            animation: blink 1s infinite;
+        }
+        .dot-deliverycompleted {
+            background: #10b981;
+        }
+        .dot-delivered {
+            background: #10b981;
+        }
+        .dot-deliveryfailed {
+            background: #ef4444;
+        }
+        .dot-cancelled {
+            background: #ef4444;
+        }
+        .dot-returnrequested {
+            background: #f59e0b;
+            animation: blink 1s infinite;
+        }
+        .dot-returnapproved {
+            background: #10b981;
+            animation: pulse 1.5s infinite;
+        }
+        .dot-returnrejected {
+            background: #ef4444;
+        }
+        .dot-returnexpired {
+            background: #f59e0b;
+        }
+        .dot-returned {
+            background: #10b981;
+        }
+
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .return-info-banner {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+        .return-info-banner i {
+            font-size: 1.2rem;
+            color: #f59e0b;
+        }
+        .return-approved-banner {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 1px solid #10b981;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #065f46;
+        }
+        .return-approved-banner i {
+            font-size: 1.2rem;
+            color: #10b981;
+        }
+        .return-rejected-banner {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 1px solid #ef4444;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #991b1b;
+        }
+        .return-rejected-banner i {
+            font-size: 1.2rem;
+            color: #ef4444;
+        }
+        .return-expired-banner {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #92400e;
+        }
+        .return-expired-banner i {
+            font-size: 1.2rem;
+            color: #f59e0b;
+        }
+        .returned-banner {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 1px solid #10b981;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #065f46;
+        }
+        .returned-banner i {
+            font-size: 1.2rem;
+            color: #10b981;
+        }
+
+        .delivery-estimate {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+            color: #0369a1;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .delivery-estimate span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .return-timer {
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #065f46;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .return-timer.expired {
+            color: #991b1b;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .return-timer.warning {
+            color: #92400e;
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .expiry-date-display {
+            font-size: 0.75rem;
+            color: #92400e;
+            font-weight: 600;
+            margin-top: 2px;
+            display: block;
+        }
+        .expiry-date-display i {
+            font-size: 0.7rem;
+            margin-right: 3px;
+            color: #f59e0b;
+        }
+
+        .order-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .order-item-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8fafc;
+            padding: 8px 14px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .order-item-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
+        .order-item-info {
+            font-size: 0.8rem;
+        }
+        .order-item-name {
+            font-weight: 600;
+            color: var(--dark);
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .order-item-qty {
+            color: #94a3b8;
+            font-size: 0.7rem;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .order-total {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #059669;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn-order-action {
+            padding: 10px 18px;
+            border-radius: 50px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-order-action:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(255, 107, 107, 0.04);
+        }
+        .btn-order-action.primary {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.2);
+        }
+        .btn-order-action.primary:hover {
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            transform: translateY(-2px);
+            color: white;
+        }
+        .btn-order-action.green {
+            background: var(--gradient-success);
+            color: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.2);
+        }
+        .btn-order-action.green:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+            color: white;
+        }
+        .btn-order-action.purple {
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+        }
+        .btn-order-action.purple:hover {
+            background: #f5f3ff;
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+        }
+        .btn-order-action.warning {
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+        .btn-order-action.warning:hover {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+        .btn-order-action.info {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        .btn-order-action.info:hover {
+            background: #eef2ff;
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        .btn-order-action.danger {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        .btn-order-action.danger:hover {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        .btn-order-action.success {
+            border-color: #10b981;
+            color: #10b981;
+        }
+        .btn-order-action.success:hover {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #059669;
+        }
+        .btn-order-action.orange {
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+        .btn-order-action.orange:hover {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #d97706;
+        }
+
+        .btn-loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        .btn-loading .btn-text {
+            visibility: hidden;
+        }
+        .btn-loading .btn-spinner {
+            display: inline-block;
+        }
+        .btn-spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        @keyframes spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .delivery-info-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+        .delivery-info-row i {
+            color: var(--primary);
+            width: 16px;
+            text-align: center;
+        }
+
+        .order-progress {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin: 15px 0;
+            padding: 10px 0;
+            position: relative;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .order-progress::-webkit-scrollbar {
+            display: none;
+        }
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 55px;
+            position: relative;
+            z-index: 1;
+        }
+        .progress-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #e2e8f0;
+            transition: var(--transition);
+        }
+        .progress-step.completed .progress-dot {
+            background: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        .progress-step.active .progress-dot {
+            background: #f59e0b;
+            box-shadow: 0 0 0 2px #f59e0b;
+            animation: pulse 1.5s infinite;
+        }
+        .progress-step.cancelled-step .progress-dot {
+            background: #ef4444;
+            box-shadow: 0 0 0 2px #ef4444;
+        }
+        .progress-step.return-step .progress-dot {
+            background: #f59e0b;
+            box-shadow: 0 0 0 2px #f59e0b;
+            animation: pulse 1.5s infinite;
+        }
+        .progress-step.return-approved-step .progress-dot {
+            background: #10b981;
+            box-shadow: 0 0 0 2px #10b981;
+            animation: pulseGreen 1.5s infinite;
+        }
+        .progress-step.return-rejected-step .progress-dot {
+            background: #ef4444;
+            box-shadow: 0 0 0 2px #ef4444;
+        }
+        .progress-step.return-expired-step .progress-dot {
+            background: #f59e0b;
+            box-shadow: 0 0 0 2px #f59e0b;
+        }
+        .progress-step.returned-step .progress-dot {
+            background: #10b981;
+            box-shadow: 0 0 0 2px #10b981;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 2px #f59e0b;
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.2);
+            }
+        }
+        @keyframes pulseGreen {
+            0%,
+            100% {
+                box-shadow: 0 0 0 2px #10b981;
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.2);
+            }
+        }
+
+        .progress-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-top: 6px;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .progress-step.completed .progress-label,
+        .progress-step.active .progress-label {
+            color: var(--dark);
+        }
+        .progress-line {
+            position: absolute;
+            top: 7px;
+            left: 50%;
+            right: -50%;
+            height: 3px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+        .progress-step:last-child .progress-line {
+            display: none;
+        }
+        .progress-line.fill {
+            background: var(--primary);
+        }
+        .progress-line.fill-green {
+            background: #10b981;
+        }
+        .progress-line.fill-red {
+            background: #ef4444;
+        }
+        .progress-line.fill-orange {
+            background: #f59e0b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+        .empty-state-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        .empty-state h3 {
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        .empty-state p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+        .btn-shop-now {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-shop-now:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.5);
+            color: white;
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .loading-spinner-large {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 107, 107, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .toast-notify {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: white;
+            border-radius: 50px;
+            padding: 12px 24px;
+            box-shadow: var(--shadow-soft);
+            border-left: 5px solid var(--primary);
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+        }
+        .toast-notify.show {
+            transform: translateX(0);
+        }
+
+        .more-items-badge {
+            background: #e2e8f0;
+            color: #64748b;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal-dialog-premium {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-body {
+            margin-bottom: 20px;
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+            display: block;
+        }
+        .form-select,
+        .form-textarea,
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: var(--transition);
+            background: #f8fafc;
+            color: var(--dark);
+        }
+        .form-select:focus,
+        .form-textarea:focus,
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .return-window-info {
+            background: #fff8e1;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            color: #856404;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            flex-direction: column;
+        }
+        .return-window-info .rw-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+        }
+        .return-window-info i {
+            font-size: 1rem;
+            color: #f59e0b;
+            flex-shrink: 0;
+        }
+
+        /* ---------- Notification Modal (Premium Pop-up) – always on top ---------- */
+        .modal-premium {
+            z-index: 3500 !important;            /* above custom overlays */
+        }
+        .modal-premium + .modal-backdrop {
+            z-index: 3499 !important;
+        }
+
+        .modal-premium .modal-content {
+            border-radius: 28px;
+            border: none;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+            animation: modalBounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes modalBounceIn {
+            from {
+                opacity: 0;
+                transform: scale(0.85) translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal-premium .modal-header {
+            border-bottom: none;
+            padding: 25px 24px 5px;
+            text-align: center;
+            display: block;
+        }
+        .modal-icon-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 12px;
+            color: white;
+        }
+        .modal-icon-circle.success {
+            background: var(--gradient-2);
+        }
+        .modal-icon-circle.error {
+            background: var(--gradient-1);
+        }
+        .modal-icon-circle.warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        .modal-icon-circle.info {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        .modal-premium .modal-body {
+            padding: 5px 24px 18px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        .modal-message-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        .modal-premium .modal-footer {
+            border-top: none;
+            padding: 0 24px 22px;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-modal-action {
+            padding: 10px 26px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .btn-modal-primary {
+            background: var(--gradient-1);
+            color: white;
+        }
+        .btn-modal-primary:hover {
+            filter: brightness(1.1);
+        }
+        .btn-modal-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .btn-modal-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* ---------- Responsive (no break on any device) ---------- */
+        @media (max-width:992px) {
+            .brand-premium {
+                font-size: 1.7rem;
+            }
+            .page-title {
+                font-size: 1.7rem;
+            }
+            .stats-row {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .stat-card {
+                padding: 14px;
+                gap: 10px;
+            }
+            .stat-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+            .stat-info h5 {
+                font-size: 1.2rem;
+            }
+            .filter-tabs {
+                gap: 6px;
+            }
+            .filter-tab {
+                padding: 8px 14px;
+                font-size: 0.78rem;
+            }
+        }
+        @media (max-width:768px) {
+            .brand-premium {
+                font-size: 1.5rem;
+            }
+            .page-title {
+                font-size: 1.4rem;
+            }
+            .page-subtitle {
+                font-size: 0.8rem;
+            }
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 12px;
+                gap: 8px;
+                border-radius: 16px;
+            }
+            .stat-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 0.9rem;
+                border-radius: 10px;
+            }
+            .stat-info h5 {
+                font-size: 1.1rem;
+            }
+            .stat-info small {
+                font-size: 0.65rem;
+            }
+            .order-header {
+                flex-direction: column;
+            }
+            .order-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .filter-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 8px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .filter-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            .filter-tab {
+                flex-shrink: 0;
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+            .order-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn-order-action {
+                justify-content: center;
+                width: 100%;
+            }
+            .modal-dialog-premium {
+                padding: 20px;
+                width: 95%;
+                border-radius: 20px;
+            }
+            .order-progress {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .order-progress::-webkit-scrollbar {
+                display: none;
+            }
+            .order-card {
+                padding: 18px;
+                border-radius: 20px;
+            }
+            .order-items {
+                gap: 8px;
+            }
+            .order-item-chip {
+                padding: 6px 10px;
+            }
+            .order-item-img {
+                width: 32px;
+                height: 32px;
+            }
+            .nav-icon-premium {
+                width: 34px;
+                height: 34px;
+                font-size: 1rem;
+                margin-left: 10px;
+            }
+            .cart-badge-premium {
+                width: 16px;
+                height: 16px;
+                font-size: 0.55rem;
+                top: -6px;
+                right: -6px;
+            }
+        }
+        @media (max-width:480px) {
+            .brand-premium {
+                font-size: 1.3rem;
+            }
+            .page-title {
+                font-size: 1.2rem;
+            }
+            .page-subtitle {
+                font-size: 0.7rem;
+            }
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .stat-card {
+                padding: 10px;
+                gap: 6px;
+                border-radius: 14px;
+            }
+            .stat-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 0.75rem;
+                border-radius: 8px;
+            }
+            .stat-info h5 {
+                font-size: 0.95rem;
+            }
+            .stat-info small {
+                font-size: 0.6rem;
+                letter-spacing: 0.3px;
+            }
+            .order-card {
+                padding: 14px;
+                border-radius: 16px;
+                margin-bottom: 14px;
+            }
+            .order-id {
+                font-size: 0.85rem;
+                padding: 4px 10px;
+            }
+            .order-date {
+                font-size: 0.7rem;
+            }
+            .order-status-badge {
+                padding: 6px 12px;
+                font-size: 0.65rem;
+            }
+            .order-total {
+                font-size: 1rem;
+            }
+            .filter-tab {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+                border-radius: 40px;
+            }
+            .btn-order-action {
+                padding: 8px 14px;
+                font-size: 0.7rem;
+                border-radius: 40px;
+            }
+            .modal-dialog-premium {
+                padding: 16px;
+                width: 98%;
+                border-radius: 16px;
+            }
+            .modal-title {
+                font-size: 1.1rem;
+            }
+            .form-select,
+            .form-textarea,
+            .form-input {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+            .header-premium {
+                padding: 8px 0;
+            }
+            .nav-icon-premium {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+                margin-left: 6px;
+            }
+            .orders-container {
+                margin: 15px auto;
+                padding: 0 8px;
+            }
+            .progress-step {
+                min-width: 40px;
+            }
+            .progress-label {
+                font-size: 0.5rem;
+            }
+            .progress-dot {
+                width: 10px;
+                height: 10px;
+            }
+            .delivery-estimate {
+                font-size: 0.7rem;
+                padding: 8px 10px;
+            }
+            .return-info-banner,
+            .return-approved-banner,
+            .return-rejected-banner,
+            .return-expired-banner,
+            .returned-banner {
+                font-size: 0.75rem;
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Success Animation Overlay (dynamic) -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="animation-container" id="animationContainer"></div>
+        <div class="success-message" id="successMessage">Success!</div>
+    </div>
+
+    <!-- Notification Modal (Premium Pop-up) – z-index increased to appear above all custom modals -->
+    <div class="modal fade modal-premium" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-icon-circle" id="modalIconCircle"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-message-title" id="modalTitle"></div>
+                    <p class="mb-0" id="modalMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal-action btn-modal-primary" id="modalPrimaryBtn"
+                        data-bs-dismiss="modal">OK</button>
+                    <button type="button" class="btn-modal-action btn-modal-secondary" id="modalSecondaryBtn"
+                        style="display:none;" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Review Modal -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal-dialog-premium">
+            <div class="modal-title"><i class="fas fa-star" style="color:#f59e0b;"></i> Write a Review</div>
+            <div class="modal-body">
+                <div class="form-group"><label class="form-label">Your Rating *</label>
+                    <div id="starRating" style="display: flex; gap: 8px; font-size: 2rem; cursor: pointer;">
+                        <span class="star" data-rating="1">☆</span><span class="star" data-rating="2">☆</span><span
+                            class="star" data-rating="3">☆</span>
+                        <span class="star" data-rating="4">☆</span><span class="star" data-rating="5">☆</span>
+                    </div><input type="hidden" id="reviewRating" value="0">
+                </div>
+                <div class="form-group"><label class="form-label">Review Title *</label><input type="text"
+                        class="form-input" id="reviewTitle" placeholder="Enter review title..."></div>
+                <div class="form-group"><label class="form-label">Your Review *</label><textarea class="form-textarea"
+                        id="reviewComments" placeholder="Share your experience..."></textarea></div>
+                <div class="form-group"><label class="form-label">Images (optional, max 5)</label><input type="file"
+                        class="form-input" id="reviewImages" accept="image/*" multiple></div>
+                <div class="form-group"><label class="form-label">Videos (optional, max 3)</label><input type="file"
+                        class="form-input" id="reviewVideos" accept="video/*" multiple></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-order-action" onclick="closeReviewModal()">Cancel</button>
+                <button class="btn-order-action purple" id="submitReviewBtn" onclick="submitReview()">
+                    <span class="btn-text">Submit Review</span>
+                    <span class="btn-spinner"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Return Modal -->
+    <div class="modal-overlay" id="returnModal">
+        <div class="modal-dialog-premium">
+            <div class="modal-title"><i class="fas fa-undo-alt" style="color:#f59e0b;"></i> Return Order</div>
+            <div class="modal-body">
+                <div id="returnWindowInfo" class="return-window-info" style="display:none;">
+                    <div class="rw-row"><i class="fas fa-clock"></i><span>Return window remaining: <strong
+                                id="returnModalTimer">--</strong></span></div>
+                    <div class="rw-row" style="margin-top:4px;"><i class="fas fa-calendar-alt"></i><span>Expires on:
+                            <strong id="returnModalExpiry">--</strong></span></div>
+                    <div class="rw-row" style="margin-top:2px;"><i
+                            class="fas fa-hourglass-half"></i><span><small id="returnModalReadable">--</small></span>
+                    </div>
+                </div>
+                <div class="form-group"><label class="form-label">Return Reason *</label>
+                    <select class="form-select" id="returnReason">
+                        <option value="">-- Select Reason --</option>
+                        <option value="Defective product received">Defective Product</option>
+                        <option value="Wrong item was delivered">Wrong Item Received</option>
+                        <option value="Product damaged during shipping">Damaged During Shipping</option>
+                        <option value="Product does not match description">Not As Described</option>
+                        <option value="Size or fit is incorrect">Size/Fit Issue</option>
+                        <option value="Changed my mind about purchase">Changed My Mind</option>
+                        <option value="Other reason for return request">Other</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">Additional Comments (Optional)</label><textarea
+                        class="form-textarea" id="returnComments" maxlength="500"
+                        placeholder="Any additional details..."></textarea></div>
+            </div>
+            <div class="modal-actions"><button class="btn-order-action" onclick="closeReturnModal()">Cancel</button><button
+                    class="btn-order-action warning" id="submitReturnBtn" onclick="submitReturn()">Submit
+                    Return</button></div>
+        </div>
+    </div>
+
+    <!-- Refund Modal -->
+    <div class="modal-overlay" id="refundModal">
+        <div class="modal-dialog-premium">
+            <div class="modal-title"><i class="fas fa-money-bill-wave" style="color:#6366f1;"></i> Request Refund</div>
+            <div class="modal-body">
+                <div class="form-group"><label class="form-label">Refund Reason *</label>
+                    <select class="form-select" id="refundReason">
+                        <option value="">-- Select Reason --</option>
+                        <option value="Order was cancelled successfully">Order Was Cancelled</option>
+                        <option value="Return has been completed">Return Completed</option>
+                        <option value="Payment issue occurred">Payment Issue</option>
+                        <option value="Duplicate charge detected">Duplicate Charge</option>
+                        <option value="Other reason for refund">Other</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">Additional Comments</label><textarea
+                        class="form-textarea" id="refundComments" placeholder="Any additional details..."></textarea>
+                </div>
+            </div>
+            <div class="modal-actions"><button class="btn-order-action" onclick="closeRefundModal()">Cancel</button><button
+                    class="btn-order-action info" onclick="submitRefund()">Request Refund</button></div>
+        </div>
+    </div>
+
+    <!-- Return Complete Modal -->
+    <div class="modal-overlay" id="returnCompleteModal">
+        <div class="modal-dialog-premium">
+            <div class="modal-title"><i class="fas fa-check-circle" style="color:#10b981;"></i> Complete Return</div>
+            <div class="modal-body">
+                <p>Are you sure you want to mark this return as completed?</p>
+            </div>
+            <div class="modal-actions"><button class="btn-order-action"
+                    onclick="closeReturnCompleteModal()">Cancel</button><button class="btn-order-action success"
+                    onclick="confirmReturnComplete()">Confirm Return</button></div>
+        </div>
+    </div>
+
+    <!-- OTP Modal -->
+    <div class="modal-overlay" id="otpModal">
+        <div class="modal-dialog-premium">
+            <div class="modal-title"><i class="fas fa-lock" style="color:#6366f1;"></i> Confirm Delivery</div>
+            <div class="modal-body">
+                <p>Enter the OTP shared with you to confirm delivery.</p>
+                <div class="form-group"><label class="form-label">Delivery OTP *</label><input type="text"
+                        class="form-input" id="deliveryOtpInput" placeholder="Enter OTP" maxlength="6"></div>
+            </div>
+            <div class="modal-actions"><button class="btn-order-action" onclick="closeOtpModal()">Cancel</button><button
+                    class="btn-order-action green" onclick="submitOtpConfirmation()">Confirm</button></div>
+        </div>
+    </div>
+
+    <header class="header-premium" id="header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="/" class="brand-premium">ShopEasy</a>
+                <div class="d-flex align-items-center">
+                    <div class="user-dropdown" id="userDropdown">
+                        <button class="nav-icon-premium" id="userIconBtn"><i class="fas fa-user-circle"></i></button>
+                        <div class="dropdown-menu-user" id="userDropdownMenu">
+                            <a href="/my-orders" class="dropdown-item-user"><i class="fas fa-box"></i> My Orders</a>
+                            <a href="/profile" class="dropdown-item-user"><i class="fas fa-user-cog"></i> Profile</a>
+                            <div class="dropdown-divider-user"></div>
+                            <a href="/logout" class="dropdown-item-user" id="menuLogout"><i
+                                    class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                    <a href="/wishlist" class="nav-icon-premium"><i class="fas fa-heart"></i></a>
+                    <div class="nav-icon-premium position-relative"
+                        onclick="window.location.href='/cart'" style="cursor:pointer;">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-badge-premium" id="cartCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container orders-container">
+        <div class="page-header">
+            <h1 class="page-title">My Orders 📦</h1>
+            <p class="page-subtitle">Track and manage all your orders in one place</p>
+        </div>
+        <div class="stats-row" id="statsRow">
+            <div class="stat-card active" data-filter="all" onclick="filterOrders('all')">
+                <div class="stat-icon stat-icon-all"><i class="fas fa-shopping-bag"></i></div>
+                <div class="stat-info"><h5 id="statAll">0</h5><small>All Orders</small></div>
+            </div>
+            <div class="stat-card" data-filter="pending" onclick="filterOrders('pending')">
+                <div class="stat-icon stat-icon-pending"><i class="fas fa-clock"></i></div>
+                <div class="stat-info"><h5 id="statPending">0</h5><small>Pending</small></div>
+            </div>
+            <div class="stat-card" data-filter="confirmed" onclick="filterOrders('confirmed')">
+                <div class="stat-icon stat-icon-confirmed"><i class="fas fa-check-double"></i></div>
+                <div class="stat-info"><h5 id="statConfirmed">0</h5><small>Confirmed</small></div>
+            </div>
+            <div class="stat-card" data-filter="processing" onclick="filterOrders('processing')">
+                <div class="stat-icon stat-icon-processing"><i class="fas fa-cogs"></i></div>
+                <div class="stat-info"><h5 id="statProcessing">0</h5><small>Processing</small></div>
+            </div>
+            <div class="stat-card" data-filter="packed" onclick="filterOrders('packed')">
+                <div class="stat-icon stat-icon-packed"><i class="fas fa-box-open"></i></div>
+                <div class="stat-info"><h5 id="statPacked">0</h5><small>Packed</small></div>
+            </div>
+            <div class="stat-card" data-filter="shipped" onclick="filterOrders('shipped')">
+                <div class="stat-icon stat-icon-shipped"><i class="fas fa-shipping-fast"></i></div>
+                <div class="stat-info"><h5 id="statShipped">0</h5><small>Shipped</small></div>
+            </div>
+            <div class="stat-card" data-filter="out_for_delivery" onclick="filterOrders('out_for_delivery')">
+                <div class="stat-icon stat-icon-outfordelivery"><i class="fas fa-truck"></i></div>
+                <div class="stat-info"><h5 id="statOutForDelivery">0</h5><small>Out for Delivery</small></div>
+            </div>
+            <div class="stat-card" data-filter="delivered" onclick="filterOrders('delivered')">
+                <div class="stat-icon stat-icon-delivered"><i class="fas fa-box"></i></div>
+                <div class="stat-info"><h5 id="statDelivered">0</h5><small>Delivered</small></div>
+            </div>
+            <div class="stat-card" data-filter="delivery_completed" onclick="filterOrders('delivery_completed')">
+                <div class="stat-icon stat-icon-deliverycompleted"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info"><h5 id="statDeliveryCompleted">0</h5><small>Delivery Completed</small></div>
+            </div>
+            <div class="stat-card" data-filter="delivery_failed" onclick="filterOrders('delivery_failed')">
+                <div class="stat-icon stat-icon-deliveryfailed"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-info"><h5 id="statDeliveryFailed">0</h5><small>Delivery Failed</small></div>
+            </div>
+            <div class="stat-card" data-filter="cancelled" onclick="filterOrders('cancelled')">
+                <div class="stat-icon stat-icon-cancelled"><i class="fas fa-times-circle"></i></div>
+                <div class="stat-info"><h5 id="statCancelled">0</h5><small>Cancelled</small></div>
+            </div>
+            <div class="stat-card" data-filter="returned" onclick="filterOrders('returned')">
+                <div class="stat-icon stat-icon-returned"><i class="fas fa-box"></i></div>
+                <div class="stat-info"><h5 id="statReturned">0</h5><small>Returned</small></div>
+            </div>
+            <div class="stat-card" data-filter="return_requested" onclick="filterOrders('return_requested')">
+                <div class="stat-icon stat-icon-return"><i class="fas fa-undo-alt"></i></div>
+                <div class="stat-info"><h5 id="statReturnRequested">0</h5><small>Return Requested</small></div>
+            </div>
+            <div class="stat-card" data-filter="return_approved" onclick="filterOrders('return_approved')">
+                <div class="stat-icon stat-icon-delivered"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info"><h5 id="statReturnApproved">0</h5><small>Return Approved</small></div>
+            </div>
+            <div class="stat-card" data-filter="return_rejected" onclick="filterOrders('return_rejected')">
+                <div class="stat-icon stat-icon-returnrejected"><i class="fas fa-times-circle"></i></div>
+                <div class="stat-info"><h5 id="statReturnRejected">0</h5><small>Return Rejected</small></div>
+            </div>
+            <div class="stat-card" data-filter="return_expired" onclick="filterOrders('return_expired')">
+                <div class="stat-icon stat-icon-returnexpired"><i class="fas fa-hourglass-end"></i></div>
+                <div class="stat-info"><h5 id="statReturnExpired">0</h5><small>Return Expired</small></div>
+            </div>
+        </div>
+        <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-filter="all" onclick="filterOrders('all')"><i
+                    class="fas fa-list me-1"></i> All</button>
+            <button class="filter-tab" data-filter="pending" onclick="filterOrders('pending')"><i
+                    class="fas fa-clock me-1"></i> Pending</button>
+            <button class="filter-tab" data-filter="confirmed" onclick="filterOrders('confirmed')"><i
+                    class="fas fa-check-double me-1"></i> Confirmed</button>
+            <button class="filter-tab" data-filter="processing" onclick="filterOrders('processing')"><i
+                    class="fas fa-cogs me-1"></i> Processing</button>
+            <button class="filter-tab" data-filter="packed" onclick="filterOrders('packed')"><i
+                    class="fas fa-box-open me-1"></i> Packed</button>
+            <button class="filter-tab" data-filter="shipped" onclick="filterOrders('shipped')"><i
+                    class="fas fa-shipping-fast me-1"></i> Shipped</button>
+            <button class="filter-tab" data-filter="out_for_delivery" onclick="filterOrders('out_for_delivery')"><i
+                    class="fas fa-truck me-1"></i> Out for Delivery</button>
+            <button class="filter-tab" data-filter="delivered" onclick="filterOrders('delivered')"><i
+                    class="fas fa-box me-1"></i> Delivered</button>
+            <button class="filter-tab" data-filter="delivery_completed" onclick="filterOrders('delivery_completed')"><i
+                    class="fas fa-check-circle me-1"></i> Completed</button>
+            <button class="filter-tab" data-filter="delivery_failed" onclick="filterOrders('delivery_failed')"><i
+                    class="fas fa-exclamation-triangle me-1"></i> Failed</button>
+            <button class="filter-tab" data-filter="cancelled" onclick="filterOrders('cancelled')"><i
+                    class="fas fa-times-circle me-1"></i> Cancelled</button>
+            <button class="filter-tab" data-filter="returned" onclick="filterOrders('returned')"><i
+                    class="fas fa-box me-1"></i> Returned</button>
+            <button class="filter-tab" data-filter="return_requested" onclick="filterOrders('return_requested')"><i
+                    class="fas fa-undo-alt me-1"></i> Return Req.</button>
+            <button class="filter-tab" data-filter="return_approved" onclick="filterOrders('return_approved')"><i
+                    class="fas fa-check-circle me-1"></i> Return Appr.</button>
+            <button class="filter-tab" data-filter="return_rejected" onclick="filterOrders('return_rejected')"><i
+                    class="fas fa-times-circle me-1"></i> Return Rej.</button>
+            <button class="filter-tab" data-filter="return_expired" onclick="filterOrders('return_expired')"><i
+                    class="fas fa-hourglass-end me-1"></i> Expired</button>
+        </div>
+        <div id="ordersContainer">
+            <div class="loading-container" id="ordersLoading">
+                <div class="loading-spinner-large"></div>
+                <p class="text-muted mt-3">Loading your orders...</p>
+            </div>
+        </div>
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-state-icon">📭</div>
+            <h3>No Orders Found</h3>
+            <p id="emptyStateMessage">You haven't placed any orders yet. Start shopping now!</p>
+            <a href="/" class="btn-shop-now"><i class="fas fa-shopping-bag me-2"></i>Start Shopping</a>
+        </div>
+    </main>
+
+    <div id="toastMsg" class="toast-notify"><i class="fas fa-check-circle me-2"></i><span
+            id="toastText">Success!</span></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script>
+        (function() {
+            const API_BASE = 'http://localhost:3000';
+            const RETURN_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
+            let isAuthenticated = false;
+            let allOrders = [];
+            let currentFilter = 'all';
+            let currentReviewOrderId = null;
+            let currentReturnOrderId = null;
+            let currentReturnCompleteOrderId = null;
+            let currentOtpOrderId = null;
+            let selectedRating = 0;
+            let activeTimers = {};
+            let returnModalTimerId = null;
+
+            // ============ Premium Modal Pop-up (Replaces toast for alerts) ============
+            const notifModal = document.getElementById('notificationModal');
+            const bsNotifModal = notifModal ? new bootstrap.Modal(notifModal, {
+                backdrop: 'static'
+            }) : null;
+
+            function showModal(type, title, msg, opts = {}) {
+                if (!bsNotifModal) return;
+                const map = {
+                    success: { cls: 'success', icon: 'fa-check-circle' },
+                    error: { cls: 'error', icon: 'fa-times-circle' },
+                    warning: { cls: 'warning', icon: 'fa-exclamation-triangle' },
+                    info: { cls: 'info', icon: 'fa-info-circle' }
+                };
+                const cfg = map[type] || map.info;
+                document.getElementById('modalIconCircle').className = 'modal-icon-circle ' + cfg.cls;
+                document.getElementById('modalIconCircle').innerHTML = `<i class="fas ${cfg.icon}"></i>`;
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalMessage').textContent = msg;
+
+                const pri = document.getElementById('modalPrimaryBtn');
+                pri.textContent = opts.primaryText || 'OK';
+                pri.style.display = 'inline-block';
+                pri.onclick = () => {
+                    opts.onPrimary?.();
+                    bsNotifModal.hide();
+                };
+
+                const sec = document.getElementById('modalSecondaryBtn');
+                let secondaryText = opts.secondaryText;
+                if (secondaryText === undefined) secondaryText = 'Cancel';
+                if (secondaryText) {
+                    sec.textContent = secondaryText;
+                    sec.style.display = 'inline-block';
+                    sec.onclick = () => {
+                        if (opts.onSecondary) opts.onSecondary();
+                        bsNotifModal.hide();
+                    };
+                } else {
+                    sec.style.display = 'none';
+                }
+
+                bsNotifModal.show();
+                if (opts.autoHide) setTimeout(() => bsNotifModal.hide(), opts.autoHide);
+            }
+
+            // Show custom success animation overlay (used for major successes)
+            function showSuccessAnimation(type, message = 'Success!') {
+                const overlay = document.getElementById('successOverlay');
+                const container = document.getElementById('animationContainer');
+                const msgEl = document.getElementById('successMessage');
+                container.innerHTML = '';
+                let animationHtml = '';
+                switch (type) {
+                    case 'review':
+                        animationHtml =
+                            `<div class="review-animation" style="position:relative;width:100%;height:100%">
+                            <div class="paper"></div>
+                            <span class="star-burst star1">⭐</span>
+                            <span class="star-burst star2">✨</span>
+                            <span class="star-burst star3">🌟</span>
+                            <div class="pen"></div>
+                        </div>`;
+                        break;
+                    case 'cancel':
+                        animationHtml =
+                            `<div class="cancel-animation" style="position:relative;width:100%;height:100%">
+                            <div class="circle"></div>
+                            <div class="cross"></div>
+                        </div>`;
+                        break;
+                    case 'return':
+                        animationHtml =
+                            `<div class="return-animation" style="position:relative;width:100%;height:100%">
+                            <div class="box"></div>
+                            <div class="arrow">↩️</div>
+                        </div>`;
+                        break;
+                    case 'refund':
+                        animationHtml =
+                            `<div class="refund-animation" style="position:relative;width:100%;height:100%">
+                            <div class="coin"></div>
+                            <div class="coin coin2"></div>
+                            <div class="coin coin3"></div>
+                        </div>`;
+                        break;
+                    case 'otp':
+                        animationHtml =
+                            `<div class="otp-animation" style="position:relative;width:100%;height:100%">
+                            <div class="shield"></div>
+                            <div class="lock">🔒</div>
+                        </div>`;
+                        break;
+                    default:
+                        animationHtml = `<div style="font-size:50px;">✅</div>`;
+                }
+                container.innerHTML = animationHtml;
+                msgEl.textContent = message;
+                overlay.classList.add('show');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2500);
+            }
+
+            function parseCustomDate(str) {
+                if (!str) return null;
+                const stdDate = new Date(str);
+                if (!isNaN(stdDate.getTime()) && str.includes('-')) return stdDate;
+                const parts = str.match(
+                    /(\d{1,2})\/(\d{1,2})\/(\d{4}), (\d{1,2}):(\d{2}):(\d{2}) (am|pm)/i);
+                if (!parts) return null;
+                const day = parseInt(parts[1], 10);
+                const month = parseInt(parts[2], 10) - 1;
+                const year = parseInt(parts[3], 10);
+                let hour = parseInt(parts[4], 10);
+                const minute = parseInt(parts[5], 10);
+                const second = parseInt(parts[6], 10);
+                const ampm = parts[7].toLowerCase();
+                if (ampm === 'pm' && hour < 12) hour += 12;
+                if (ampm === 'am' && hour === 12) hour = 0;
+                return new Date(year, month, day, hour, minute, second);
+            }
+
+            function formatExpiryDate(expiryTimeMs) {
+                const date = new Date(expiryTimeMs);
+                if (isNaN(date.getTime())) return '--';
+                return date.toLocaleString('en-IN', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+            }
+
+            (function() {
+                const pc = document.getElementById('particles');
+                for (let i = 0; i < 30; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    const s = Math.random() * 25 + 5;
+                    p.style.cssText =
+                        `width:${s}px;height:${s}px;background:hsl(${Math.random() * 360},70%,65%);left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${Math.random() * 15}s;`;
+                    pc.appendChild(p);
+                }
+            })();
+
+            window.addEventListener('scroll', () => document.getElementById('header').classList.toggle(
+                'scrolled', window.scrollY > 50));
+
+            function initStarRating() {
+                const stars = document.querySelectorAll('#starRating .star');
+                stars.forEach(star => {
+                    star.addEventListener('click', function() {
+                        selectedRating = parseInt(this.dataset.rating);
+                        document.getElementById('reviewRating').value = selectedRating;
+                        updateStars(selectedRating);
+                    });
+                    star.addEventListener('mouseenter', function() {
+                        updateStars(parseInt(this.dataset.rating));
+                    });
+                });
+                document.getElementById('starRating').addEventListener('mouseleave', function() {
+                    updateStars(selectedRating);
+                });
+            }
+
+            function updateStars(rating) {
+                const stars = document.querySelectorAll('#starRating .star');
+                stars.forEach(star => {
+                    if (parseInt(star.dataset.rating) <= rating) {
+                        star.textContent = '★';
+                        star.style.color = '#f59e0b';
+                    } else {
+                        star.textContent = '☆';
+                        star.style.color = '#d1d5db';
+                    }
+                });
+            }
+
+            function toast(msg) {
+                const t = document.getElementById('toastMsg');
+                document.getElementById('toastText').innerText = msg;
+                t.classList.add('show');
+                setTimeout(() => t.classList.remove('show'), 2800);
+            }
+
+            function updateCartBadge(count = 0) {
+                document.getElementById('cartCount').innerText = count;
+            }
+
+            function redirectToLogin() {
+                window.location.href = `/login?returnTo=${encodeURIComponent(window.location.href)}`;
+            }
+
+            async function checkAuth() {
+                try {
+                    const res = await fetch(`${API_BASE}/api/check-auth`, {
+                        credentials: 'include'
+                    });
+                    if (res.ok) {
+                        const json = await res.json();
+                        isAuthenticated = json.loggedIn === true;
+                    } else isAuthenticated = false;
+                } catch (e) {
+                    isAuthenticated = false;
+                }
+                updateLoginUI();
+                if (!isAuthenticated) {
+                    redirectToLogin();
+                    return false;
+                }
+                return true;
+            }
+
+            function updateLoginUI() {
+                const menuLogout = document.getElementById('menuLogout');
+                const userIconBtn = document.getElementById('userIconBtn');
+                if (menuLogout) menuLogout.style.display = isAuthenticated ? 'flex' : 'none';
+                if (userIconBtn) userIconBtn.style.color = isAuthenticated ? '#4ecdc4' : '#666';
+            }
+
+            async function fetchCartCount() {
+                if (!isAuthenticated) {
+                    updateCartBadge(0);
+                    return 0;
+                }
+                try {
+                    const res = await fetch(`${API_BASE}/carts`, {
+                        credentials: 'include'
+                    });
+                    if (res.ok) {
+                        const json = await res.json();
+                        if (json.success) {
+                            const count = json.count || (json.data ? json.data.length : 0);
+                            updateCartBadge(count);
+                            return count;
+                        }
+                    }
+                } catch (e) {}
+                return 0;
+            }
+
+            function getTimeRemaining(deadline) {
+                const now = Date.now();
+                const total = deadline.getTime() - now;
+                if (total <= 0) return {
+                    expired: true,
+                    days: 0,
+                    hours: 0,
+                    minutes: 0,
+                    seconds: 0,
+                    total: 0
+                };
+                const seconds = Math.floor((total / 1000) % 60);
+                const minutes = Math.floor((total / 1000 / 60) % 60);
+                const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+                const days = Math.floor(total / (1000 * 60 * 60 * 24));
+                return {
+                    expired: false,
+                    days,
+                    hours,
+                    minutes,
+                    seconds,
+                    total
+                };
+            }
+
+            function formatTimerDisplay(timeObj) {
+                if (timeObj.expired) return 'EXPIRED';
+                let parts = [];
+                if (timeObj.days > 0) parts.push(`${timeObj.days}d`);
+                parts.push(`${String(timeObj.hours).padStart(2, '0')}h`);
+                parts.push(`${String(timeObj.minutes).padStart(2, '0')}m`);
+                parts.push(`${String(timeObj.seconds).padStart(2, '0')}s`);
+                return parts.join(' : ');
+            }
+
+            function startTimer(timerId, deadline, onExpiry) {
+                if (activeTimers[timerId]) clearInterval(activeTimers[timerId]);
+                const timerElement = document.getElementById(timerId);
+                if (!timerElement) return;
+
+                function update() {
+                    const remaining = getTimeRemaining(deadline);
+                    timerElement.textContent = formatTimerDisplay(remaining);
+                    timerElement.classList.toggle('expired', remaining.expired);
+                    if (remaining.expired) {
+                        if (activeTimers[timerId]) {
+                            clearInterval(activeTimers[timerId]);
+                            delete activeTimers[timerId];
+                        }
+                        if (typeof onExpiry === 'function') onExpiry();
+                    }
+                }
+                update();
+                activeTimers[timerId] = setInterval(update, 1000);
+            }
+
+            async function checkReturnWindowAndStartTimer(orderId) {
+                const returnBtn = document.getElementById(`return-btn-${orderId}`);
+                const bannerEl = document.getElementById(`return-banner-${orderId}`);
+                const timerEl = document.getElementById(`return-window-${orderId}`);
+                const expiryEl = document.getElementById(`return-expiry-${orderId}`);
+
+                if (activeTimers[`return-window-${orderId}`]) {
+                    clearInterval(activeTimers[`return-window-${orderId}`]);
+                    delete activeTimers[`return-window-${orderId}`];
+                }
+
+                try {
+                    const res = await fetch(`${API_BASE}/order/return-time/${orderId}`, {
+                        credentials: 'include'
+                    });
+                    if (!res.ok) return;
+                    const result = await res.json();
+                    if (!result.success || !result.data) return;
+
+                    const {
+                        isExpired,
+                        remainingTime,
+                        expiryTime,
+                        readableRemainingTime
+                    } = result.data;
+
+                    if (isExpired) {
+                        if (returnBtn) returnBtn.style.display = 'none';
+                        if (bannerEl) bannerEl.innerHTML =
+                            '<i class="fas fa-hourglass-end"></i><div><strong>Return Window Expired</strong></div>';
+                        if (timerEl) timerEl.textContent = 'EXPIRED';
+                        if (expiryEl && expiryTime) expiryEl.textContent = 'Expired on: ' +
+                            formatExpiryDate(expiryTime);
+                        return;
+                    }
+
+                    if (returnBtn) returnBtn.style.display = '';
+
+                    if (expiryEl && expiryTime) {
+                        expiryEl.textContent = 'Expires: ' + formatExpiryDate(expiryTime);
+                    }
+
+                    const deadline = new Date(Date.now() + remainingTime);
+                    startTimer(`return-window-${orderId}`, deadline, () => {
+                        if (returnBtn) returnBtn.style.display = 'none';
+                        if (bannerEl) bannerEl.innerHTML =
+                            '<i class="fas fa-hourglass-end"></i><div><strong>Return Window Expired</strong></div>';
+                        if (expiryEl && expiryTime) expiryEl.textContent = 'Expired on: ' +
+                            formatExpiryDate(expiryTime);
+                    });
+                } catch (e) {
+                    const order = allOrders.find(o => o._id === orderId);
+                    if (order && order.orderTimeline?.deliveryCompletedAt) {
+                        const completedDate = parseCustomDate(order.orderTimeline.deliveryCompletedAt);
+                        if (completedDate && !isNaN(completedDate)) {
+                            const deadline = new Date(completedDate.getTime() + RETURN_WINDOW_MS);
+                            if (expiryEl) expiryEl.textContent = 'Expires: ' + formatExpiryDate(deadline
+                                .getTime());
+                            startTimer(`return-window-${orderId}`, deadline, () => {
+                                if (returnBtn) returnBtn.style.display = 'none';
+                                if (bannerEl) bannerEl.innerHTML =
+                                    '<i class="fas fa-hourglass-end"></i><div><strong>Return Window Expired</strong></div>';
+                                if (expiryEl) expiryEl.textContent = 'Expired on: ' +
+                                    formatExpiryDate(deadline.getTime());
+                            });
+                        }
+                    }
+                }
+            }
+
+            async function fetchOrders() {
+                const ordersContainer = document.getElementById('ordersContainer');
+                const loadingDiv = document.getElementById('ordersLoading');
+                const emptyState = document.getElementById('emptyState');
+                clearAllTimers();
+                if (loadingDiv) loadingDiv.style.display = 'block';
+                emptyState.style.display = 'none';
+                while (ordersContainer.firstChild) {
+                    if (ordersContainer.firstChild !== loadingDiv) ordersContainer.removeChild(ordersContainer
+                        .firstChild);
+                    else break;
+                }
+                try {
+                    const res = await fetch(`${API_BASE}/orders`, {
+                        credentials: 'include'
+                    });
+                    const result = await res.json();
+                    if (res.ok && result.success) {
+                        allOrders = (result.orders || []).map(order => ({
+                            ...order,
+                            orderStatus: order.orderStatus || 'pending',
+                            returnStatus: order.returnStatus || 'none',
+                            orderTimeline: order.orderTimeline || {},
+                            returnTimeline: order.returnTimeline || {},
+                            totals: order.totals || {},
+                            items: order.items || [],
+                            paymentMethod: order.paymentMethod || 'N/A',
+                            shippingAddress: order.shippingAddress || {},
+                            hasReviewed: order.hasReviewed || false
+                        }));
+                        updateStats();
+                        if (allOrders.length === 0) {
+                            loadingDiv.style.display = 'none';
+                            emptyState.style.display = 'block';
+                        } else {
+                            filterOrders(currentFilter);
+                        }
+                    } else throw new Error(result.message || 'Failed');
+                } catch (error) {
+                    allOrders = [];
+                    updateStats();
+                    loadingDiv.style.display = 'none';
+                    emptyState.style.display = 'block';
+                    showModal('error', 'Error', 'Error loading orders: ' + error.message);
+                }
+            }
+
+            function clearAllTimers() {
+                Object.values(activeTimers).forEach(timerId => clearInterval(timerId));
+                activeTimers = {};
+                if (returnModalTimerId) {
+                    clearInterval(returnModalTimerId);
+                    returnModalTimerId = null;
+                }
+            }
+
+            function updateStats() {
+                const counts = {
+                    all: allOrders.length,
+                    pending: 0,
+                    confirmed: 0,
+                    processing: 0,
+                    packed: 0,
+                    shipped: 0,
+                    out_for_delivery: 0,
+                    delivered: 0,
+                    delivery_completed: 0,
+                    delivery_failed: 0,
+                    cancelled: 0,
+                    returned: 0,
+                    return_requested: 0,
+                    return_approved: 0,
+                    return_rejected: 0,
+                    return_expired: 0
+                };
+                allOrders.forEach(order => {
+                    const s = (order.orderStatus || '').toLowerCase();
+                    if (counts.hasOwnProperty(s)) counts[s]++;
+                    const rs = (order.returnStatus || 'none').toLowerCase();
+                    const returnKeys = ['return_requested', 'return_approved', 'return_rejected',
+                        'return_expired', 'returned'
+                    ];
+                    if (returnKeys.includes(rs)) counts[rs] = (counts[rs] || 0) + 1;
+                });
+                Object.keys(counts).forEach(k => {
+                    const el = document.getElementById('stat' + k.charAt(0).toUpperCase() + k.slice(1)
+                        .replace(/_./g, x => x[1].toUpperCase()));
+                    if (el) el.textContent = counts[k];
+                });
+            }
+
+            window.filterOrders = function(filter) {
+                currentFilter = filter;
+                document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
+                const statCard = document.querySelector(`.stat-card[data-filter="${filter}"]`);
+                if (statCard) statCard.classList.add('active');
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                const tab = document.querySelector(`.filter-tab[data-filter="${filter}"]`);
+                if (tab) tab.classList.add('active');
+                let filtered = allOrders;
+                const returnFilters = ['return_requested', 'return_approved', 'return_rejected',
+                    'return_expired', 'returned'
+                ];
+                if (returnFilters.includes(filter)) {
+                    filtered = allOrders.filter(o => (o.returnStatus || 'none').toLowerCase() === filter);
+                } else if (filter !== 'all') {
+                    filtered = allOrders.filter(o => (o.orderStatus || '').toLowerCase() === filter);
+                }
+                renderOrders(filtered);
+            };
+
+            function renderOrders(orders) {
+                const ordersContainer = document.getElementById('ordersContainer');
+                const loadingDiv = document.getElementById('ordersLoading');
+                const emptyState = document.getElementById('emptyState');
+                clearAllTimers();
+                if (loadingDiv) loadingDiv.style.display = 'none';
+                if (!orders.length) {
+                    while (ordersContainer.firstChild) ordersContainer.removeChild(ordersContainer.firstChild);
+                    emptyState.style.display = 'block';
+                    document.getElementById('emptyStateMessage').textContent = allOrders.length > 0 ?
+                        'No orders match the selected filter.' :
+                        'You haven\'t placed any orders yet. Start shopping now!';
+                    return;
+                }
+                emptyState.style.display = 'none';
+                let html = '';
+                orders.forEach((order, i) => html += createOrderCard(order, i));
+                while (ordersContainer.firstChild) {
+                    if (ordersContainer.firstChild !== loadingDiv) ordersContainer.removeChild(ordersContainer
+                        .firstChild);
+                    else break;
+                }
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                while (temp.firstChild) ordersContainer.appendChild(temp.firstChild);
+
+                orders.forEach(order => {
+                    const status = (order.orderStatus || '').toLowerCase();
+                    const minAt = order.orderTimeline?.deliveredMinAt;
+                    const maxAt = order.orderTimeline?.deliveredMaxAt;
+                    if (['pending', 'confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery']
+                        .includes(status) && minAt && maxAt) {
+                        const minDate = parseCustomDate(minAt),
+                            maxDate = parseCustomDate(maxAt);
+                        if (minDate && !isNaN(minDate)) startTimer(`delivery-min-${order._id}`,
+                    minDate);
+                        if (maxDate && !isNaN(maxDate)) startTimer(`delivery-max-${order._id}`,
+                    maxDate);
+                    }
+                    if (status === 'delivery_completed' && (order.returnStatus || 'none').toLowerCase() ===
+                        'none') {
+                        checkReturnWindowAndStartTimer(order._id);
+                    }
+                });
+                initStarRating();
+            }
+
+            function createOrderCard(order, index) {
+                const orderId = order._id,
+                    shortId = orderId.toString().slice(-8);
+                const orderedAtDate = parseCustomDate(order.orderTimeline?.orderedAt);
+                const orderDate = orderedAtDate ? orderedAtDate.toLocaleDateString('en-IN', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : 'N/A';
+                const orderStatus = (order.orderStatus || 'pending').toLowerCase();
+                const returnStatus = (order.returnStatus || 'none').toLowerCase();
+                const totals = order.totals || {},
+                    totalAmount = totals.totalAmount || 0;
+                const paymentMethod = order.paymentMethod || 'N/A';
+                const paymentDisplay = paymentMethod === 'cashOnDelivery' ? 'Cash on Delivery' : paymentMethod ===
+                    'onlinePayment' ? 'Online Payment' : paymentMethod;
+                const isCOD = paymentMethod === 'cashOnDelivery';
+                let displayStatus = orderStatus,
+                    statusLabel = orderStatus.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                let statusClass = `status-${orderStatus.replace(/_/g, '')}`,
+                    statusDotClass = `dot-${orderStatus.replace(/_/g, '')}`;
+                const returnMap = {
+                    'requested': {
+                        label: 'Return Requested',
+                        class: 'status-returnrequested',
+                        dot: 'dot-returnrequested'
+                    },
+                    'approved': {
+                        label: 'Return Approved',
+                        class: 'status-returnapproved',
+                        dot: 'dot-returnapproved'
+                    },
+                    'rejected': {
+                        label: 'Return Rejected',
+                        class: 'status-returnrejected',
+                        dot: 'dot-returnrejected'
+                    },
+                    'expired': {
+                        label: 'Return Expired',
+                        class: 'status-returnexpired',
+                        dot: 'dot-returnexpired'
+                    },
+                    'returned': {
+                        label: 'Returned',
+                        class: 'status-returned',
+                        dot: 'dot-returned'
+                    }
+                };
+                if (returnMap[returnStatus]) {
+                    displayStatus = returnStatus;
+                    statusLabel = returnMap[returnStatus].label;
+                    statusClass = returnMap[returnStatus].class;
+                    statusDotClass = returnMap[returnStatus].dot;
+                }
+                const items = order.items || [];
+                let itemsHTML = '';
+                items.slice(0, 4).forEach(item => {
+                    const product = item.productId || {};
+                    let imgUrl =
+                        'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=40&h=40&fit=crop';
+                    const mainImg = product.image || product.mainImage;
+                    if (mainImg) {
+                        if (typeof mainImg === 'string') imgUrl = mainImg.startsWith('http') ? mainImg :
+                            `${API_BASE}${mainImg}`;
+                        else if (mainImg.path) imgUrl = mainImg.path.startsWith('http') ? mainImg.path :
+                            `${API_BASE}${mainImg.path}`;
+                        else if (mainImg.url) imgUrl = mainImg.url.startsWith('http') ? mainImg.url :
+                            `${API_BASE}${mainImg.url}`;
+                    }
+                    itemsHTML +=
+                        `<div class="order-item-chip"><img src="${imgUrl}" alt="${product.name || 'Product'}" class="order-item-img" onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=40&h=40&fit=crop'"><div class="order-item-info"><div class="order-item-name">${item.productName || product.name || 'Product'}</div><div class="order-item-qty">Qty: ${item.quantity || 1}</div></div></div>`;
+                });
+                if (items.length > 4) itemsHTML +=
+                    `<div class="more-items-badge">+${items.length - 4} more</div>`;
+                const progressHTML = buildProgressHTML(orderStatus, returnStatus);
+                const shipping = order.shippingAddress || {};
+                const city = shipping.city || 'N/A',
+                    state = shipping.state || '',
+                    country = shipping.country || 'India';
+                let deliveryHTML = '';
+                if (['pending', 'confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery'].includes(
+                        orderStatus) && order.orderTimeline?.deliveredMinAt && order.orderTimeline
+                    ?.deliveredMaxAt) {
+                    deliveryHTML =
+                        `<div class="delivery-estimate"><span><i class="fas fa-box-open"></i> Earliest: <span id="delivery-min-${orderId}">--</span></span><span><i class="fas fa-truck"></i> Latest: <span id="delivery-max-${orderId}">--</span></span></div>`;
+                }
+                const returnBannerHTML = buildReturnBanner(order);
+                let cardClass = '';
+                if (returnStatus === 'approved') cardClass = ' return-approved-card';
+                else if (returnStatus === 'rejected') cardClass = ' return-rejected-card';
+                else if (returnStatus === 'requested') cardClass = ' return-requested-card';
+                else if (returnStatus === 'expired') cardClass = ' return-expired-card';
+                else if (returnStatus === 'returned') cardClass = ' returned-card';
+                const actionButtons = buildActionButtons(orderStatus, returnStatus, isCOD, orderId, order);
+
+                return `<div class="order-card${cardClass}" style="animation-delay:${index * 0.1}s">
+            <div class="order-header">
+                <div>
+                    <div class="order-id-section"><span class="order-id">#${shortId}</span><span class="order-date"><i class="far fa-calendar-alt me-1"></i>${orderDate}</span></div>
+                    <div class="delivery-info-row mt-2"><i class="fas fa-map-marker-alt"></i><span>${city}${state ? ', ' + state : ''}, ${country} 🇮🇳</span></div>
+                </div>
+                <div class="order-status-badge ${statusClass}"><span class="status-dot ${statusDotClass}"></span>${statusLabel}</div>
+            </div>
+            ${deliveryHTML}
+            <div id="return-banner-${orderId}">${returnBannerHTML}</div>
+            ${progressHTML}
+            <div class="order-items">${itemsHTML || '<span class="text-muted small">No items</span>'}</div>
+            <div class="order-footer">
+                <div><small class="text-muted d-block">Total Amount</small><span class="order-total">₹${Number(totalAmount).toFixed(2)}</span><small class="text-muted d-block mt-1"><i class="fas fa-credit-card me-1"></i>${paymentDisplay}</small></div>
+                <div class="order-actions">${actionButtons}</div>
+            </div>
+        </div>`;
+            }
+
+            function buildProgressHTML(orderStatus, returnStatus) {
+                const steps = ['pending', 'confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery',
+                    'delivered', 'delivery_completed'
+                ];
+                if (orderStatus === 'cancelled') return `<div class="order-progress"><div class="progress-step cancelled-step"><div class="progress-dot" style="background:#ef4444;box-shadow:0 0 0 2px #ef4444;"></div><span class="progress-label" style="color:#ef4444;">Cancelled</span></div></div>`;
+                if (orderStatus === 'delivery_failed')
+                    return `<div class="order-progress"><div class="progress-step cancelled-step"><div class="progress-dot" style="background:#ef4444;box-shadow:0 0 0 2px #ef4444;"></div><span class="progress-label" style="color:#ef4444;">Delivery Failed</span></div></div>`;
+                const idx = steps.indexOf(orderStatus);
+                if (idx === -1) return '';
+                let html = '';
+                steps.forEach((s, i) => {
+                    let stepClass = i <= idx ? 'completed' : '';
+                    if (i === idx && orderStatus !== 'delivery_completed' && orderStatus !== 'delivered')
+                        stepClass = 'active';
+                    let lineClass = i < idx ? 'fill' : '';
+                    if (i < idx && (orderStatus === 'delivery_completed' || orderStatus === 'delivered'))
+                        lineClass = 'fill-green';
+                    html += `<div class="progress-step ${stepClass}">
+                ${i < steps.length - 1 ? `<div class="progress-line ${lineClass}"></div>` : ''}
+                <div class="progress-dot"></div><span class="progress-label">${formatStepLabel(s)}</span></div>`;
+                });
+                if (returnStatus === 'returned') html +=
+                    `<div class="progress-step returned-step"><div class="progress-dot" style="background:#10b981;box-shadow:0 0 0 2px #10b981;"></div><span class="progress-label" style="color:#10b981;">Returned</span></div>`;
+                else if (returnStatus === 'approved') html +=
+                    `<div class="progress-step return-approved-step"><div class="progress-dot" style="background:#10b981;box-shadow:0 0 0 2px #10b981;animation:pulseGreen 1.5s infinite;"></div><span class="progress-label" style="color:#10b981;">Return Approved</span></div>`;
+                else if (returnStatus === 'requested') html +=
+                    `<div class="progress-step return-step"><div class="progress-dot"></div><span class="progress-label" style="color:#f59e0b;">Return Requested</span></div>`;
+                else if (returnStatus === 'rejected') html +=
+                    `<div class="progress-step return-rejected-step"><div class="progress-dot" style="background:#ef4444;box-shadow:0 0 0 2px #ef4444;"></div><span class="progress-label" style="color:#ef4444;">Return Rejected</span></div>`;
+                else if (returnStatus === 'expired') html +=
+                    `<div class="progress-step return-expired-step"><div class="progress-dot" style="background:#f59e0b;box-shadow:0 0 0 2px #f59e0b;"></div><span class="progress-label" style="color:#f59e0b;">Expired</span></div>`;
+                return `<div class="order-progress">${html}</div>`;
+            }
+
+            function formatStepLabel(step) {
+                const map = {
+                    pending: 'Pending',
+                    confirmed: 'Confirmed',
+                    processing: 'Processing',
+                    packed: 'Packed',
+                    shipped: 'Shipped',
+                    out_for_delivery: 'Out for Delivery',
+                    delivered: 'Delivered',
+                    delivery_completed: 'Completed'
+                };
+                return map[step] || step;
+            }
+
+            function buildReturnBanner(order) {
+                const rs = (order.returnStatus || 'none').toLowerCase();
+                if (rs === 'approved') {
+                    const appDate = order.returnTimeline?.returnApprovedAt ? parseCustomDate(order.returnTimeline
+                        .returnApprovedAt)?.toLocaleString('en-IN') : 'N/A';
+                    let html =
+                        `<div class="return-approved-banner"><i class="fas fa-check-circle"></i><div><strong>Return Approved ✓</strong><br><small>Approved: ${appDate}</small>`;
+                    if (order.returnrejectReason) html +=
+                        `<br><small>Note: ${order.returnrejectReason}</small>`;
+                    html += `</div></div>`;
+                    return html;
+                }
+                if (rs === 'rejected') {
+                    let html =
+                        `<div class="return-rejected-banner"><i class="fas fa-times-circle"></i><div><strong>Return Rejected ✗</strong>`;
+                    if (order.returnrejectReason) html +=
+                        `<br><small>Reason: ${order.returnrejectReason}</small>`;
+                    if (order.returnrejectComment) html +=
+                        `<br><small>Comment: ${order.returnrejectComment}</small>`;
+                    html += `</div></div>`;
+                    return html;
+                }
+                if (rs === 'requested') {
+                    const reqDate = order.returnTimeline?.returnRequestedAt ? parseCustomDate(order.returnTimeline
+                        .returnRequestedAt)?.toLocaleString('en-IN') : 'Just now';
+                    return `<div class="return-info-banner"><i class="fas fa-info-circle"></i><div><strong>Return Requested</strong><br><small>Requested: ${reqDate}</small><br><small>Reason: ${order.returnReason || 'N/A'}</small></div></div>`;
+                }
+                if (rs === 'expired') {
+                    return `<div class="return-expired-banner"><i class="fas fa-hourglass-end"></i><div><strong>Return Expired</strong><br><small>Reason: ${order.returnReason || 'N/A'}</small></div></div>`;
+                }
+                if (rs === 'returned') {
+                    return `<div class="returned-banner"><i class="fas fa-box"></i><div><strong>Return Completed ✓</strong><br><small>Reason: ${order.returnReason || 'N/A'}</small></div></div>`;
+                }
+                if ((order.orderStatus || '').toLowerCase() === 'delivery_completed') {
+                    if (rs === 'none' && order.orderTimeline?.deliveryCompletedAt) {
+                        return `<div class="return-info-banner"><i class="fas fa-clock"></i><div><strong>Return Window Active</strong><br><small>Return by: <span id="return-window-${order._id}" class="return-timer">--</span></small><br><span class="expiry-date-display" id="return-expiry-${order._id}"><i class="fas fa-calendar-alt"></i> Loading expiry...</span></div></div>`;
+                    }
+                }
+                return '';
+            }
+
+            function buildActionButtons(orderStatus, returnStatus, isCOD, orderId, order) {
+                let btns =
+                    `<button class="btn-order-action primary" onclick="viewOrderDetails('${orderId}')"><i class="fas fa-eye"></i> View</button>`;
+
+                if (orderStatus === 'delivered' && returnStatus === 'none') {
+                    btns +=
+                        `<button class="btn-order-action green" onclick="openOtpModal('${orderId}')"><i class="fas fa-check-circle"></i> Order Confirm</button>`;
+                }
+
+                if (orderStatus === 'delivery_completed' && returnStatus === 'none') {
+                    if (!order.hasReviewed) btns +=
+                        `<button class="btn-order-action purple" onclick="openReviewModal('${orderId}')"><i class="fas fa-star"></i> Review</button>`;
+                    btns +=
+                        `<button class="btn-order-action warning" onclick="openReturnModal('${orderId}')" id="return-btn-${orderId}"><i class="fas fa-undo-alt"></i> Return</button>`;
+                    btns +=
+                        `<button class="btn-order-action" onclick="buyAgain('${orderId}')"><i class="fas fa-redo"></i> Buy Again</button>`;
+                }
+
+                if (returnStatus === 'approved') btns +=
+                    `<button class="btn-order-action success" onclick="openReturnCompleteModal('${orderId}')"><i class="fas fa-check-circle"></i> Mark Returned</button>`;
+                if (returnStatus === 'requested') btns +=
+                    `<button class="btn-order-action warning" disabled><i class="fas fa-undo-alt"></i> Return Pending</button>`;
+                if (returnStatus === 'rejected') btns +=
+                    `<button class="btn-order-action danger" disabled><i class="fas fa-times-circle"></i> Return Rejected</button>`;
+                if (returnStatus === 'expired') btns +=
+                    `<button class="btn-order-action orange" disabled><i class="fas fa-hourglass-end"></i> Return Expired</button>`;
+                if (returnStatus === 'returned') btns +=
+                    `<button class="btn-order-action success" disabled><i class="fas fa-box"></i> Returned</button>`;
+
+                if (!['shipped', 'out_for_delivery', 'delivered', 'delivery_completed', 'delivery_failed',
+                        'cancelled'
+                    ].includes(orderStatus) && !['requested', 'approved', 'returned', 'rejected', 'expired']
+                    .includes(returnStatus)) {
+                    btns +=
+                        `<button class="btn-order-action danger" onclick="cancelOrder('${orderId}')"><i class="fas fa-times"></i> Cancel</button>`;
+                }
+                if (orderStatus === 'cancelled' && !isCOD && returnStatus === 'none') btns +=
+                    `<button class="btn-order-action info" onclick="openRefundModal('${orderId}')"><i class="fas fa-money-bill-wave"></i> Refund</button>`;
+                return btns;
+            }
+
+            window.openOtpModal = function(orderId) {
+                currentOtpOrderId = orderId;
+                document.getElementById('otpModal').classList.add('show');
+                document.getElementById('deliveryOtpInput').value = '';
+            };
+            window.closeOtpModal = function() {
+                document.getElementById('otpModal').classList.remove('show');
+                currentOtpOrderId = null;
+            };
+            window.submitOtpConfirmation = async function() {
+                const otp = document.getElementById('deliveryOtpInput').value.trim();
+                if (!otp) {
+                    showModal('warning', 'OTP Required', '⚠️ Enter OTP');
+                    return;
+                }
+                try {
+                    const res = await fetch(`${API_BASE}/order/confirm-delivery/${currentOtpOrderId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ otp })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        closeOtpModal();
+                        showSuccessAnimation('otp', 'OTP Confirmed!');
+                    } else showModal('error', 'Invalid OTP', data.message || 'Invalid OTP');
+                } catch (e) {
+                    showModal('error', 'Network Error', 'Network error');
+                }
+            };
+
+            window.viewOrderDetails = (id) => window.location.href = `/myOrder/${id}`;
+            window.buyAgain = (id) => {
+                toast('🛒 Adding items...');
+                setTimeout(() => window.location.href = '/cart', 1000);
+            };
+            window.cancelOrder = async (id) => {
+                if (!confirm('Cancel order?')) return;
+                try {
+                    const res = await fetch(`${API_BASE}/orders/cancel/${id}`, {
+                        method: 'PUT',
+                        credentials: 'include'
+                    });
+                    const data = await res.json();
+                    if (data.success) showSuccessAnimation('cancel', 'Order Cancelled');
+                    else showModal('error', 'Cancellation Failed', data.message || 'Failed');
+                } catch (e) {
+                    showModal('error', 'Network Error', 'Network error');
+                }
+            };
+
+            window.openReviewModal = function(orderId) {
+                currentReviewOrderId = orderId;
+                document.getElementById('reviewModal').classList.add('show');
+                selectedRating = 0;
+                updateStars(0);
+                document.getElementById('reviewTitle').value = '';
+                document.getElementById('reviewComments').value = '';
+                document.getElementById('reviewImages').value = '';
+                document.getElementById('reviewVideos').value = '';
+                const btn = document.getElementById('submitReviewBtn');
+                btn.classList.remove('btn-loading');
+                btn.querySelector('.btn-text').style.visibility = 'visible';
+            };
+            window.closeReviewModal = () => {
+                document.getElementById('reviewModal').classList.remove('show');
+                const btn = document.getElementById('submitReviewBtn');
+                btn.classList.remove('btn-loading');
+                btn.querySelector('.btn-text').style.visibility = 'visible';
+            };
+            window.submitReview = async () => {
+                const rating = parseInt(document.getElementById('reviewRating').value);
+                const comment = document.getElementById('reviewComments').value.trim();
+                if (!rating || rating < 1) {
+                    showModal('warning', 'Rating Required', '⚠️ Select rating');
+                    return;
+                }
+                if (comment.length < 10) {
+                    showModal('warning', 'Review Too Short', '⚠️ Review too short');
+                    return;
+                }
+
+                const order = allOrders.find(o => o._id === currentReviewOrderId);
+                if (!order || !order.items || order.items.length === 0) {
+                    showModal('error', 'No Products', '⚠️ No products found');
+                    return;
+                }
+                const productId = order.items[0].productId?._id || order.items[0].productId;
+                if (!productId) {
+                    showModal('error', 'Product Missing', '⚠️ Product ID missing');
+                    return;
+                }
+
+                const btn = document.getElementById('submitReviewBtn');
+                btn.classList.add('btn-loading');
+                btn.querySelector('.btn-text').style.visibility = 'hidden';
+
+                const formData = new FormData();
+                formData.append('productId', productId);
+                formData.append('rating', rating);
+                formData.append('comment', comment);
+                const imageFiles = document.getElementById('reviewImages').files;
+                for (let i = 0; i < imageFiles.length; i++) formData.append('reviewImages', imageFiles[i]);
+                const videoFiles = document.getElementById('reviewVideos').files;
+                for (let i = 0; i < videoFiles.length; i++) formData.append('reviewVideos', videoFiles[i]);
+
+                try {
+                    const res = await fetch(`${API_BASE}/review`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        body: formData
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        closeReviewModal();
+                        showSuccessAnimation('review', 'Review Submitted!');
+                        const orderIndex = allOrders.findIndex(o => o._id === currentReviewOrderId);
+                        if (orderIndex !== -1) allOrders[orderIndex].hasReviewed = true;
+                        filterOrders(currentFilter);
+                    } else {
+                        btn.classList.remove('btn-loading');
+                        btn.querySelector('.btn-text').style.visibility = 'visible';
+                        showModal('error', 'Review Failed', data.message || 'Failed');
+                    }
+                } catch (e) {
+                    btn.classList.remove('btn-loading');
+                    btn.querySelector('.btn-text').style.visibility = 'visible';
+                    showModal('error', 'Network Error', 'Network error');
+                }
+            };
+
+            window.openReturnModal = function(orderId) {
+                currentReturnOrderId = orderId;
+                document.getElementById('returnModal').classList.add('show');
+                document.getElementById('returnReason').value = '';
+                document.getElementById('returnComments').value = '';
+                document.getElementById('returnModalTimer').textContent = '--';
+                document.getElementById('returnModalExpiry').textContent = '--';
+                document.getElementById('returnModalReadable').textContent = '--';
+                document.getElementById('returnWindowInfo').style.display = 'none';
+                const submitBtn = document.getElementById('submitReturnBtn');
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.textContent = 'Submit Return';
+                fetch(`${API_BASE}/order/return-time/${orderId}`, { credentials: 'include' })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.success && data.data && data.data.isExpired) {
+                            document.getElementById('returnWindowInfo').style.display = 'flex';
+                            document.getElementById('returnModalTimer').textContent = 'EXPIRED';
+                            document.getElementById('returnModalExpiry').textContent = data.data
+                                .expiryTime ? formatExpiryDate(data.data.expiryTime) : '--';
+                            document.getElementById('returnModalReadable').textContent = data.data
+                                .readableRemainingTime || 'EXPIRED';
+                            submitBtn.disabled = true;
+                            submitBtn.style.opacity = '0.5';
+                            submitBtn.textContent = 'Return Window Expired';
+                            showModal('warning', 'Return Expired', '⏰ Return window expired');
+                        } else if (data.success && data.data && data.data.remainingTime) {
+                            startReturnModalTimerFromApi(data.data.remainingTime, data.data.expiryTime,
+                                data.data.readableRemainingTime);
+                        } else {
+                            startReturnModalTimerFallback(orderId);
+                        }
+                    })
+                    .catch(() => startReturnModalTimerFallback(orderId));
+            };
+            window.closeReturnModal = function() {
+                document.getElementById('returnModal').classList.remove('show');
+                currentReturnOrderId = null;
+                if (returnModalTimerId) {
+                    clearInterval(returnModalTimerId);
+                    returnModalTimerId = null;
+                }
+                document.getElementById('returnWindowInfo').style.display = 'none';
+            };
+            window.submitReturn = async function() {
+                const reason = document.getElementById('returnReason').value;
+                const comments = document.getElementById('returnComments').value.trim();
+                if (!reason) {
+                    showModal('warning', 'Reason Required', '⚠️ Select reason');
+                    return;
+                }
+                try {
+                    const check = await fetch(`${API_BASE}/order/return-time/${currentReturnOrderId}`, {
+                        credentials: 'include'
+                    });
+                    const checkData = await check.json();
+                    if (checkData.success && checkData.data && checkData.data.isExpired) {
+                        showModal('warning', 'Return Expired', '⏰ Return window expired');
+                        closeReturnModal();
+                        await fetchOrders();
+                        return;
+                    }
+                } catch (e) {}
+                try {
+                    const res = await fetch(`${API_BASE}/order/return-request/${currentReturnOrderId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            returnReason: reason,
+                            returnComments: comments || undefined
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        closeReturnModal();
+                        showSuccessAnimation('return', 'Return Requested!');
+                    } else showModal('error', 'Return Failed', data.message || 'Failed');
+                } catch (e) {
+                    showModal('error', 'Network Error', 'Network error');
+                }
+            };
+
+            function startReturnModalTimerFromApi(remainingTime, expiryTime, readableRemainingTime) {
+                if (returnModalTimerId) clearInterval(returnModalTimerId);
+                const deadline = new Date(Date.now() + remainingTime);
+                document.getElementById('returnWindowInfo').style.display = 'flex';
+                document.getElementById('returnModalExpiry').textContent = formatExpiryDate(expiryTime);
+                document.getElementById('returnModalReadable').textContent = readableRemainingTime || '';
+
+                function update() {
+                    const remaining = getTimeRemaining(deadline);
+                    const timerEl = document.getElementById('returnModalTimer');
+                    const submitBtn = document.getElementById('submitReturnBtn');
+                    if (timerEl) timerEl.textContent = formatTimerDisplay(remaining);
+                    if (remaining.expired) {
+                        if (submitBtn) {
+                            submitBtn.disabled = true;
+                            submitBtn.style.opacity = '0.5';
+                            submitBtn.textContent = 'Return Window Expired';
+                        }
+                        if (returnModalTimerId) {
+                            clearInterval(returnModalTimerId);
+                            returnModalTimerId = null;
+                        }
+                        showModal('warning', 'Return Expired', '⏰ Return window expired');
+                    }
+                }
+                update();
+                returnModalTimerId = setInterval(update, 1000);
+            }
+
+            function startReturnModalTimerFallback(orderId) {
+                if (returnModalTimerId) clearInterval(returnModalTimerId);
+                const order = allOrders.find(o => o._id === orderId);
+                if (!order || !order.orderTimeline?.deliveryCompletedAt) return;
+                const completedDate = parseCustomDate(order.orderTimeline.deliveryCompletedAt);
+                if (!completedDate || isNaN(completedDate)) return;
+                const returnDeadline = new Date(completedDate.getTime() + RETURN_WINDOW_MS);
+                document.getElementById('returnWindowInfo').style.display = 'flex';
+                document.getElementById('returnModalExpiry').textContent = formatExpiryDate(returnDeadline.getTime());
+                document.getElementById('returnModalReadable').textContent = '';
+
+                function update() {
+                    const remaining = getTimeRemaining(returnDeadline);
+                    const timerEl = document.getElementById('returnModalTimer');
+                    const submitBtn = document.getElementById('submitReturnBtn');
+                    if (timerEl) timerEl.textContent = formatTimerDisplay(remaining);
+                    if (remaining.expired) {
+                        if (submitBtn) {
+                            submitBtn.disabled = true;
+                            submitBtn.style.opacity = '0.5';
+                            submitBtn.textContent = 'Return Window Expired';
+                        }
+                        if (returnModalTimerId) {
+                            clearInterval(returnModalTimerId);
+                            returnModalTimerId = null;
+                        }
+                        showModal('warning', 'Return Expired', '⏰ Return window expired');
+                    }
+                }
+                update();
+                returnModalTimerId = setInterval(update, 1000);
+            }
+
+            window.openRefundModal = (id) => {
+                currentReviewOrderId = id;
+                document.getElementById('refundModal').classList.add('show');
+            };
+            window.closeRefundModal = () => document.getElementById('refundModal').classList.remove('show');
+            window.submitRefund = async () => {
+                const reason = document.getElementById('refundReason').value;
+                const comments = document.getElementById('refundComments').value.trim();
+                if (!reason) {
+                    showModal('warning', 'Reason Required', '⚠️ Select reason');
+                    return;
+                }
+                try {
+                    const res = await fetch(`${API_BASE}/refund-request`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            orderId: currentReviewOrderId,
+                            refundReason: reason,
+                            refundComments: comments || undefined
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        closeRefundModal();
+                        showSuccessAnimation('refund', 'Refund Requested!');
+                    } else showModal('error', 'Refund Failed', data.message || 'Failed');
+                } catch (e) {
+                    showModal('error', 'Network Error', 'Network error');
+                }
+            };
+
+            window.openReturnCompleteModal = (id) => {
+                currentReturnCompleteOrderId = id;
+                document.getElementById('returnCompleteModal').classList.add('show');
+            };
+            window.closeReturnCompleteModal = () => document.getElementById('returnCompleteModal').classList.remove('show');
+            window.confirmReturnComplete = async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/admin/order/return-complete/${currentReturnCompleteOrderId}`, {
+                        method: 'PUT',
+                        credentials: 'include'
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        closeReturnCompleteModal();
+                        showSuccessAnimation('return', 'Return Completed!');
+                    } else showModal('error', 'Return Completion Failed', data.message || 'Failed');
+                } catch (e) {
+                    showModal('error', 'Network Error', 'Network error');
+                }
+            };
+
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('show');
+                        if (this.id === 'returnModal') closeReturnModal();
+                        if (this.id === 'otpModal') closeOtpModal();
+                    }
+                });
+            });
+
+            document.getElementById('userIconBtn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!isAuthenticated) {
+                    redirectToLogin();
+                    return;
+                }
+                document.getElementById('userDropdownMenu').classList.toggle('show');
+            });
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#userDropdown')) document.getElementById('userDropdownMenu').classList
+                    .remove('show');
+            });
+            document.getElementById('menuLogout').addEventListener('click', async (e) => {
+                e.preventDefault();
+                try { await fetch('/logout', { method: 'GET', credentials: 'include' }); } catch (e) {}
+                isAuthenticated = false;
+                updateLoginUI();
+                updateCartBadge(0);
+                showModal('info', 'Logged Out', 'Logged out successfully', {
+                    autoHide: 2000,
+                    onPrimary: () => redirectToLogin()
+                });
+            });
+
+            (async () => {
+                if (await checkAuth()) {
+                    await fetchCartCount();
+                    await fetchOrders();
+                }
+            })();
+        })();
+    </script>
+</body>
+</html>
+<!-- its ok but pop form alert message does not show so corrade design -->

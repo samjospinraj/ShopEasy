@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopMaster · Settings (Dashboard)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ----- same design system (identical to dashboard) ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #2c6de9;
+            --dark-blue: #1a4fb3;
+            --light-blue: #e8f1ff;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --dark-charcoal: #1f2937;
+            --medium-charcoal: #374151;
+            --light-charcoal: #f9fafb;
+            --white: #ffffff;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --border-radius: 12px;
+            --transition: all 0.25s ease;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f5fe 0%, #e9f0fa 100%);
+            color: var(--dark-charcoal);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ----- SIDEBAR (identical) ----- */
+        .sidebar {
+            width: 280px;
+            background: var(--white);
+            color: var(--dark-charcoal);
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            border-right: 1px solid rgba(0,0,0,0.05);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px 20px;
+            border-bottom: 1px solid #eef2f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
+            font-size: 1.7rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--primary-blue);
+        }
+
+        .logo-subtext {
+            font-size: 0.7rem;
+            color: var(--medium-charcoal);
+            letter-spacing: 0.3px;
+        }
+
+        .toggle-sidebar {
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .toggle-sidebar:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--medium-charcoal);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            font-weight: 450;
+        }
+
+        .menu-item:hover,
+        .menu-item.active-menu {
+            background: var(--light-blue);
+            border-left-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .menu-item i {
+            width: 24px;
+            font-size: 1.2rem;
+            margin-right: 14px;
+        }
+
+        .menu-text {
+            font-size: 1rem;
+        }
+
+        /* ----- MAIN CONTENT (same margin) ----- */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 20px 30px;
+            transition: margin-left 0.3s ease;
+            width: 100%;
+        }
+
+        /* ----- HEADER (identical) ----- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            padding: 16px 28px;
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            border: 1px solid #edf2f7;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--light-charcoal);
+            border-radius: 40px;
+            padding: 8px 20px;
+            width: min(400px, 100%);
+            border: 1px solid #dee4ed;
+            transition: var(--transition);
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(44, 109, 233, 0.2);
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            padding: 8px 10px;
+            width: 100%;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-bar i {
+            color: #7f8c9f;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: transparent;
+            border: none;
+            font-size: 1.3rem;
+            color: var(--medium-charcoal);
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 3px;
+            right: 5px;
+            background: var(--accent-red);
+            color: white;
+            font-size: 0.65rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 16px 6px 10px;
+            background: var(--light-charcoal);
+            border-radius: 40px;
+            border: 1px solid #dee4ed;
+        }
+
+        .user-info img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-blue);
+            object-fit: cover;
+        }
+
+        .user-details h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: var(--medium-charcoal);
+        }
+
+        /* ----- SETTINGS LAYOUT (specific but consistent) ----- */
+        .settings-container {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 24px;
+            margin-top: 8px;
+        }
+
+        .settings-sidebar {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            border: 1px solid #edf2f9;
+            height: fit-content;
+        }
+
+        .settings-sidebar .settings-item {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--medium-charcoal);
+            border-left: 4px solid transparent;
+            transition: 0.15s;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .settings-sidebar .settings-item i {
+            width: 22px;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+        }
+
+        .settings-sidebar .settings-item.active-setting {
+            background: var(--light-blue);
+            border-left-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .settings-sidebar .settings-item:not(.active-setting):hover {
+            background: #f5f9ff;
+        }
+
+        .settings-content {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid #edf2f9;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eef2f6;
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .settings-header h2 {
+            font-size: 1.7rem;
+            font-weight: 600;
+        }
+
+        .settings-header h2 i {
+            color: var(--primary-blue);
+            margin-right: 12px;
+        }
+
+        .setting-group {
+            margin-bottom: 32px;
+        }
+
+        .setting-group h3 {
+            font-size: 1.2rem;
+            margin-bottom: 18px;
+            color: var(--dark-charcoal);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #edf2f9;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            font-weight: 500;
+            color: var(--medium-charcoal);
+        }
+
+        .setting-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .toggle-switch {
+            width: 52px;
+            height: 28px;
+            background: #cbd5e1;
+            border-radius: 40px;
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.active {
+            background: var(--primary-blue);
+        }
+
+        .toggle-switch.active::after {
+            left: 26px;
+        }
+
+        .select-input {
+            padding: 10px 18px;
+            border-radius: 30px;
+            border: 1px solid #d0dae8;
+            background: white;
+            font-weight: 500;
+            min-width: 180px;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .color-dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #cbd5e1;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .color-dot:hover, .color-dot.selected-color {
+            box-shadow: 0 0 0 3px var(--primary-blue);
+        }
+
+        .btn-setting {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-setting-outline {
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .btn-setting:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,50,100,0.15);
+        }
+
+        .twofa-badge {
+            background: #e6f7e6;
+            color: #0e7342;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* ----- responsive (same breakpoints) ----- */
+        @media (max-width: 992px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .menu-toggle { display: flex; }
+        }
+
+        @media (max-width: 850px) {
+            .settings-container { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 680px) {
+            .header { flex-direction: column; align-items: stretch; }
+            .search-bar { width: 100%; }
+            .main-content { padding: 16px; }
+            .settings-content { padding: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .header-actions { justify-content: center; }
+            .user-details { display: none; }
+            .setting-row { flex-direction: column; align-items: flex-start; }
+        }
+
+        /* notification toast (reused) */
+        .notification-toast {
+            position: fixed; top: 20px; right: 20px; background: white; border-left: 5px solid var(--primary-blue);
+            padding: 16px 22px; border-radius: 16px; box-shadow: 0 12px 28px rgba(0,0,0,0.1); z-index: 9999;
+            display: flex; align-items: center; gap: 12px; font-weight: 500; animation: slideIn 0.2s;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR (identical, but active on Settings) -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div>
+                    <div class="logo-text">ShopMaster</div>
+                    <div class="logo-subtext">admin panel</div>
+                </div>
+            </div>
+            <button class="toggle-sidebar" id="toggleSidebar" aria-label="close sidebar">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+        <div class="sidebar-menu">
+            <a href="/Admin/dashboard" class="menu-item"><i class="fas fa-tachometer-alt"></i><span class="menu-text">Dashboard</span></a>
+            <a href="/Admin/product" class="menu-item"><i class="fas fa-box"></i><span class="menu-text">Products</span></a>
+            <a href="/Admin/category" class="menu-item"><i class="fas fa-tags"></i><span class="menu-text">Categories</span></a>
+            <a href="/Admin/order" class="menu-item"><i class="fas fa-shopping-cart"></i><span class="menu-text">Orders</span></a>
+            <a href="/Admin/customer" class="menu-item"><i class="fas fa-users"></i><span class="menu-text">Customers</span></a>
+            <a href="/Admin/analytics" class="menu-item"><i class="fas fa-chart-line"></i><span class="menu-text">Analytics</span></a>
+            <a href="/Admin/profile" class="menu-item"><i class="fas fa-id-badge"></i><span class="menu-text">Profile</span></a>
+            <a href="/Admin/setting" class="menu-item active-menu"><i class="fas fa-cog"></i><span class="menu-text">Settings</span></a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT (Settings page) -->
+    <div class="main-content" id="mainContent">
+        <!-- HEADER (exact copy) -->
+        <div class="header">
+            <button class="menu-toggle" id="menuToggle" aria-label="menu"><i class="fas fa-bars"></i></button>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search settings...">
+            </div>
+            <div class="header-actions">
+                <button class="notification-btn"><i class="fas fa-bell"></i><span class="notification-badge">5</span></button>
+                <button class="notification-btn"><i class="fas fa-envelope"></i><span class="notification-badge">3</span></button>
+                <div class="user-info">
+                    <a href="/Admin/profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin+Master&background=2c6de9&color=fff&bold=true&size=42" alt="admin" >
+                    </a>
+                    <div class="user-details">
+                        <h4>Alex Master</h4>
+                        <p>Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS DASHBOARD (full response) -->
+        <div class="settings-container">
+            <!-- left: setting categories -->
+            <div class="settings-sidebar">
+                <div class="settings-item active-setting" data-tab="account"><i class="fas fa-user-circle"></i> Account</div>
+                <div class="settings-item" data-tab="notifications"><i class="fas fa-bell"></i> Notifications</div>
+                <div class="settings-item" data-tab="appearance"><i class="fas fa-palette"></i> Appearance</div>
+                <div class="settings-item" data-tab="security"><i class="fas fa-shield-alt"></i> Security</div>
+                <div class="settings-item" data-tab="billing"><i class="fas fa-credit-card"></i> Billing</div>
+                <div class="settings-item" data-tab="team"><i class="fas fa-users-cog"></i> Team</div>
+            </div>
+
+            <!-- right: dynamic content (using active class, but we fully design all sections and show/hide via JS) -->
+            <div class="settings-content" id="settingsContent">
+                <!-- Account settings (default visible) -->
+                <div class="setting-tab active-tab" id="tab-account">
+                    <div class="settings-header">
+                        <h2><i class="fas fa-user-circle"></i> Account settings</h2>
+                        <button class="btn-setting btn-setting-outline" id="saveAccountDemo"><i class="fas fa-save"></i> Save changes</button>
+                    </div>
+                    <div class="setting-group">
+                        <h3><i class="fas fa-id-badge"></i> Profile information</h3>
+                        <div class="setting-row">
+                            <div><div class="setting-label">Full name</div><div class="setting-desc">Your public display name</div></div>
+                            <input class="select-input" type="text" value="Alex Master" style="width:200px;">
+                        </div>
+                        <div class="setting-row">
+                            <div><div class="setting-label">Email address</div><div class="setting-desc">Used for login & notifications</div></div>
+                            <input class="select-input" type="email" value="a.master@shopmaster.com" style="width:240px;">
+                        </div>
+                        <div class="setting-row">
+                            <div><div class="setting-label">Job role</div><div class="setting-desc">Super admin</div></div>
+                            <select class="select-input"><option>Super Admin</option><option>Manager</option><option>Support</option></select>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <h3><i class="fas fa-map-pin"></i> Region & language</h3>
+                        <div class="setting-row">
+                            <div><div class="setting-label">Language</div><div class="setting-desc">Dashboard language</div></div>
+                            <select class="select-input"><option>English (US)</option><option>Spanish</option><option>French</option></select>
+                        </div>
+                        <div class="setting-row">
+                            <div><div class="setting-label">Timezone</div><div class="setting-desc">(UTC-05:00) Eastern Time</div></div>
+                            <select class="select-input"><option>Eastern Time (UTC-5)</option><option>Pacific Time</option></select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications (hidden initially) -->
+                <div class="setting-tab" id="tab-notifications" style="display:none;">
+                    <div class="settings-header">
+                        <h2><i class="fas fa-bell"></i> Notification preferences</h2>
+                        <button class="btn-setting btn-setting-outline" id="saveNotifDemo"><i class="fas fa-save"></i> Save</button>
+                    </div>
+                    <div class="setting-group">
+                        <div class="setting-row">
+                            <div><span class="setting-label">Order alerts</span><div class="setting-desc">New order, cancellations</div></div>
+                            <span class="toggle-switch active" id="toggleOrder"></span>
+                        </div>
+                        <div class="setting-row">
+                            <div><span class="setting-label">Inventory updates</span><div class="setting-desc">Low stock, restocks</div></div>
+                            <span class="toggle-switch active" id="toggleStock"></span>
+                        </div>
+                        <div class="setting-row">
+                            <div><span class="setting-label">Customer messages</span><div class="setting-desc">Queries & reviews</div></div>
+                            <span class="toggle-switch" id="toggleMsg"></span>
+                        </div>
+                        <div class="setting-row">
+                            <div><span class="setting-label">Newsletter & tips</span><div class="setting-desc">Product updates</div></div>
+                            <span class="toggle-switch" id="toggleNews"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appearance -->
+                <div class="setting-tab" id="tab-appearance" style="display:none;">
+                    <div class="settings-header">
+                        <h2><i class="fas fa-palette"></i> Appearance</h2>
+                        <button class="btn-setting btn-setting-outline" id="saveAppearanceDemo"><i class="fas fa-save"></i> Save</button>
+                    </div>
+                    <div class="setting-group">
+                        <h3>Theme</h3>
+                        <div class="setting-row">
+                            <div><span class="setting-label">Dark mode</span><div class="setting-desc">Switch between light/dark</div></div>
+                            <span class="toggle-switch" id="darkModeToggle"></span>
+                        </div>
+                        <div class="setting-row">
+                            <div><span class="setting-label">Primary color</span><div class="setting-desc">Brand accent</div></div>
+                            <div class="color-picker">
+                                <span class="color-dot" style="background:#2c6de9;" data-color="blue"></span>
+                                <span class="color-dot" style="background:#10b981;" data-color="green"></span>
+                                <span class="color-dot" style="background:#f59e0b;" data-color="orange"></span>
+                                <span class="color-dot" style="background:#8b5cf6;" data-color="purple"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <h3>Layout</h3>
+                        <div class="setting-row">
+                            <div><span class="setting-label">Compact sidebar</span><div class="setting-desc">Reduces width</div></div>
+                            <span class="toggle-switch" id="compactSidebar"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security (simplified but consistent) -->
+                <div class="setting-tab" id="tab-security" style="display:none;">
+                    <div class="settings-header">
+                        <h2><i class="fas fa-shield-alt"></i> Security</h2>
+                    </div>
+                    <div class="setting-group">
+                        <div class="setting-row">
+                            <div><span class="setting-label">Two-factor authentication</span><div class="setting-desc">Protect your account</div></div>
+                            <span class="twofa-badge"><i class="fas fa-check-circle"></i> Enabled</span>
+                        </div>
+                        <div class="setting-row">
+                            <div><span class="setting-label">Password</span><div class="setting-desc">Last changed 30 days ago</div></div>
+                            <button class="btn-setting btn-setting-outline" style="padding:8px 22px;">Change</button>
+                        </div>
+                        <div class="setting-row">
+                            <div><span class="setting-label">Session timeout</span><div class="setting-desc">Auto logout after 30min</div></div>
+                            <select class="select-input"><option>15 minutes</option><option selected>30 minutes</option><option>1 hour</option></select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing placeholder -->
+                <div class="setting-tab" id="tab-billing" style="display:none;">
+                    <div class="settings-header"><h2><i class="fas fa-credit-card"></i> Billing & plan</h2></div>
+                    <div class="setting-row"><div><span class="setting-label">Current plan</span><div class="setting-desc">Enterprise (annual)</div></div><button class="btn-setting btn-setting-outline">Manage</button></div>
+                    <div class="setting-row"><div><span class="setting-label">Payment method</span><div class="setting-desc">VISA ···· 4242</div></div><button class="btn-setting btn-setting-outline">Update</button></div>
+                </div>
+
+                <!-- Team placeholder -->
+                <div class="setting-tab" id="tab-team" style="display:none;">
+                    <div class="settings-header"><h2><i class="fas fa-users-cog"></i> Team management</h2></div>
+                    <div class="setting-row"><div><span class="setting-label">Admin role</span><div class="setting-desc">Full access</div></div><span class="twofa-badge">2 users</span></div>
+                    <div class="setting-row"><div><span class="setting-label">Manager role</span><div class="setting-desc">Limited</div></div><span class="twofa-badge">4 users</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- SIDEBAR TOGGLE (same as dashboard) ----------
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menuToggle');
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            function toggleSidebarFunc(e) {
+                e.stopPropagation();
+                sidebar.classList.toggle('active');
+            }
+            if (menuToggle) menuToggle.addEventListener('click', toggleSidebarFunc);
+            if (toggleSidebar) toggleSidebar.addEventListener('click', toggleSidebarFunc);
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 992 && !sidebar.contains(e.target) && !menuToggle.contains(e.target) && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+            // chevron update
+            function updateChevron() {
+                const icon = toggleSidebar?.querySelector('i');
+                if (icon) {
+                    if (sidebar.classList.contains('active')) icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
+                    else icon.classList.replace('fa-chevron-right', 'fa-chevron-left');
+                }
+            }
+            new MutationObserver(() => updateChevron()).observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+            updateChevron();
+
+            // ---------- SETTINGS TABS ----------
+            const settingItems = document.querySelectorAll('.settings-item');
+            const tabs = {
+                account: document.getElementById('tab-account'),
+                notifications: document.getElementById('tab-notifications'),
+                appearance: document.getElementById('tab-appearance'),
+                security: document.getElementById('tab-security'),
+                billing: document.getElementById('tab-billing'),
+                team: document.getElementById('tab-team')
+            };
+
+            function activateTab(tabId) {
+                // hide all tabs
+                Object.values(tabs).forEach(tab => { if (tab) tab.style.display = 'none'; });
+                // show selected
+                if (tabs[tabId]) tabs[tabId].style.display = 'block';
+                // update active class on left menu
+                settingItems.forEach(item => {
+                    const data = item.getAttribute('data-tab');
+                    if (data === tabId) item.classList.add('active-setting');
+                    else item.classList.remove('active-setting');
+                });
+            }
+
+            settingItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const tabId = item.getAttribute('data-tab');
+                    if (tabId) activateTab(tabId);
+                    showDemoNotification(`⚙️ ${item.innerText.trim()} settings`, 'cog');
+                });
+            });
+
+            // ---------- TOGGLE SWITCH simulation (click) ----------
+            document.querySelectorAll('.toggle-switch').forEach(t => {
+                t.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            });
+
+            // color picker simulation
+            document.querySelectorAll('.color-dot').forEach(dot => {
+                dot.addEventListener('click', function() {
+                    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected-color'));
+                    this.classList.add('selected-color');
+                });
+            });
+
+            // ---------- SAVE / DEMO TOAST (same style) ----------
+            function showDemoNotification(msg, icon = 'bell') {
+                const notif = document.createElement('div');
+                notif.className = 'notification-toast';
+                notif.innerHTML = `<i class="fas fa-${icon}" style="color: var(--primary-blue); font-size:1.4rem"></i><span>${msg}</span>`;
+                document.body.appendChild(notif);
+                setTimeout(() => { notif.style.opacity = '0'; notif.style.transform = 'translateX(40px)'; setTimeout(() => notif.remove(), 300); }, 2000);
+            }
+
+            document.getElementById('saveAccountDemo')?.addEventListener('click', () => showDemoNotification('Account changes saved (demo)', 'check-circle'));
+            document.getElementById('saveNotifDemo')?.addEventListener('click', () => showDemoNotification('Notification prefs updated', 'bell'));
+            document.getElementById('saveAppearanceDemo')?.addEventListener('click', () => showDemoNotification('Appearance updated', 'palette'));
+
+            // small demo for any "Change" or "Manage" buttons
+            document.querySelectorAll('.btn-setting, .btn-setting-outline, .twofa-badge, .select-input').forEach(el => {
+                if (el.id?.startsWith('save')) return;
+                el.addEventListener('click', (e) => {
+                    if (el.classList.contains('settings-item')) return;
+                    e.stopPropagation();
+                    if (el.classList.contains('toggle-switch')) return; // already handled
+                    if (el.tagName === 'SELECT') return; // ignore selects
+                    showDemoNotification(`⚡ ${el.innerText.trim() || 'action'} (demo)`, 'cog');
+                });
+            });
+
+            // ensure initial active tab (account)
+            activateTab('account');
+
+            // extra: simulate save from any header button with class .btn-setting (we already covered)
+        })();
+    </script>
+</body>
+</html>

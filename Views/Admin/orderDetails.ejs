@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShopMaster · Order Details 2026</title>
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        :root {
+            --bg-deep: #060b1f;
+            --bg-card: rgba(10, 16, 36, 0.65);
+            --bg-sidebar: rgba(7, 11, 28, 0.82);
+            --bg-header: rgba(9, 14, 32, 0.7);
+            --glass-blur: 20px;
+            --primary: #4dabf7;
+            --primary-glow: #339af0;
+            --accent-cyan: #38bdf8;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --accent-orange: #fb923c;
+            --accent-amber: #fbbf24;
+            --text-primary: #e8ecf4;
+            --text-secondary: #b0bdd0;
+            --text-muted: #7b8ca6;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(77, 171, 247, 0.3);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+            --shadow-glow: 0 0 40px rgba(77, 171, 247, 0.18);
+            --radius-xl: 22px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(ellipse at 20% 20%, #0b1430 0%, #060b1f 45%, #04091a 70%, #020617 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+        }
+
+        #nuranCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-sidebar);
+            backdrop-filter: blur(26px);
+            -webkit-backdrop-filter: blur(26px);
+            color: var(--text-primary);
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            border-right: 1px solid var(--border-subtle);
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 18px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e8ecf4 0%, #a0c8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .logo-subtext {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+        .toggle-sidebar {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+        .toggle-sidebar:hover {
+            background: rgba(77, 171, 247, 0.15);
+            border-color: var(--border-glow);
+            color: var(--accent-cyan);
+        }
+        .sidebar-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 13px 20px;
+            margin: 3px 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: 0.2s;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 450;
+            border: 1px solid transparent;
+        }
+        .menu-item:hover {
+            background: rgba(77, 171, 247, 0.08);
+            color: var(--text-primary);
+            border-color: rgba(77, 171, 247, 0.2);
+        }
+        .menu-item.active-menu {
+            background: rgba(77, 171, 247, 0.13);
+            color: #fff;
+            border-color: rgba(77, 171, 247, 0.35);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.15);
+            position: relative;
+        }
+        .menu-item.active-menu::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 22px;
+            border-radius: 0 4px 4px 0;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 14px var(--accent-cyan);
+        }
+        .menu-item i {
+            width: 24px;
+            font-size: 1.15rem;
+            margin-right: 14px;
+            text-align: center;
+        }
+        .menu-text {
+            font-size: 0.95rem;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 22px 30px;
+            transition: margin-left 0.35s ease;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-header);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            padding: 14px 26px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 28px;
+            border: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .menu-toggle:hover {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.2);
+            color: var(--accent-cyan);
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .notification-btn {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 10px 12px;
+            border-radius: 50%;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .notification-btn:hover {
+            background: rgba(77, 171, 247, 0.12);
+            border-color: var(--border-glow);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.2);
+        }
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 3px;
+            background: var(--accent-red);
+            color: #fff;
+            font-size: 0.6rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 18px 5px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50px;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+        }
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(77, 171, 247, 0.5);
+            object-fit: cover;
+        }
+        .user-details h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        .user-details p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* ── DETAIL CARD (glass) ── */
+        .detail-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 24px;
+            transition: 0.35s;
+        }
+        .detail-card:hover {
+            border-color: var(--border-glow);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .back-link {
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            color: #fff;
+        }
+
+        /* ── STATUS BADGES (adjusted for dark) ── */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.08);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        /* Override specific status colors */
+        .status-delivered, .status-completed { background: rgba(52,211,153,0.15); color: #34d399; border-color: rgba(52,211,153,0.3); }
+        .status-processing { background: rgba(251,146,60,0.15); color: #fb923c; border-color: rgba(251,146,60,0.3); }
+        .status-pending { background: rgba(248,113,113,0.15); color: #f87171; border-color: rgba(248,113,113,0.3); }
+        .status-confirmed { background: rgba(77,171,247,0.15); color: #4dabf7; border-color: rgba(77,171,247,0.3); }
+        .status-packed { background: rgba(167,139,250,0.15); color: #a78bfa; border-color: rgba(167,139,250,0.3); }
+        .status-shipped { background: rgba(56,189,248,0.15); color: #38bdf8; border-color: rgba(56,189,248,0.3); }
+        .status-out-for-delivery { background: rgba(251,191,36,0.15); color: #fbbf24; border-color: rgba(251,191,36,0.3); }
+        .status-cancelled { background: rgba(248,113,113,0.15); color: #f87171; border-color: rgba(248,113,113,0.3); }
+        .status-return-requested { background: rgba(251,146,60,0.15); color: #fb923c; border-color: #f59e0b; animation: pulse-border 2s infinite; }
+        .status-return-approved { background: rgba(52,211,153,0.15); color: #34d399; border-color: rgba(52,211,153,0.3); }
+        .status-returned { background: rgba(52,211,153,0.15); color: #34d399; border-color: rgba(52,211,153,0.3); }
+        .status-return-rejected { background: rgba(255,255,255,0.05); color: var(--text-secondary); border-color: rgba(255,255,255,0.1); }
+        .status-delivery-failed { background: rgba(248,113,113,0.15); color: #f87171; border-color: rgba(248,113,113,0.3); }
+        .status-delivery-completed { background: rgba(52,211,153,0.15); color: #34d399; border-color: rgba(52,211,153,0.3); }
+        .status-return-completed { background: rgba(52,211,153,0.15); color: #34d399; border-color: rgba(52,211,153,0.3); }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: #f59e0b; box-shadow: 0 0 0 0 rgba(245,158,11,0.35); }
+            50% { border-color: #d97706; box-shadow: 0 0 0 8px rgba(245,158,11,0); }
+        }
+
+        .info-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .info-box .label {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .info-box .value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        /* ensure small value texts remain bright */
+        .info-box .value.small {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .product-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        .product-item img {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid var(--border-subtle);
+        }
+        .product-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .product-info .brand {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .product-price .price {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+        .product-price .qty {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .quick-action-card, .return-approval-card, .return-approved-card, .returned-card, .return-rejected-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 24px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .quick-action-card .action-icon, .return-approval-card .action-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #fff;
+        }
+
+        .form-control, .form-select {
+            background: rgba(255,255,255,0.04) !important;
+            border: 1px solid var(--border-subtle) !important;
+            color: #ffffff !important;
+            border-radius: 40px !important;
+            padding: 12px 16px !important;
+            font-size: 0.9rem !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--border-glow) !important;
+            box-shadow: 0 0 14px rgba(77,171,247,0.15) !important;
+            background: rgba(255,255,255,0.06) !important;
+        }
+        .form-select option {
+            background: #0f1829;
+            color: #e0e7f0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4dabf7, #339af0);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(77,171,247,0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-glow);
+            color: var(--text-secondary);
+        }
+        .btn-outline:hover {
+            background: rgba(77,171,247,0.1);
+            color: #fff;
+        }
+        .btn-danger { background: var(--accent-red); color: #fff; }
+        .btn-success { background: var(--accent-green); color: #fff; }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        /* ═══ MODAL POPUP 2026 ═══ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInOverlay 0.25s ease;
+        }
+        .modal-content {
+            background: linear-gradient(145deg, rgba(18,28,52,0.95), rgba(10,18,40,0.95));
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 32px 36px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(77,171,247,0.3);
+            animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        .modal-message {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .modal-btn {
+            background: linear-gradient(135deg, #4dabf7, #339af0);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(77,171,247,0.3);
+        }
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(77,171,247,0.4);
+        }
+
+        @keyframes fadeInOverlay { from { opacity:0; } to { opacity:1; } }
+        @keyframes scaleIn {
+            0% { transform: scale(0.7); opacity:0; }
+            100% { transform: scale(1); opacity:1; }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 992px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .menu-toggle { display: flex; }
+        }
+        @media (max-width: 768px) {
+            .detail-card { padding: 20px; }
+            .quick-action-card, .return-approval-card, .return-approved-card, .returned-card, .return-rejected-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="nuranCanvas"></canvas>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div>
+                <div class="logo-text">ShopMaster</div>
+                <div class="logo-subtext">admin · 2026</div>
+            </div>
+            <button class="toggle-sidebar" id="toggleSidebarBtn"><i class="fas fa-chevron-left"></i></button>
+        </div>
+        <div class="sidebar-menu">
+            <a href="/Admin/dashboard" class="menu-item"><i class="fas fa-tachometer-alt"></i><span class="menu-text">Dashboard</span></a>
+            <a href="/Admin/product" class="menu-item"><i class="fas fa-box"></i><span class="menu-text">Products</span></a>
+            <a href="/Admin/category" class="menu-item"><i class="fas fa-tags"></i><span class="menu-text">Categories</span></a>
+            <a href="/Admin/order" class="menu-item active-menu"><i class="fas fa-shopping-cart"></i><span class="menu-text">Orders</span></a>
+            <a href="/Admin/customer" class="menu-item"><i class="fas fa-users"></i><span class="menu-text">Customers</span></a>
+            <a href="/Admin/review" class="menu-item "><i class="fas fa-star"></i> Reviews</a>
+            <a href="/Admin/analytics" class="menu-item"><i class="fas fa-chart-line"></i><span class="menu-text">Analytics</span></a>
+            <a href="/Admin/profile" class="menu-item"><i class="fas fa-id-badge"></i><span class="menu-text">Profile</span></a>
+            <a href="/Admin/setting" class="menu-item"><i class="fas fa-cog"></i><span class="menu-text">Settings</span></a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        <!-- HEADER -->
+        <div class="header">
+            <button class="menu-toggle" id="mobileMenuToggle"><i class="fas fa-bars"></i></button>
+            <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary);">
+                <i class="fas fa-file-invoice" style="color: var(--accent-cyan); margin-right: 8px;"></i> Order Details
+            </div>
+            <div class="header-actions">
+                <button class="notification-btn"><i class="fas fa-bell"></i><span class="notification-badge">5</span></button>
+                <button class="notification-btn"><i class="fas fa-envelope"></i><span class="notification-badge">3</span></button>
+                <div class="user-info">
+                    <a href="/Admin/profile"><img src="https://ui-avatars.com/api/?name=Admin+Master&background=4dabf7&color=fff&bold=true&size=42" alt="admin" /></a>
+                    <div class="user-details">
+                        <h4>Alex Master</h4>
+                        <p>Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="/Admin/order" class="back-link"><i class="fas fa-arrow-left"></i> Back to Orders</a>
+
+        <div class="detail-card" id="orderDetailCard">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Loading order details...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reject Return Modal -->
+    <div class="modal-overlay d-none" id="rejectReturnModal">
+        <div class="modal-content text-start" style="max-width:500px;">
+            <h3 class="mb-3"><i class="fas fa-times-circle" style="color:var(--accent-red);"></i> Reject Return Request</h3>
+            <label class="text-secondary mb-1">Reason for rejection *</label>
+            <input type="text" id="rejectReason" class="form-control mb-3" placeholder="e.g., Product not in original condition">
+            <label class="text-secondary mb-1">Additional comment (optional)</label>
+            <textarea id="rejectComment" class="form-control mb-3" rows="3" placeholder="Any further details..."></textarea>
+            <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-outline" id="cancelRejectBtn">Cancel</button>
+                <button class="btn btn-danger" id="confirmRejectBtn"><i class="fas fa-ban"></i> Reject Return</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            // ═══════════ NURAN PARTICLE BACKGROUND ═══════════
+            const canvas = document.getElementById('nuranCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let mouseX = -999, mouseY = -999, targetMouseX = -999, targetMouseY = -999;
+            const SPLATTER_RADIUS = 190, CONNECTION_DIST = 140, PARTICLE_COUNT = window.innerWidth < 768 ? 80 : 140;
+            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            resize(); window.addEventListener('resize', () => { resize(); const nc = window.innerWidth<768?80:140; while(particles.length<nc) particles.push(createParticle()); while(particles.length>nc) particles.pop(); });
+            function createParticle() {
+                const cols = ['rgba(77,171,247,','rgba(56,189,248,','rgba(167,139,250,','rgba(139,92,246,','rgba(45,212,191,','rgba(96,165,250,','rgba(192,132,252,','rgba(52,211,153,'];
+                const c = cols[Math.floor(Math.random()*cols.length)];
+                return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.7, vy:(Math.random()-0.5)*0.7, size:1.8+Math.random()*3.5, color:c, glowAlpha:0.5+Math.random()*0.5, pulsePhase:Math.random()*Math.PI*2, pulseSpeed:0.008+Math.random()*0.025, baseSize:1.8+Math.random()*3.5 };
+            }
+            for(let i=0;i<PARTICLE_COUNT;i++) particles.push(createParticle());
+            document.addEventListener('mousemove',e=>{ targetMouseX=e.clientX; targetMouseY=e.clientY; });
+            document.addEventListener('mouseleave',()=>{ targetMouseX=-999; targetMouseY=-999; });
+            document.addEventListener('touchmove',e=>{ if(e.touches.length>0){ targetMouseX=e.touches[0].clientX; targetMouseY=e.touches[0].clientY; } },{passive:true});
+            document.addEventListener('touchend',()=>{ targetMouseX=-999; targetMouseY=-999; });
+            function animate(ts) {
+                mouseX+=(targetMouseX-mouseX)*0.18; mouseY+=(targetMouseY-mouseY)*0.18;
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                const time=ts*0.001;
+                for(let p of particles) {
+                    p.vx+=Math.sin(time*0.7+p.pulsePhase)*0.025; p.vy+=Math.cos(time*0.6+p.pulsePhase+1.3)*0.025;
+                    if(mouseX>-500&&mouseY>-500){ const dx=p.x-mouseX,dy=p.y-mouseY,dist=Math.sqrt(dx*dx+dy*dy); if(dist<SPLATTER_RADIUS&&dist>0.5){ const force=(1-dist/SPLATTER_RADIUS)*4.5; p.vx+=(dx/dist)*force; p.vy+=(dy/dist)*force; p.glowAlpha=Math.min(1,p.glowAlpha+0.06); } }
+                    p.x+=p.vx; p.y+=p.vy; p.vx*=0.94; p.vy*=0.94;
+                    const sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy); if(sp>6){ p.vx=(p.vx/sp)*6; p.vy=(p.vy/sp)*6; }
+                    if(p.x<-30)p.x=canvas.width+30; if(p.x>canvas.width+30)p.x=-30; if(p.y<-30)p.y=canvas.height+30; if(p.y>canvas.height+30)p.y=-30;
+                    p.size=p.baseSize+Math.sin(time*p.pulseSpeed*10+p.pulsePhase)*0.7;
+                    p.glowAlpha+=(0.6-p.glowAlpha)*0.03;
+                }
+                for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++) {
+                    const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+                    if(dist<CONNECTION_DIST){ const alpha=(1-dist/CONNECTION_DIST)*0.28, pulse=Math.sin(ts*0.003+i*0.4+j*0.3)*0.5+0.5; ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.strokeStyle=`rgba(120,170,230,${alpha*(0.5+pulse*0.5)})`; ctx.lineWidth=0.6; ctx.stroke(); }
+                }
+                for(let p of particles) {
+                    const grad=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*3.5);
+                    grad.addColorStop(0,p.color+(p.glowAlpha*0.7)+')'); grad.addColorStop(0.35,p.color+(p.glowAlpha*0.25)+')'); grad.addColorStop(1,p.color+'0)');
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.size*3.5,0,Math.PI*2); ctx.fillStyle=grad; ctx.fill();
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.size*0.65,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${0.7+p.glowAlpha*0.3})`; ctx.fill();
+                }
+                if(mouseX>-500&&mouseY>-500){ const mg=ctx.createRadialGradient(mouseX,mouseY,0,mouseX,mouseY,SPLATTER_RADIUS*0.7); mg.addColorStop(0,'rgba(120,180,240,0.08)'); mg.addColorStop(0.5,'rgba(100,150,220,0.03)'); mg.addColorStop(1,'rgba(0,0,0,0)'); ctx.beginPath(); ctx.arc(mouseX,mouseY,SPLATTER_RADIUS*0.7,0,Math.PI*2); ctx.fillStyle=mg; ctx.fill(); }
+                requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+
+            // ═══════════ SIDEBAR TOGGLE ═══════════
+            const sidebar = document.getElementById('sidebar');
+            const mobileToggle = document.getElementById('mobileMenuToggle');
+            const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
+            function toggleSidebar() { sidebar.classList.toggle('active'); }
+            mobileToggle?.addEventListener('click', toggleSidebar);
+            toggleSidebarBtn?.addEventListener('click', () => { if(window.innerWidth<=992) sidebar.classList.toggle('active'); });
+
+            // ═══════════ MODAL POPUP (2026 animation) ═══════════
+            function showModal(message, isSuccess = true) {
+                const existing = document.querySelector('.modal-overlay:not(#rejectReturnModal)');
+                if(existing) existing.remove();
+                const overlay = document.createElement('div');
+                overlay.className = 'modal-overlay';
+                const iconClass = isSuccess ? 'fa-check-circle' : 'fa-exclamation-triangle';
+                const iconColor = isSuccess ? 'var(--accent-green)' : 'var(--accent-red)';
+                overlay.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-icon" style="color: ${iconColor};"><i class="fas ${iconClass}"></i></div>
+                        <div class="modal-message">${message}</div>
+                        <button class="modal-btn">OK</button>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+                const closeModal = () => {
+                    overlay.style.opacity = '0';
+                    overlay.style.transition = 'opacity 0.2s';
+                    setTimeout(() => overlay.remove(), 200);
+                };
+                overlay.querySelector('.modal-btn').addEventListener('click', closeModal);
+                overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
+                setTimeout(closeModal, 3500);
+            }
+
+            // ═══════════ ORDER DETAIL LOGIC ═══════════
+            const orderDetailCard = document.getElementById('orderDetailCard');
+            const orderId = (() => {
+                const parts = window.location.pathname.split('/').filter(Boolean);
+                if (parts.length >= 3 && parts[0] === 'Admin' && parts[1] === 'orderDetails') return parts[2];
+                return null;
+            })();
+
+            if (!orderId) {
+                orderDetailCard.innerHTML = '<div class="text-center py-5">⚠️ No order ID provided. <a href="/Admin/order">Return to orders</a></div>';
+                return;
+            }
+
+            function getProductImageUrl(product) {
+                if (product?.mainImage?.path) return `http://localhost:3000${product.mainImage.path}`;
+                return 'https://ui-avatars.com/api/?name=No+Img&background=ccc&color=fff&size=56';
+            }
+
+            function formatStatusForDisplay(status) {
+                if (!status) return 'Unknown';
+                return status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            }
+
+            function getStatusClass(status) {
+                const mapping = {
+                    completed: 'status-delivered', delivered: 'status-delivered',
+                    processing: 'status-processing', pending: 'status-pending',
+                    confirmed: 'status-confirmed', packed: 'status-packed',
+                    shipped: 'status-shipped', out_for_delivery: 'status-out-for-delivery',
+                    cancelled: 'status-cancelled', returned: 'status-returned',
+                    delivery_failed: 'status-delivery-failed', delivery_completed: 'status-delivery-completed',
+                    requested: 'status-return-requested', approved: 'status-return-approved',
+                    rejected: 'status-return-rejected', completed: 'status-return-completed'
+                };
+                return mapping[status] || '';
+            }
+
+            async function fetchOrderDetail() {
+                try {
+                    const res = await fetch(`/admin/order/${orderId}`);
+                    if (!res.ok) throw new Error('Order not found');
+                    const data = await res.json();
+                    if (!data.success || !data.order) throw new Error('Invalid order data');
+                    renderOrderDetail(data.order);
+                } catch (error) {
+                    orderDetailCard.innerHTML = `<div class="text-center py-5">⚠️ Could not load order details. ${error.message}</div>`;
+                }
+            }
+
+            function renderOrderDetail(order) {
+                const items = order.items || [];
+                const orderDate = order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A';
+                const orderStatus = order.orderStatus || 'Unknown';
+                const displayOrderStatus = formatStatusForDisplay(orderStatus);
+                const orderStatusClass = getStatusClass(orderStatus);
+                const returnStatus = order.returnStatus || '';
+                const displayReturnStatus = returnStatus ? formatStatusForDisplay(returnStatus) : '';
+                const returnStatusClass = getStatusClass(returnStatus);
+                const totalAmount = order.totals?.totalAmount || 0;
+                const customerName = order.shippingAddress?.fullName || order.userId?.fullName || 'Unknown Customer';
+                const customerEmail = order.userId?.email || 'N/A';
+                const shippingAddress = (() => {
+                    const addr = order.shippingAddress || {};
+                    return [addr.address, addr.city, addr.state, addr.postalCode, addr.country].filter(p => p).join(', ') || 'Not provided';
+                })();
+                const paymentMethod = order.paymentMethod === 'cashOnDelivery' ? 'Cash on Delivery' : (order.paymentMethod || 'Not specified');
+                const paymentStatus = order.paymentStatus || 'N/A';
+
+                const productRows = items.map(item => {
+                    const product = item.productId || {};
+                    return `
+                        <div class="product-item">
+                            <img src="${getProductImageUrl(product)}" alt="${product.productName || 'Product'}" onerror="this.src='https://ui-avatars.com/api/?name=No+Img&background=ccc&color=fff&size=56'">
+                            <div class="product-info">
+                                <h4>${product.productName || 'Unknown Product'}</h4>
+                                <div class="brand">${product.brand || ''} ${product.model || ''}</div>
+                            </div>
+                            <div class="product-price">
+                                <div class="price">₹${product.price?.toFixed(2) || '0.00'}</div>
+                                <div class="qty">Qty: ${item.quantity}</div>
+                            </div>
+                        </div>`;
+                }).join('');
+
+                const statusBadges = returnStatus && returnStatus !== 'none'
+                    ? `<div class="d-flex align-items-center gap-2"><span class="status-badge ${orderStatusClass}">${displayOrderStatus}</span><i class="fas fa-arrow-right text-muted"></i><span class="status-badge ${returnStatusClass}">${displayReturnStatus}</span></div>`
+                    : `<span class="status-badge ${orderStatusClass}">${displayOrderStatus}</span>`;
+
+                const generalStatuses = ['pending','confirmed','processing','packed','shipped','out_for_delivery','delivered','delivery_failed','delivery_completed','cancelled','returned'];
+                const statusOptions = generalStatuses.map(s => `<option value="${s}" ${orderStatus===s?'selected':''}>${formatStatusForDisplay(s)}</option>`).join('');
+                const paymentStatuses = ['pending','paid','failed','refunded'];
+                const paymentOptions = paymentStatuses.map(s => `<option value="${s}" ${paymentStatus===s?'selected':''}>${formatStatusForDisplay(s)}</option>`).join('');
+
+                let quickActionHTML = '';
+                if (orderStatus === 'out_for_delivery') {
+                    quickActionHTML = `
+                        <div class="quick-action-card">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="action-icon bg-success"><i class="fas fa-truck-fast"></i></div>
+                                <div>
+                                    <h4 class="text-success">Order is Out for Delivery</h4>
+                                    <p class="text-muted mb-0">Mark as delivered to complete payment.</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-success" id="markDeliveredBtn"><i class="fas fa-check-double"></i> Mark as Delivered</button>
+                        </div>`;
+                }
+
+                let returnSectionHTML = '';
+                if (returnStatus === 'requested') {
+                    returnSectionHTML = `
+                        <div class="return-approval-card">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="action-icon bg-warning"><i class="fas fa-undo-alt"></i></div>
+                                <div>
+                                    <h4 class="text-warning">Return Request Pending</h4>
+                                    <p class="text-muted mb-0">${order.returnReason ? 'Reason: ' + order.returnReason : 'Customer requested a return.'}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger" id="rejectReturnBtn"><i class="fas fa-times-circle"></i> Reject</button>
+                                <button class="btn btn-success" id="approveReturnBtn"><i class="fas fa-check-circle"></i> Approve</button>
+                            </div>
+                        </div>`;
+                } else if (returnStatus === 'approved') {
+                    returnSectionHTML = `
+                        <div class="return-approved-card">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="action-icon bg-info"><i class="fas fa-check-circle"></i></div>
+                                <div><h4 class="text-info">Return Approved</h4><p class="text-muted mb-0">Awaiting product return.</p></div>
+                            </div>
+                            <button class="btn btn-success" id="completeReturnBtn"><i class="fas fa-box-check"></i> Complete Return</button>
+                        </div>`;
+                } else if (returnStatus === 'rejected') {
+                    returnSectionHTML = `
+                        <div class="return-rejected-card">
+                            <i class="fas fa-ban fa-2x text-muted"></i>
+                            <div>
+                                <h4 class="text-muted">Return Request Rejected</h4>
+                                <p class="text-muted mb-0">${order.returnrejectReason || 'No reason provided'}</p>
+                                ${order.returnrejectComment ? `<small class="text-muted">${order.returnrejectComment}</small>` : ''}
+                            </div>
+                        </div>`;
+                } else if (returnStatus === 'completed') {
+                    returnSectionHTML = `
+                        <div class="returned-card">
+                            <i class="fas fa-check-double fa-2x text-success"></i>
+                            <div><h4 class="text-success">Product Returned Successfully</h4></div>
+                        </div>`;
+                }
+
+                // Razorpay info boxes (if available)
+                const razorpayInfoHTML = order.razorpay ? `
+                    <div class="col-md-6 col-lg-4"><div class="info-box"><div class="label">Razorpay Payment ID</div><div class="value small">${order.razorpay.paymentId || 'N/A'}</div></div></div>
+                    <div class="col-md-6 col-lg-4"><div class="info-box"><div class="label">Razorpay Order ID</div><div class="value small">${order.razorpay.orderId || 'N/A'}</div></div></div>
+                ` : '';
+
+                // 🌟 UPDATED: email and date now use text-secondary for better visibility
+                orderDetailCard.innerHTML = `
+                    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+                        <div>
+                            <h3 class="mb-1">Order #${order._id ? order._id.substring(0,8) : 'N/A'}</h3>
+                            <p class="text-secondary mb-0">Placed on ${orderDate}</p>
+                        </div>
+                        <div>${statusBadges}</div>
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6 col-lg-4"><div class="info-box"><div class="label">Customer</div><div class="value">${customerName}</div><div class="small text-secondary">${customerEmail}</div></div></div>
+                        <div class="col-md-6 col-lg-4"><div class="info-box"><div class="label">Shipping Address</div><div class="value small">${shippingAddress}</div></div></div>
+                        <div class="col-md-6 col-lg-4"><div class="info-box"><div class="label">Payment Method</div><div class="value">${paymentMethod}</div></div></div>
+                        <div class="col-md-6 col-lg-4"><div class="info-box"><div class="label">Payment Status</div><div class="value">${formatStatusForDisplay(paymentStatus)}</div></div></div>
+                        <div class="col-md-6 col-lg-4"><div class="info-box"><div class="label">Total Amount</div><div class="value" style="font-size:1.4rem;">₹${totalAmount.toFixed(2)}</div></div></div>
+                        ${razorpayInfoHTML}
+                    </div>
+                    <hr class="border-light">
+                    <h4 class="mb-3">Products (${items.length})</h4>
+                    <div class="mb-4">${productRows}</div>
+                    ${quickActionHTML}
+                    <div class="d-flex flex-wrap align-items-center gap-3 mt-4">
+                        <label class="text-secondary fw-semibold">Update Status:</label>
+                        <select class="form-select w-auto" id="statusSelect">${statusOptions}</select>
+                        <button class="btn btn-primary" id="updateStatusBtn"><i class="fas fa-sync-alt"></i> Update</button>
+                    </div>
+                    <div class="d-flex flex-wrap align-items-center gap-3 mt-3">
+                        <label class="text-secondary fw-semibold">Payment Status:</label>
+                        <select class="form-select w-auto" id="paymentStatusSelect">${paymentOptions}</select>
+                        <button class="btn btn-primary" id="updatePaymentStatusBtn"><i class="fas fa-credit-card"></i> Update Payment</button>
+                    </div>
+                    <div id="returnSection" class="mt-3">${returnSectionHTML}</div>
+                    <div class="d-flex justify-content-end gap-3 mt-4">
+                        <button class="btn btn-outline" id="printOrderBtn"><i class="fas fa-print"></i> Print</button>
+                        <button class="btn btn-danger" id="deleteOrderBtn"><i class="fas fa-trash"></i> Delete</button>
+                    </div>`;
+
+                // Bind events (same as before)
+                document.getElementById('markDeliveredBtn')?.addEventListener('click', async () => {
+                    if (!confirm('Mark as delivered? Payment will become Paid.')) return;
+                    const btn = document.getElementById('markDeliveredBtn');
+                    btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                    try {
+                        const res = await fetch(`/admin/orders/delivered/${orderId}`, { method: 'PUT' });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.message);
+                        showModal('✅ Order marked as delivered!', true);
+                        setTimeout(() => location.reload(), 1200);
+                    } catch (err) {
+                        showModal(err.message, false);
+                        btn.disabled = false; btn.innerHTML = '<i class="fas fa-check-double"></i> Mark as Delivered';
+                    }
+                });
+
+                document.getElementById('updateStatusBtn')?.addEventListener('click', async () => {
+                    const newStatus = document.getElementById('statusSelect').value;
+                    const btn = document.getElementById('updateStatusBtn');
+                    btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                    try {
+                        const res = await fetch(`/admin/order/status/${orderId}`, {
+                            method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ orderStatus: newStatus })
+                        });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.message);
+                        showModal(`Status updated to ${formatStatusForDisplay(newStatus)}`, true);
+                        setTimeout(() => location.reload(), 1000);
+                    } catch (err) {
+                        showModal(err.message, false);
+                        btn.disabled = false; btn.innerHTML = '<i class="fas fa-sync-alt"></i> Update';
+                    }
+                });
+
+                document.getElementById('updatePaymentStatusBtn')?.addEventListener('click', async () => {
+                    const newPaymentStatus = document.getElementById('paymentStatusSelect').value;
+                    const btn = document.getElementById('updatePaymentStatusBtn');
+                    btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                    try {
+                        const res = await fetch(`/admin/payment/status/${orderId}`, {
+                            method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ paymentStatus: newPaymentStatus })
+                        });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.message);
+                        showModal(`Payment status updated to ${formatStatusForDisplay(newPaymentStatus)}`, true);
+                        setTimeout(() => location.reload(), 1000);
+                    } catch (err) {
+                        showModal(err.message, false);
+                        btn.disabled = false; btn.innerHTML = '<i class="fas fa-credit-card"></i> Update Payment';
+                    }
+                });
+
+                document.getElementById('deleteOrderBtn')?.addEventListener('click', async () => {
+                    if (!confirm('Delete this order permanently?')) return;
+                    const btn = document.getElementById('deleteOrderBtn');
+                    btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                    try {
+                        const res = await fetch(`/admin/order/${orderId}`, { method: 'DELETE' });
+                        if (!res.ok) throw new Error('Delete failed');
+                        showModal('Order deleted.', true);
+                        setTimeout(() => window.location.href = '/Admin/order', 1200);
+                    } catch (err) {
+                        showModal('Delete failed.', false);
+                        btn.disabled = false; btn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+                    }
+                });
+
+                document.getElementById('printOrderBtn')?.addEventListener('click', () => window.print());
+
+                // Return actions – using the simplified return-approve route
+                if (returnStatus === 'requested') {
+                    document.getElementById('approveReturnBtn')?.addEventListener('click', async () => {
+                        if (!confirm('Approve this return?')) return;
+                        const btn = document.getElementById('approveReturnBtn');
+                        btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                        try {
+                            const res = await fetch(`/admin/order/return-approve/${orderId}`, { method: 'PUT' });
+                            const data = await res.json();
+                            if (!res.ok) throw new Error(data.message);
+                            showModal('Return approved successfully!', true);
+                            setTimeout(() => location.reload(), 1200);
+                        } catch (err) {
+                            showModal(err.message, false);
+                            btn.disabled = false; btn.innerHTML = '<i class="fas fa-check-circle"></i> Approve';
+                        }
+                    });
+                    document.getElementById('rejectReturnBtn')?.addEventListener('click', () => {
+                        document.getElementById('rejectReason').value = '';
+                        document.getElementById('rejectComment').value = '';
+                        document.getElementById('rejectReturnModal').classList.remove('d-none');
+                    });
+                } else if (returnStatus === 'approved') {
+                    document.getElementById('completeReturnBtn')?.addEventListener('click', async () => {
+                        if (!confirm('Complete the return (product returned by customer)?')) return;
+                        const btn = document.getElementById('completeReturnBtn');
+                        btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                        try {
+                            const res = await fetch(`/admin/order/return-complete/${orderId}`, { method: 'PUT' });
+                            const data = await res.json();
+                            if (!res.ok) throw new Error(data.message);
+                            showModal('Product returned successfully!', true);
+                            setTimeout(() => location.reload(), 1200);
+                        } catch (err) {
+                            showModal(err.message, false);
+                            btn.disabled = false; btn.innerHTML = '<i class="fas fa-box-check"></i> Complete Return';
+                        }
+                    });
+                }
+            }
+
+            // Reject modal logic (unchanged)
+            document.getElementById('cancelRejectBtn').addEventListener('click', () => document.getElementById('rejectReturnModal').classList.add('d-none'));
+            document.getElementById('rejectReturnModal').addEventListener('click', function(e) { if (e.target === this) this.classList.add('d-none'); });
+            document.getElementById('confirmRejectBtn').addEventListener('click', async () => {
+                const reason = document.getElementById('rejectReason').value.trim();
+                if (!reason) { showModal('Please provide a rejection reason.', false); return; }
+                const comment = document.getElementById('rejectComment').value.trim();
+                const btn = document.getElementById('confirmRejectBtn');
+                btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                try {
+                    const res = await fetch(`/admin/order/return-reject/${orderId}`, {
+                        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ returnrejectReason: reason, returnrejectComment: comment })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message);
+                    showModal('Return request rejected.', false);
+                    document.getElementById('rejectReturnModal').classList.add('d-none');
+                    setTimeout(() => location.reload(), 1200);
+                } catch (err) {
+                    showModal(err.message, false);
+                    btn.disabled = false; btn.innerHTML = '<i class="fas fa-ban"></i> Reject Return';
+                }
+            });
+
+            fetchOrderDetail();
+        })();
+    </script>
+</body>
+</html>

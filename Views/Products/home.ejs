@@ -1,0 +1,3321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5" />
+    <title>ShopEasy · Premium E‑commerce 2026</title>
+    <!-- Bootstrap 5 + Font Awesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --accent: #ffe66d;
+            --dark: #2c3e50;
+            --light: #f7f9fc;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --gradient-1: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            --gradient-2: linear-gradient(135deg, #4ecdc4, #44bd32);
+            --gradient-3: linear-gradient(135deg, #a55eea, #8854d0);
+            --gradient-4: linear-gradient(135deg, #667eea, #764ba2);
+            --gradient-5: linear-gradient(135deg, #f093fb, #f5576c);
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            --neon-glow: 0 0 20px rgba(255, 107, 107, 0.4);
+            --stock-green: #27ae60;
+            --stock-orange: #f39c12;
+            --stock-red: #e74c3c;
+            --star-gold: #f1c40f;
+            --star-empty: #d5d8dc;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f3f8 0%, #e8ecf1 100%);
+            color: var(--dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animated Particles */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: particleFloat 15s infinite ease-in-out;
+            opacity: 0.4;
+        }
+
+        @keyframes particleFloat {
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(80px, -60px) rotate(90deg);
+            }
+            50% {
+                transform: translate(-40px, 40px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-70px, -30px) rotate(270deg);
+            }
+        }
+
+        /* Header */
+        .header-premium {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            transition: var(--transition);
+        }
+
+        .header-premium.scrolled {
+            box-shadow: var(--glass-shadow);
+            padding: 8px 0;
+        }
+
+        .brand-premium {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.3));
+        }
+
+        .brand-premium:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        .nav-icon-premium {
+            position: relative;
+            color: #666;
+            font-size: 1.3rem;
+            margin-left: 22px;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            background: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: none;
+        }
+
+        .nav-icon-premium:hover {
+            color: var(--primary);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.2);
+        }
+
+        .cart-badge-premium {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gradient-1);
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            animation: badgePulse 2s infinite;
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+            pointer-events: none;
+        }
+
+        @keyframes badgePulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 0 15px rgba(255, 107, 107, 0);
+            }
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: var(--gradient-1);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            margin-left: 15px;
+            transition: var(--transition);
+            box-shadow: var(--neon-glow);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 991px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+        }
+
+        /* Category Panel */
+        .category-panel-2026 {
+            position: relative;
+            margin: 25px 0 30px;
+        }
+
+        .category-scroll-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .scroll-arrow {
+            flex: 0 0 auto;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 11;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            color: #666;
+            font-size: 0.9rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .scroll-arrow.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .scroll-arrow:hover {
+            background: var(--gradient-1);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .scroll-arrow.scroll-left {
+            margin-right: 8px;
+        }
+        .scroll-arrow.scroll-right {
+            margin-left: 8px;
+        }
+
+        .scroll-to-end-btn {
+            flex: 0 0 auto;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 11;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            color: #666;
+            font-size: 0.9rem;
+            margin-left: 8px;
+            animation: bounceRight 2s infinite;
+        }
+
+        .scroll-to-end-btn:hover {
+            background: var(--gradient-1);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        @keyframes bounceRight {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(5px);
+            }
+        }
+
+        .category-chips-container {
+            display: flex;
+            gap: 12px;
+            padding: 8px 4px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            position: relative;
+            z-index: 10;
+            scroll-behavior: smooth;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .category-chips-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-chip {
+            flex: 0 0 auto;
+            padding: 14px 22px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            background: white;
+            color: #555;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(10px);
+            letter-spacing: 0.3px;
+            user-select: none;
+        }
+
+        .category-chip i {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .category-chip:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(255, 107, 107, 0.2);
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .category-chip.active {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .category-chip.active i {
+            background: none;
+            -webkit-text-fill-color: white;
+            color: white;
+        }
+
+        .mega-panel-2026 {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 30px;
+            margin-top: 15px;
+            padding: 35px;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--glass-border);
+            animation: panelSlideIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .mega-panel-2026::-webkit-scrollbar {
+            width: 6px;
+        }
+        .mega-panel-2026::-webkit-scrollbar-thumb {
+            background: rgba(255, 107, 107, 0.3);
+            border-radius: 3px;
+        }
+        .mega-panel-2026.show {
+            display: block;
+        }
+
+        @keyframes panelSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .subcategory-card-2026 {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .subcategory-card-2026:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            border-color: rgba(255, 107, 107, 0.2);
+        }
+
+        .subcategory-card-2026::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .subcategory-card-2026:hover::after {
+            transform: scale(1.5);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .card-header-2026 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .icon-badge-2026 {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .icon-badge-2026.gradient-1 {
+            background: var(--gradient-1);
+        }
+        .icon-badge-2026.gradient-2 {
+            background: var(--gradient-2);
+        }
+        .icon-badge-2026.gradient-3 {
+            background: var(--gradient-3);
+        }
+        .icon-badge-2026.gradient-4 {
+            background: var(--gradient-4);
+        }
+        .icon-badge-2026.gradient-5 {
+            background: var(--gradient-5);
+        }
+
+        .card-title-2026 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark);
+            position: relative;
+            z-index: 1;
+        }
+
+        .tags-container-2026 {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tag-2026 {
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: #f8f9fc;
+            color: #666;
+            border: 1px solid #e8ecf1;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tag-2026::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .tag-2026:hover {
+            background: var(--gradient-1);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            padding-left: 20px;
+        }
+
+        .tag-2026:hover::before {
+            opacity: 1;
+        }
+
+        .explore-link-2026 {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+            transition: gap 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .explore-link-2026:hover {
+            gap: 15px;
+        }
+        .explore-link-2026:hover i {
+            transform: translateX(5px);
+        }
+
+        .panel-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .panel-close-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .scroll-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .scroll-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .scroll-dot.active {
+            background: var(--primary);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 991px) {
+            .category-panel-2026.desktop-only {
+                display: none;
+            }
+            .panel-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Mobile Sidebar */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .category-sidebar-2026 {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 380px;
+            max-width: 100vw;
+            height: 100%;
+            background: white;
+            z-index: 1045;
+            transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+            overflow-y: auto;
+            border-radius: 30px 0 0 30px;
+        }
+
+        .category-sidebar-2026.open {
+            right: 0;
+        }
+
+        .sidebar-header-2026 {
+            padding: 25px 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 2;
+            border-radius: 30px 0 0 0;
+        }
+
+        .sidebar-title-2026 {
+            font-weight: 800;
+            font-size: 1.3rem;
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-close-2026 {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-close-2026:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .sidebar-list-2026 {
+            list-style: none;
+            padding: 15px 0;
+            margin: 0;
+        }
+        .sidebar-item-2026 {
+            animation: slideInRight 0.4s ease backwards;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar-link-2026 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 25px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .sidebar-link-2026::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 0;
+            background: var(--gradient-1);
+            border-radius: 0 4px 4px 0;
+            transition: height 0.3s ease;
+        }
+
+        .sidebar-link-2026:hover {
+            background: linear-gradient(90deg, rgba(255, 107, 107, 0.05), transparent);
+        }
+
+        .sidebar-link-2026:hover::before {
+            height: 60%;
+        }
+
+        .sidebar-icon-2026 {
+            width: 45px;
+            height: 45px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .sidebar-icon-2026.gradient-1 {
+            background: var(--gradient-1);
+        }
+        .sidebar-icon-2026.gradient-2 {
+            background: var(--gradient-2);
+        }
+        .sidebar-icon-2026.gradient-3 {
+            background: var(--gradient-3);
+        }
+        .sidebar-icon-2026.gradient-4 {
+            background: var(--gradient-4);
+        }
+        .sidebar-icon-2026.gradient-5 {
+            background: var(--gradient-5);
+        }
+
+        .sidebar-chevron {
+            margin-left: auto;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+            color: #aaa;
+        }
+
+        .sidebar-link-2026.expanded .sidebar-chevron {
+            transform: rotate(180deg);
+            color: var(--primary);
+        }
+
+        .sidebar-sub-2026 {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: #fafbfc;
+        }
+
+        .sidebar-sub-2026.show {
+            max-height: 800px;
+        }
+
+        .sidebar-sub-link-2026 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 25px 13px 60px;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-sub-link-2026:hover {
+            color: var(--primary);
+            padding-left: 65px;
+        }
+
+        .sidebar-sub-sub-2026 {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-sub-sub-link-2026 {
+            display: block;
+            padding: 10px 25px 10px 80px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .sidebar-sub-sub-link-2026::before {
+            content: "◦";
+            position: absolute;
+            left: 65px;
+            color: var(--primary);
+        }
+
+        .sidebar-sub-sub-link-2026:hover {
+            color: var(--primary);
+            padding-left: 85px;
+        }
+
+        /* Search */
+        .search-wrapper {
+            max-width: 500px;
+            margin: 15px auto;
+            position: relative;
+        }
+
+        .search-input-group {
+            display: flex;
+            background: white;
+            border-radius: 60px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .search-input-group:focus-within {
+            box-shadow: 0 8px 35px rgba(255, 107, 107, 0.2);
+            transform: scale(1.02);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            background: transparent;
+        }
+
+        .search-btn {
+            background: var(--gradient-1);
+            border: none;
+            padding: 0 28px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        /* Hero */
+        .hero-premium {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            border-radius: 30px;
+            padding: 50px 40px;
+            margin: 25px 0 35px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            animation: heroGlowIn 0.8s ease-out;
+        }
+
+        @keyframes heroGlowIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .hero-premium::after {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.2) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            animation: heroPulse 6s ease-in-out infinite;
+        }
+
+        @keyframes heroPulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.8;
+            }
+        }
+
+        .hero-title-premium {
+            font-size: 2.8rem;
+            font-weight: 800;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Products Grid - Responsive */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        @media (min-width: 1400px) {
+            .products-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1399px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 991px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            animation: cardFloatIn 0.6s ease backwards;
+        }
+
+        @keyframes cardFloatIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-img-wrap {
+            height: 220px;
+            background: linear-gradient(135deg, #f5f7fa, #e9ecef);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @media (max-width: 575px) {
+            .product-img-wrap {
+                height: 250px;
+            }
+        }
+
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img-wrap img {
+            transform: scale(1.15) rotate(2deg);
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .wishlist-btn i {
+            font-size: 1rem;
+            color: #aaa;
+            transition: 0.2s;
+        }
+
+        .wishlist-btn.active i {
+            color: #ff4757;
+        }
+
+        .wishlist-btn:hover {
+            transform: scale(1.1);
+        }
+        .wishlist-btn:hover i {
+            color: #ff4757;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #ff4757;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        /* Stock Badge */
+        .stock-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            z-index: 1;
+            letter-spacing: 0.4px;
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stock-badge.in-stock {
+            background: rgba(39, 174, 96, 0.9);
+            color: white;
+        }
+
+        .stock-badge.low-stock {
+            background: rgba(243, 156, 18, 0.9);
+            color: white;
+            animation: lowStockPulse 2s infinite;
+        }
+
+        .stock-badge.out-of-stock {
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+        }
+
+        @keyframes lowStockPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(243, 156, 18, 0);
+            }
+        }
+
+        .product-details {
+            padding: 18px;
+        }
+
+        @media (max-width: 575px) {
+            .product-details {
+                padding: 14px;
+            }
+        }
+
+        .product-brand {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .product-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 8px 0;
+            line-height: 1.4;
+        }
+
+        /* Product Rating Stars */
+        .product-rating-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+            font-size: 0.78rem;
+            color: #888;
+            min-height: 18px;
+        }
+
+        .product-rating-row .stars-inline {
+            color: var(--star-gold);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .product-rating-row .stars-inline .fa-star.empty-inline {
+            color: var(--star-empty);
+        }
+
+        .product-rating-row .rating-count-text {
+            color: #999;
+            font-weight: 500;
+        }
+
+        /* Stock Info Row */
+        .stock-info-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .stock-info-row.text-success {
+            color: var(--stock-green) !important;
+        }
+        .stock-info-row.text-warning {
+            color: var(--stock-orange) !important;
+        }
+        .stock-info-row.text-danger {
+            color: var(--stock-red) !important;
+        }
+
+        .stock-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .stock-dot.green {
+            background: var(--stock-green);
+        }
+        .stock-dot.orange {
+            background: var(--stock-orange);
+            animation: dotPulse 1.5s infinite;
+        }
+        .stock-dot.red {
+            background: var(--stock-red);
+        }
+
+        @keyframes dotPulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .price-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .current-price {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #bbb;
+            font-size: 0.85rem;
+        }
+
+        .btn-add-cart {
+            width: 100%;
+            background: var(--gradient-1);
+            border: none;
+            padding: 10px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-add-cart::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-add-cart:hover:not(:disabled)::before {
+            left: 100%;
+        }
+        .btn-add-cart:hover:not(:disabled) {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+        .btn-add-cart:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .btn-add-cart.in-cart {
+            background: var(--gradient-2);
+        }
+
+        .section-header-premium {
+            margin: 40px 0 25px;
+        }
+
+        .section-header-premium h2 {
+            font-weight: 800;
+            font-size: 1.8rem;
+            padding-left: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header-premium h2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 30px;
+            background: var(--gradient-1);
+            border-radius: 3px;
+        }
+
+        /* ============ REVIEWS SECTION ============ */
+        .reviews-section-wrapper {
+            margin: 50px 0;
+        }
+
+        .rating-summary-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px 28px;
+            box-shadow: var(--shadow-soft);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .rating-summary-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .rating-big-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .rating-big-stars {
+            color: var(--star-gold);
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            margin-bottom: 6px;
+        }
+
+        .rating-big-stars .fa-star.empty-big {
+            color: var(--star-empty);
+        }
+
+        .rating-total-text {
+            font-size: 0.9rem;
+            color: #888;
+            font-weight: 500;
+            margin-bottom: 18px;
+        }
+
+        .rating-bars-container {
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .rating-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .rating-bar-label {
+            width: 20px;
+            text-align: right;
+            font-weight: 600;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .rating-bar-label i {
+            color: var(--star-gold);
+            font-size: 0.65rem;
+        }
+
+        .rating-bar-track {
+            flex: 1;
+            height: 8px;
+            background: #eef1f5;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .rating-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: var(--gradient-1);
+            transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .rating-bar-count {
+            width: 28px;
+            text-align: left;
+            font-weight: 600;
+            color: #999;
+            flex-shrink: 0;
+            font-size: 0.75rem;
+        }
+
+        /* Review Cards Grid */
+        .review-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        @media (min-width: 1400px) {
+            .review-cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .review-cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .review-card-premium {
+            background: white;
+            border-radius: 20px;
+            padding: 22px 24px;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            animation: cardFloatIn 0.6s ease backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-card-premium:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .review-card-premium::after {
+            content: "";
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .review-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .review-user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .review-user-avatar.av-1 {
+            background: var(--gradient-1);
+        }
+        .review-user-avatar.av-2 {
+            background: var(--gradient-2);
+        }
+        .review-user-avatar.av-3 {
+            background: var(--gradient-3);
+        }
+        .review-user-avatar.av-4 {
+            background: var(--gradient-4);
+        }
+        .review-user-avatar.av-5 {
+            background: var(--gradient-5);
+        }
+
+        .review-user-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .review-user-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .review-date {
+            font-size: 0.72rem;
+            color: #aaa;
+            margin-top: 1px;
+        }
+
+        .review-stars-row {
+            color: var(--star-gold);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .review-stars-row .fa-star.empty-review {
+            color: var(--star-empty);
+        }
+
+        .review-product-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f9fc;
+            padding: 8px 14px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            align-self: flex-start;
+        }
+
+        .review-product-link:hover {
+            background: var(--gradient-1);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.25);
+        }
+
+        .review-product-link img {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .review-title-text {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--dark);
+            position: relative;
+            z-index: 1;
+        }
+
+        .review-body-text {
+            font-size: 0.85rem;
+            color: #777;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .review-images-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .review-image-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .review-image-thumb:hover {
+            transform: scale(1.08);
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: var(--stock-green);
+            font-weight: 600;
+            background: rgba(39, 174, 96, 0.08);
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-left: 6px;
+        }
+
+        @media (max-width: 575px) {
+            .rating-summary-card {
+                padding: 20px 16px;
+                border-radius: 18px;
+            }
+            .rating-big-number {
+                font-size: 3rem;
+            }
+            .review-card-premium {
+                padding: 16px 18px;
+                border-radius: 16px;
+            }
+            .review-cards-grid {
+                gap: 14px;
+            }
+            .rating-bars-container {
+                max-width: 100%;
+            }
+        }
+
+        /* Modal Custom Styles */
+        .modal-premium .modal-content {
+            border-radius: 24px;
+            border: none;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: modalBounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalBounceIn {
+            from {
+                opacity: 0;
+                transform: scale(0.85) translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-premium .modal-header {
+            border-bottom: none;
+            padding: 24px 28px 10px;
+            position: relative;
+        }
+
+        .modal-premium .modal-header .modal-icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 10px;
+            color: white;
+        }
+
+        .modal-premium .modal-header .modal-icon-circle.success {
+            background: var(--gradient-2);
+        }
+        .modal-premium .modal-header .modal-icon-circle.error {
+            background: var(--gradient-1);
+        }
+        .modal-premium .modal-header .modal-icon-circle.warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        .modal-premium .modal-header .modal-icon-circle.info {
+            background: var(--gradient-4);
+        }
+
+        .modal-premium .modal-body {
+            padding: 10px 28px 20px;
+            text-align: center;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .modal-premium .modal-body .modal-message-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .modal-premium .modal-footer {
+            border-top: none;
+            padding: 0 28px 24px;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .modal-premium .btn-modal-action {
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .modal-premium .btn-modal-primary {
+            background: var(--gradient-1);
+            color: white;
+        }
+        .modal-premium .btn-modal-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.35);
+        }
+        .modal-premium .btn-modal-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+        .modal-premium .btn-modal-secondary:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 575px) {
+            .modal-premium .modal-content {
+                border-radius: 20px;
+                margin: 0 10px;
+            }
+            .modal-premium .modal-header {
+                padding: 18px 18px 8px;
+            }
+            .modal-premium .modal-body {
+                padding: 8px 18px 16px;
+            }
+            .modal-premium .modal-footer {
+                padding: 0 18px 18px;
+            }
+        }
+
+        /* Toast */
+        .toast-notify {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: white;
+            border-radius: 50px;
+            padding: 12px 24px;
+            box-shadow: var(--shadow-soft);
+            border-left: 5px solid var(--primary);
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            z-index: 1100;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast-notify.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 575px) {
+            .toast-notify {
+                bottom: 15px;
+                right: 10px;
+                left: 10px;
+                border-radius: 30px;
+                font-size: 0.85rem;
+                padding: 10px 18px;
+            }
+        }
+
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu-user {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow-hover);
+            min-width: 200px;
+            padding: 10px 0;
+            display: none;
+            z-index: 1050;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-menu-user.show {
+            display: block;
+        }
+
+        .dropdown-menu-user a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .dropdown-menu-user a:hover {
+            background: #f8f9fc;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        .footer-premium {
+            background: #1a1a2e;
+            color: #aab;
+            padding: 60px 0 25px;
+            margin-top: 60px;
+        }
+
+        .footer-premium h6 {
+            color: white;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .footer-premium a {
+            color: #889;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+        .footer-premium a:hover {
+            color: var(--primary);
+            padding-left: 8px;
+        }
+
+        .social-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            margin-right: 12px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-circle:hover {
+            background: var(--gradient-1);
+            transform: translateY(-5px) rotate(360deg);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title-premium {
+                font-size: 1.8rem;
+            }
+            .search-btn span {
+                display: none;
+            }
+            .section-header-premium h2 {
+                font-size: 1.4rem;
+            }
+            .category-sidebar-2026 {
+                width: 320px;
+                border-radius: 20px 0 0 20px;
+            }
+            .nav-icon-premium {
+                margin-left: 10px;
+                width: 38px;
+                height: 38px;
+                font-size: 1.1rem;
+            }
+            .brand-premium {
+                font-size: 1.6rem;
+            }
+            .panel-grid {
+                grid-template-columns: 1fr;
+            }
+            .scroll-arrow,
+            .scroll-to-end-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 0.8rem;
+            }
+            .hero-premium {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            .review-cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .hero-title-premium {
+                font-size: 1.5rem;
+            }
+            .hero-premium {
+                padding: 25px 16px;
+                border-radius: 16px;
+                margin: 15px 0 20px;
+            }
+            .hero-premium .lead {
+                font-size: 0.9rem;
+            }
+            .brand-premium {
+                font-size: 1.3rem;
+            }
+            .nav-icon-premium {
+                margin-left: 6px;
+                width: 34px;
+                height: 34px;
+                font-size: 1rem;
+            }
+            .category-chip {
+                padding: 10px 16px;
+                font-size: 0.8rem;
+                gap: 6px;
+            }
+            .category-chip i {
+                font-size: 0.9rem;
+            }
+            .section-header-premium {
+                margin: 25px 0 15px;
+            }
+            .section-header-premium h2 {
+                font-size: 1.2rem;
+            }
+            .product-card {
+                border-radius: 16px;
+            }
+            .footer-premium {
+                padding: 35px 0 20px;
+            }
+            .search-input {
+                padding: 12px 16px;
+                font-size: 0.85rem;
+            }
+            .search-btn {
+                padding: 0 18px;
+            }
+            .rating-big-number {
+                font-size: 2.6rem;
+            }
+            .review-card-premium {
+                padding: 14px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <header class="header-premium" id="header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <a href="/" class="brand-premium">ShopEasy</a>
+                <div class="d-flex align-items-center">
+                    <div class="user-dropdown" id="userDropdown">
+                        <button class="nav-icon-premium" id="userIconBtn" aria-label="User menu">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                        <div class="dropdown-menu-user" id="userDropdownMenu">
+                            <a href="/myOrders" id="menuMyOrders">
+                                <i class="fas fa-box"></i> My Orders
+                            </a>
+                            <a href="/account" class="dropdown-item-user active-nav"><i class="fas fa-home"></i> Account</a>
+                            <a href="#" id="menuLogout">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                    <a href="/wishlist" class="nav-icon-premium" id="wishlistLink" title="Wishlist">
+                        <i class="fas fa-heart"></i>
+                    </a>
+                    <a href="/cart" class="nav-icon-premium position-relative" id="cartLink" title="Cart">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-badge-premium" id="cartCount">0</span>
+                    </a>
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-wrapper">
+                <div class="search-input-group">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search products..." />
+                    <button class="search-btn" id="searchBtn">
+                        <i class="fas fa-search"></i><span> Search</span>
+                    </button>
+                </div>
+                <div class="search-results-count small text-muted mt-1" id="searchResultsCount"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="category-sidebar-2026" id="categorySidebar">
+        <div class="sidebar-header-2026">
+            <h4 class="sidebar-title-2026">Categories</h4>
+            <button class="sidebar-close-2026" id="closeSidebar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-list-2026" id="sidebarCategoryList"></ul>
+    </div>
+
+    <main class="container">
+        <!-- Desktop Category Panel -->
+        <div class="category-panel-2026 desktop-only">
+            <div class="category-scroll-wrapper">
+                <button class="scroll-arrow scroll-left" id="scrollLeft" title="Scroll left">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="category-chips-container" id="categoryChips"></div>
+                <button class="scroll-arrow scroll-right" id="scrollRight" title="Scroll right">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="scroll-to-end-btn" id="scrollToEnd" title="Scroll to end">
+                    <i class="fas fa-angle-double-right"></i>
+                </button>
+            </div>
+            <div class="scroll-indicator" id="scrollIndicator"></div>
+            <div class="mega-panel-2026" id="megaPanel">
+                <button class="panel-close-btn" id="panelCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="panel-grid" id="panelGrid"></div>
+            </div>
+        </div>
+
+        <section class="hero-premium">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h1 class="hero-title-premium">
+                        Shop The <span style="color: var(--accent)">Future</span> 2026
+                    </h1>
+                    <p class="lead mb-4">AI-curated collections. Next-gen shopping experience.</p>
+                    <a href="#products" class="btn btn-light rounded-pill px-4 py-2 fw-bold">Explore Now →</a>
+                </div>
+                <div class="col-lg-5 d-none d-lg-block">
+                    <img src="https://cdn.pixabay.com/photo/2023/06/18/21/52/ai-generated-8072823_1280.jpg" alt="Hero"
+                        class="img-fluid rounded-4" style="animation: float 4s infinite" />
+                </div>
+            </div>
+        </section>
+
+        <div class="section-header-premium">
+            <h2>🔥 Trending Now</h2>
+        </div>
+        <div class="products-grid" id="featuredGrid"></div>
+        <div class="section-header-premium">
+            <h2>✨ Fresh Arrivals</h2>
+        </div>
+        <div class="products-grid" id="moreGrid"></div>
+        <div class="section-header-premium">
+            <h2>💎 Exclusive Deals</h2>
+        </div>
+        <div class="products-grid" id="saleGrid"></div>
+
+        <!-- ============ CUSTOMER REVIEWS SECTION ============ -->
+        <div class="reviews-section-wrapper" id="reviewsSectionWrapper">
+            <div class="section-header-premium">
+                <h2>⭐ Customer Reviews</h2>
+            </div>
+            <div class="row g-4">
+                <!-- Rating Summary -->
+                <div class="col-lg-4 col-md-5">
+                    <div class="rating-summary-card" id="ratingSummaryCard">
+                        <div class="rating-big-number" id="avgRatingBig">--</div>
+                        <div class="rating-big-stars" id="avgStarsBig"></div>
+                        <div class="rating-total-text" id="totalReviewsText">Loading reviews...</div>
+                        <div class="rating-bars-container" id="ratingBarsContainer"></div>
+                    </div>
+                </div>
+                <!-- Review Cards -->
+                <div class="col-lg-8 col-md-7">
+                    <div class="review-cards-grid" id="reviewCardsGrid">
+                        <div class="empty-state">
+                            <i class="fas fa-spinner fa-spin fa-3x mb-3"></i>
+                            <h5>Loading reviews...</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Premium Modal for Messages -->
+    <div class="modal fade modal-premium" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-center d-block">
+                    <div class="modal-icon-circle" id="modalIconCircle">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-message-title" id="modalTitle">Success!</div>
+                    <p class="mb-0" id="modalMessage">Operation completed successfully.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal-action btn-modal-primary" id="modalPrimaryBtn"
+                        data-bs-dismiss="modal">OK</button>
+                    <button type="button" class="btn-modal-action btn-modal-secondary" id="modalSecondaryBtn"
+                        style="display:none;" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toastMsg" class="toast-notify">
+        <i class="fas fa-check-circle"></i><span id="toastText">Success!</span>
+    </div>
+
+    <footer class="footer-premium">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <h6>ShopEasy</h6>
+                    <a href="#">Our Story</a><a href="#">Careers</a><a href="#">Press</a>
+                </div>
+                <div class="col-md-3 col-6">
+                    <h6>Support</h6>
+                    <a href="#">Help Center</a><a href="#">Shipping Info</a><a href="#">Returns</a>
+                </div>
+                <div class="col-md-3 col-6">
+                    <h6>Account</h6>
+                    <a href="/myOrders">My Orders</a><a href="/wishlist">Wishlist</a><a href="/profile">Profile</a>
+                </div>
+                <div class="col-md-3 col-6">
+                    <h6>Connect</h6>
+                    <div>
+                        <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-circle"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5 pt-4 border-top border-secondary">
+                © 2026 ShopEasy Premium. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
+    </script>
+    <script>
+        AOS.init({ duration: 800, once: true, offset: 80 });
+
+        (function() {
+            const BASE_URL = "http://localhost:3000";
+            const PRODUCT_API = `${BASE_URL}/allproduct`;
+            const REVIEWS_API = `${BASE_URL}/reviews`;
+            const RATING_COUNT_API = `${BASE_URL}/reviews/ratings/count`;
+
+            // State
+            let allProducts = [];
+            let categoriesData = [];
+            let subcategoriesMap = {};
+            let subSubcategoriesMap = {};
+            let cartItemIds = new Set();
+            let wishlistItemIds = new Set();
+            let isSearchActive = false;
+            let isLoggedIn = false;
+            let allReviews = [];
+            let ratingCounts = {};
+            let productRatingsMap = {};
+
+            // DOM refs
+            const featuredGrid = document.getElementById("featuredGrid");
+            const moreGrid = document.getElementById("moreGrid");
+            const saleGrid = document.getElementById("saleGrid");
+            const categoryChips = document.getElementById("categoryChips");
+            const megaPanel = document.getElementById("megaPanel");
+            const panelGrid = document.getElementById("panelGrid");
+            const panelCloseBtn = document.getElementById("panelCloseBtn");
+            const cartCountSpan = document.getElementById("cartCount");
+            const searchInput = document.getElementById("searchInput");
+            const searchBtn = document.getElementById("searchBtn");
+            const searchResultsCount = document.getElementById("searchResultsCount");
+            const sidebarCategoryList = document.getElementById("sidebarCategoryList");
+            const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+            const sidebarOverlay = document.getElementById("sidebarOverlay");
+            const categorySidebar = document.getElementById("categorySidebar");
+            const closeSidebarBtn = document.getElementById("closeSidebar");
+            const userIconBtn = document.getElementById("userIconBtn");
+            const userDropdownMenu = document.getElementById("userDropdownMenu");
+            const menuLogout = document.getElementById("menuLogout");
+            const scrollLeftBtn = document.getElementById("scrollLeft");
+            const scrollRightBtn = document.getElementById("scrollRight");
+            const scrollToEndBtn = document.getElementById("scrollToEnd");
+            const scrollIndicator = document.getElementById("scrollIndicator");
+
+            // Review DOM refs
+            const ratingSummaryCard = document.getElementById("ratingSummaryCard");
+            const avgRatingBig = document.getElementById("avgRatingBig");
+            const avgStarsBig = document.getElementById("avgStarsBig");
+            const totalReviewsText = document.getElementById("totalReviewsText");
+            const ratingBarsContainer = document.getElementById("ratingBarsContainer");
+            const reviewCardsGrid = document.getElementById("reviewCardsGrid");
+
+            // Modal elements
+            const notificationModal = document.getElementById("notificationModal");
+            const modalIconCircle = document.getElementById("modalIconCircle");
+            const modalTitle = document.getElementById("modalTitle");
+            const modalMessage = document.getElementById("modalMessage");
+            const modalPrimaryBtn = document.getElementById("modalPrimaryBtn");
+            const modalSecondaryBtn = document.getElementById("modalSecondaryBtn");
+            let bsModalInstance = null;
+            let modalAutoHideTimer = null;
+
+            if (notificationModal) {
+                bsModalInstance = new bootstrap.Modal(notificationModal, {
+                    backdrop: 'static',
+                    keyboard: true
+                });
+            }
+
+            let hidePanelTimeout;
+
+            // ========== Modal System ==========
+            function showModal(type = 'success', title = 'Success!', message = '', options = {}) {
+                if (!bsModalInstance) return;
+                if (modalAutoHideTimer) {
+                    clearTimeout(modalAutoHideTimer);
+                    modalAutoHideTimer = null;
+                }
+                modalIconCircle.className = 'modal-icon-circle';
+                modalIconCircle.innerHTML = '';
+                switch (type) {
+                    case 'success':
+                        modalIconCircle.classList.add('success');
+                        modalIconCircle.innerHTML = '<i class="fas fa-check-circle"></i>';
+                        break;
+                    case 'error':
+                        modalIconCircle.classList.add('error');
+                        modalIconCircle.innerHTML = '<i class="fas fa-times-circle"></i>';
+                        break;
+                    case 'warning':
+                        modalIconCircle.classList.add('warning');
+                        modalIconCircle.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                        break;
+                    case 'info':
+                    default:
+                        modalIconCircle.classList.add('info');
+                        modalIconCircle.innerHTML = '<i class="fas fa-info-circle"></i>';
+                        break;
+                }
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                modalPrimaryBtn.textContent = options.primaryText || 'OK';
+                modalPrimaryBtn.style.display = 'inline-block';
+                modalPrimaryBtn.onclick = function() {
+                    if (options.onPrimary && typeof options.onPrimary === 'function') options.onPrimary();
+                    bsModalInstance.hide();
+                };
+                if (options.secondaryText) {
+                    modalSecondaryBtn.textContent = options.secondaryText;
+                    modalSecondaryBtn.style.display = 'inline-block';
+                    modalSecondaryBtn.onclick = function() {
+                        if (options.onSecondary && typeof options.onSecondary === 'function') options.onSecondary();
+                        bsModalInstance.hide();
+                    };
+                } else {
+                    modalSecondaryBtn.style.display = 'none';
+                }
+                bsModalInstance.show();
+                const autoHideDelay = options.autoHide || (type === 'success' ? 2500 : (type === 'info' ? 3000 : 0));
+                if (autoHideDelay > 0) {
+                    modalAutoHideTimer = setTimeout(() => {
+                        if (bsModalInstance && notificationModal.classList.contains('show')) bsModalInstance
+                            .hide();
+                    }, autoHideDelay);
+                }
+            }
+
+            function showToast(msg) {
+                const toast = document.getElementById("toastMsg");
+                document.getElementById("toastText").innerText = msg;
+                toast.classList.add("show");
+                setTimeout(() => toast.classList.remove("show"), 2500);
+            }
+
+            function escapeHtml(str) {
+                if (!str) return "";
+                return String(str).replace(/[&<>"']/g, m => ({
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#39;"
+                })[m]);
+            }
+
+            function updateCartCountUI(count) {
+                cartCountSpan.textContent = count || 0;
+            }
+
+            // ========== Generate Stars HTML ==========
+            function generateStarsHTML(rating, emptyClass = 'empty-inline') {
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 >= 0.5;
+                const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                let html = '';
+                for (let i = 0; i < fullStars; i++) html += '<i class="fas fa-star"></i>';
+                if (halfStar) html += '<i class="fas fa-star-half-alt"></i>';
+                for (let i = 0; i < emptyStars; i++) html += `<i class="far fa-star ${emptyClass}"></i>`;
+                return html;
+            }
+
+            function generateReviewStarsHTML(rating) {
+                return generateStarsHTML(rating, 'empty-review');
+            }
+
+            function generateBigStarsHTML(rating) {
+                return generateStarsHTML(rating, 'empty-big');
+            }
+
+            // ========== User Dropdown ==========
+            userIconBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (!isLoggedIn) {
+                    window.location.href = "/login";
+                    return;
+                }
+                userDropdownMenu.classList.toggle("show");
+            });
+
+            async function checkAuth() {
+                try {
+                    const response = await fetch("/api/check-auth", {
+                        method: "GET",
+                        credentials: "include"
+                    });
+                    if (!response.ok) throw new Error('Auth check failed');
+                    const data = await response.json();
+                    isLoggedIn = data.loggedIn;
+                    updateLoginUI();
+                    if (isLoggedIn) await fetchCartAndWishlist();
+                } catch (error) {
+                    console.error("Auth check failed:", error);
+                    isLoggedIn = false;
+                    updateLoginUI();
+                }
+            }
+
+            function updateLoginUI() {
+                if (menuLogout) menuLogout.style.display = isLoggedIn ? "flex" : "none";
+                if (userIconBtn) userIconBtn.style.color = isLoggedIn ? "#4ecdc4" : "#666";
+            }
+
+            menuLogout.addEventListener("click", async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                try {
+                    const response = await fetch("/logout", { method: "GET", credentials: "include" });
+                    if (response.ok || response.redirected) {
+                        isLoggedIn = false;
+                        updateLoginUI();
+                        userDropdownMenu.classList.remove("show");
+                        cartItemIds.clear();
+                        wishlistItemIds.clear();
+                        updateCartCountUI(0);
+                        renderProductSections();
+                        showModal('info', 'Logged Out', 'You have been logged out successfully.', {
+                            autoHide: 2000,
+                            onPrimary: () => { window.location.href = "/"; }
+                        });
+                        setTimeout(() => { window.location.href = "/"; }, 2200);
+                    }
+                } catch (error) {
+                    console.error("Logout failed:", error);
+                    showModal('error', 'Error', 'Logout failed. Please try again.');
+                }
+            });
+
+            document.addEventListener("click", (e) => {
+                if (!e.target.closest("#userDropdown")) userDropdownMenu.classList.remove("show");
+            });
+
+            // ========== Mobile Sidebar ==========
+            function openSidebar() {
+                categorySidebar.classList.add("open");
+                sidebarOverlay.classList.add("active");
+                document.body.style.overflow = "hidden";
+            }
+
+            function closeSidebarFunc() {
+                categorySidebar.classList.remove("open");
+                sidebarOverlay.classList.remove("active");
+                document.body.style.overflow = "";
+            }
+            mobileMenuToggle.addEventListener("click", openSidebar);
+            closeSidebarBtn.addEventListener("click", closeSidebarFunc);
+            sidebarOverlay.addEventListener("click", closeSidebarFunc);
+
+            panelCloseBtn.addEventListener("click", () => {
+                megaPanel.classList.remove("show");
+                document.querySelectorAll(".category-chip").forEach(c => c.classList.remove("active"));
+                if (categoryChips.firstChild) categoryChips.firstChild.classList.add("active");
+            });
+
+            // ========== API: Fetch Cart ==========
+            async function fetchCart() {
+                if (!isLoggedIn) { updateCartCountUI(0); return; }
+                try {
+                    const res = await fetch(`${BASE_URL}/carts`, { credentials: "include" });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.success && data.data) {
+                            cartItemIds.clear();
+                            data.data.forEach(item => cartItemIds.add(item.productId.toString()));
+                            updateCartCountUI(data.count || data.data.length);
+                        }
+                    } else if (res.status === 401) {
+                        isLoggedIn = false;
+                        updateLoginUI();
+                        updateCartCountUI(0);
+                    } else { updateCartCountUI(0); }
+                } catch (err) { console.error("Cart fetch error:", err);
+                    updateCartCountUI(0); }
+            }
+
+            async function fetchWishlist() {
+                if (!isLoggedIn) return;
+                try {
+                    const res = await fetch(`${BASE_URL}/wishlists`, { credentials: "include" });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.success && data.data) {
+                            wishlistItemIds.clear();
+                            data.data.forEach(item => wishlistItemIds.add(item.productId.toString()));
+                        }
+                    }
+                } catch (err) { console.error("Wishlist fetch error:", err); }
+            }
+
+            async function fetchCartAndWishlist() {
+                await Promise.all([fetchCart(), fetchWishlist()]);
+                renderProductSections();
+            }
+
+            async function addToCart(productId, productName, buttonElement) {
+                if (!isLoggedIn) {
+                    showModal('warning', 'Login Required', 'Please login first to add items to your cart.', {
+                        autoHide: 2500,
+                        primaryText: 'Login Now',
+                        onPrimary: () => { window.location.href = "/login"; },
+                        secondaryText: 'Later'
+                    });
+                    return;
+                }
+                if (cartItemIds.has(productId.toString())) { window.location.href = "/cart"; return; }
+                try {
+                    buttonElement.disabled = true;
+                    const originalHTML = buttonElement.innerHTML;
+                    buttonElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+                    const res = await fetch(`${BASE_URL}/cart`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include",
+                        body: JSON.stringify({ productId, quantity: 1 })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        cartItemIds.add(productId.toString());
+                        showModal('success', 'Added to Cart!',
+                            `${productName || "Item"} has been added to your cart.`, {
+                                autoHide: 2200,
+                                primaryText: 'Continue Shopping',
+                                secondaryText: 'View Cart',
+                                onSecondary: () => { window.location.href = "/cart"; }
+                            });
+                        await fetchCart();
+                        renderProductSections();
+                    } else if (res.status === 401) {
+                        showModal('warning', 'Login Required', 'Please login to add items to your cart.', {
+                            autoHide: 2500,
+                            primaryText: 'Login Now',
+                            onPrimary: () => { window.location.href = "/login"; }
+                        });
+                    } else {
+                        showModal('error', 'Oops!', data.message || "Failed to add to cart");
+                        buttonElement.disabled = false;
+                        buttonElement.innerHTML = originalHTML;
+                    }
+                } catch (err) {
+                    console.error("Add to cart error:", err);
+                    showModal('warning', 'Login Required', 'Please login first to add items.');
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = '<i class="fas fa-cart-plus me-1"></i> Add to Cart';
+                }
+            }
+
+            async function toggleWishlist(productId, buttonElement) {
+                if (!isLoggedIn) {
+                    showModal('warning', 'Login Required', 'Please login first to manage your wishlist.', {
+                        autoHide: 2500,
+                        primaryText: 'Login Now',
+                        onPrimary: () => { window.location.href = "/login"; },
+                        secondaryText: 'Later'
+                    });
+                    return;
+                }
+                const isActive = buttonElement.classList.contains("active");
+                try {
+                    buttonElement.disabled = true;
+                    const res = await fetch(`${BASE_URL}/wishlist`, {
+                        method: isActive ? "DELETE" : "POST",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include",
+                        body: JSON.stringify({ productId })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        if (isActive) {
+                            wishlistItemIds.delete(productId.toString());
+                            buttonElement.classList.remove("active");
+                            buttonElement.querySelector("i").className = "far fa-heart";
+                            showModal('info', 'Removed', 'Item removed from your wishlist.', { autoHide: 2000 });
+                        } else {
+                            wishlistItemIds.add(productId.toString());
+                            buttonElement.classList.add("active");
+                            buttonElement.querySelector("i").className = "fas fa-heart";
+                            showModal('success', 'Wishlisted!', 'Item added to your wishlist! ❤️', { autoHide: 2000 });
+                        }
+                    } else if (res.status === 401) {
+                        showModal('warning', 'Login Required', 'Please login to manage your wishlist.', {
+                            autoHide: 2500,
+                            primaryText: 'Login Now',
+                            onPrimary: () => { window.location.href = "/login"; }
+                        });
+                    } else {
+                        showModal('error', 'Error', data.message || "Action failed");
+                    }
+                } catch (err) {
+                    console.error("Wishlist error:", err);
+                    showModal('warning', 'Login Required', 'Please login first.');
+                } finally { buttonElement.disabled = false; }
+            }
+
+            // ========== Category Scroll ==========
+            function setupCategoryScroll() {
+                if (!categoryChips) return;
+                const scrollAmount = 300;
+
+                function updateScrollButtons() {
+                    const canScrollLeft = categoryChips.scrollLeft > 5;
+                    const canScrollRight = categoryChips.scrollLeft < categoryChips.scrollWidth - categoryChips
+                        .clientWidth - 5;
+                    const hasOverflow = categoryChips.scrollWidth > categoryChips.clientWidth;
+                    scrollLeftBtn.classList.toggle("visible", hasOverflow && canScrollLeft);
+                    scrollRightBtn.classList.toggle("visible", hasOverflow && canScrollRight);
+                    scrollToEndBtn.style.display = hasOverflow && canScrollRight ? "flex" : "none";
+                    updateScrollIndicator();
+                }
+
+                function updateScrollIndicator() {
+                    if (!scrollIndicator) return;
+                    const totalWidth = categoryChips.scrollWidth;
+                    const visibleWidth = categoryChips.clientWidth;
+                    if (totalWidth <= visibleWidth) { scrollIndicator.innerHTML = ""; return; }
+                    const numDots = Math.min(Math.ceil(totalWidth / visibleWidth), 8);
+                    const currentDot = Math.floor(categoryChips.scrollLeft / (totalWidth / numDots));
+                    scrollIndicator.innerHTML = Array.from({ length: numDots }, (_, i) =>
+                        `<div class="scroll-dot ${i === currentDot ? "active" : ""}" data-index="${i}"></div>`
+                    ).join("");
+                    scrollIndicator.querySelectorAll(".scroll-dot").forEach(dot => {
+                        dot.addEventListener("click", () => {
+                            categoryChips.scrollTo({ left: (totalWidth / numDots) * parseInt(dot
+                                    .dataset.index),
+                                behavior: "smooth" });
+                        });
+                    });
+                }
+                scrollLeftBtn.addEventListener("click", () => categoryChips.scrollBy({ left: -scrollAmount,
+                    behavior: "smooth" }));
+                scrollRightBtn.addEventListener("click", () => categoryChips.scrollBy({ left: scrollAmount,
+                    behavior: "smooth" }));
+                scrollToEndBtn.addEventListener("click", () => categoryChips.scrollTo({ left: categoryChips.scrollWidth,
+                    behavior: "smooth" }));
+                categoryChips.addEventListener("scroll", updateScrollButtons);
+                updateScrollButtons();
+                window.addEventListener("resize", updateScrollButtons);
+                setTimeout(updateScrollButtons, 500);
+            }
+
+            function getGradientClass(index) {
+                return ["gradient-1", "gradient-2", "gradient-3", "gradient-4", "gradient-5"][index % 5];
+            }
+
+            function getAvatarClass(index) {
+                return ["av-1", "av-2", "av-3", "av-4", "av-5"][index % 5];
+            }
+
+            // ========== Build Mobile Sidebar ==========
+            function buildSidebar() {
+                if (!sidebarCategoryList) return;
+                sidebarCategoryList.innerHTML = "";
+                if (!categoriesData.length) {
+                    sidebarCategoryList.innerHTML =
+                        '<li class="p-4 text-center text-muted">No categories available</li>';
+                    return;
+                }
+                categoriesData.forEach((cat, idx) => {
+                    const subcats = subcategoriesMap[cat._id] || [];
+                    const gradient = getGradientClass(idx);
+                    const li = document.createElement("li");
+                    li.className = "sidebar-item-2026";
+                    li.style.animationDelay = `${idx * 0.06}s`;
+                    li.innerHTML = `
+                    <div class="sidebar-link-2026">
+                        <div class="sidebar-icon-2026 ${gradient}"><i class="${cat.icon || "fas fa-tag"}"></i></div>
+                        <span>${escapeHtml(cat.categoryName)}</span>
+                        ${subcats.length > 0 ? '<i class="fas fa-chevron-down sidebar-chevron"></i>' : ""}
+                    </div>
+                    <ul class="sidebar-sub-2026">
+                        ${subcats.map(sub => `
+                            <li>
+                                <a href="/subcategory/${sub._id}" class="sidebar-sub-link-2026">
+                                    <i class="fas fa-folder-open"></i> ${escapeHtml(sub.subcategoryName)}
+                                </a>
+                                <ul class="sidebar-sub-sub-2026">
+                                    ${(subSubcategoriesMap[sub._id] || []).slice(0, 10).map(ss => `
+                                        <li><a href="/sub_subcategory/${ss._id}" class="sidebar-sub-sub-link-2026">${escapeHtml(ss.sub_subcategoryName)}</a></li>
+                                    `).join("")}
+                                </ul>
+                            </li>
+                        `).join("")}
+                    </ul>`;
+                    const linkDiv = li.querySelector(".sidebar-link-2026");
+                    const submenuUl = li.querySelector(".sidebar-sub-2026");
+                    if (subcats.length > 0) {
+                        linkDiv.addEventListener("click", (e) => {
+                            e.stopPropagation();
+                            linkDiv.classList.toggle("expanded");
+                            submenuUl.classList.toggle("show");
+                        });
+                    } else {
+                        linkDiv.addEventListener("click", () => window.location.href =
+                            `/category/${cat._id}`);
+                    }
+                    sidebarCategoryList.appendChild(li);
+                });
+            }
+
+            // ========== Desktop Categories ==========
+            function renderDesktopCategories() {
+                if (!categoryChips) return;
+                categoryChips.innerHTML = "";
+                if (!categoriesData.length) {
+                    categoryChips.innerHTML =
+                        '<div class="category-chip active"><i class="fas fa-th-large"></i> All Categories</div>';
+                    setupCategoryScroll();
+                    return;
+                }
+                const allChip = document.createElement("div");
+                allChip.className = "category-chip active";
+                allChip.innerHTML = '<i class="fas fa-th-large"></i> All Categories';
+                allChip.addEventListener("click", () => {
+                    document.querySelectorAll(".category-chip").forEach(c => c.classList.remove("active"));
+                    allChip.classList.add("active");
+                    megaPanel.classList.remove("show");
+                    renderProductSections();
+                });
+                allChip.addEventListener("mouseenter", () => {
+                    clearTimeout(hidePanelTimeout);
+                    megaPanel.classList.remove("show");
+                });
+                categoryChips.appendChild(allChip);
+                categoriesData.forEach((cat, idx) => {
+                    const chip = document.createElement("div");
+                    chip.className = "category-chip";
+                    chip.innerHTML =
+                        `<i class="${cat.icon || "fas fa-tag"}"></i> ${escapeHtml(cat.categoryName)}`;
+                    chip.addEventListener("mouseenter", () => {
+                        clearTimeout(hidePanelTimeout);
+                        document.querySelectorAll(".category-chip").forEach(c => c.classList.remove(
+                            "active"));
+                        chip.classList.add("active");
+                        showMegaPanel(cat._id, cat.categoryName, idx);
+                    });
+                    chip.addEventListener("click", () => window.location.href = `/category/${cat._id}`);
+                    categoryChips.appendChild(chip);
+                });
+                megaPanel.addEventListener("mouseenter", () => clearTimeout(hidePanelTimeout));
+                megaPanel.addEventListener("mouseleave", () => {
+                    hidePanelTimeout = setTimeout(() => {
+                        megaPanel.classList.remove("show");
+                        document.querySelectorAll(".category-chip").forEach(c => c.classList.remove(
+                            "active"));
+                        if (categoryChips.firstChild) categoryChips.firstChild.classList.add("active");
+                    }, 300);
+                });
+                setupCategoryScroll();
+            }
+
+            function showMegaPanel(catId, catName, gradientIndex) {
+                const subcats = subcategoriesMap[catId] || [];
+                if (!subcats.length) {
+                    panelGrid.innerHTML = `
+                    <div class="subcategory-card-2026 text-center">
+                        <p class="text-muted mb-0">Browse all ${escapeHtml(catName)} products</p>
+                        <a href="/category/${catId}" class="explore-link-2026 mt-3">Explore ${escapeHtml(catName)} <i class="fas fa-arrow-right"></i></a>
+                    </div>`;
+                } else {
+                    const gradient = getGradientClass(gradientIndex);
+                    panelGrid.innerHTML = subcats.map(sub => {
+                        const subSubs = subSubcategoriesMap[sub._id] || [];
+                        return `
+                        <div class="subcategory-card-2026">
+                            <div class="card-header-2026">
+                                <div class="icon-badge-2026 ${gradient}"><i class="fas fa-cube"></i></div>
+                                <div class="card-title-2026">${escapeHtml(sub.subcategoryName)}</div>
+                            </div>
+                            <div class="tags-container-2026">
+                                ${subSubs.slice(0, 8).map(ss => `<a href="/sub_subcategory/${ss._id}" class="tag-2026">${escapeHtml(ss.sub_subcategoryName)}</a>`).join("")}
+                                ${subSubs.length > 8 ? `<span class="tag-2026" style="background:#f0f0f0;">+${subSubs.length - 8} more</span>` : ""}
+                            </div>
+                            <a href="/subcategory/${sub._id}" class="explore-link-2026">Explore ${escapeHtml(sub.subcategoryName)} <i class="fas fa-arrow-right"></i></a>
+                        </div>`;
+                    }).join("");
+                }
+                megaPanel.classList.add("show");
+                megaPanel.scrollTop = 0;
+            }
+
+            // ========== Search ==========
+            function performSearch() {
+                const term = searchInput.value.trim().toLowerCase();
+                if (!term) {
+                    isSearchActive = false;
+                    searchResultsCount.textContent = "";
+                    renderProductSections();
+                    return;
+                }
+                isSearchActive = true;
+                const filtered = allProducts.filter(p =>
+                    p.name.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term)
+                );
+                searchResultsCount.textContent =
+                    `Found ${filtered.length} product(s) for "${escapeHtml(term)}"`;
+                featuredGrid.innerHTML = filtered.length ?
+                    filtered.map((p, i) => renderProductCard(p, i)).join("") :
+                    '<div class="empty-state col-12"><i class="fas fa-search fa-3x mb-3"></i><h5>No products found</h5><p class="text-muted">Try different keywords</p></div>';
+                moreGrid.innerHTML = "";
+                saleGrid.innerHTML = "";
+                document.querySelectorAll(".section-header-premium").forEach(h => h.style.display = filtered.length ?
+                    "block" : "none");
+                if (!filtered.length) document.querySelector(".section-header-premium:first-of-type").style.display =
+                    "block";
+            }
+
+            searchBtn.addEventListener("click", performSearch);
+            searchInput.addEventListener("keypress", (e) => e.key === "Enter" && performSearch());
+            searchInput.addEventListener("input", () => {
+                if (!searchInput.value.trim()) {
+                    isSearchActive = false;
+                    searchResultsCount.textContent = "";
+                    renderProductSections();
+                    document.querySelectorAll(".section-header-premium").forEach(h => h.style.display =
+                        "block");
+                }
+            });
+
+            // ========== Fetch Category System ==========
+            async function fetchCategorySystem() {
+                try {
+                    const res = await fetch(`${BASE_URL}/Admin/all-category-system`);
+                    const result = await res.json();
+                    if (result.success && result.data) {
+                        const { categories, subcategories, subSubcategories } = result.data;
+                        categoriesData = (categories || []).map(c => ({
+                            _id: c.id || c._id,
+                            categoryName: c.name || c.categoryName || "Unknown",
+                            icon: c.icon || "fas fa-tag"
+                        }));
+                        subcategoriesMap = {};
+                        (subcategories || []).forEach(sub => {
+                            const parentId = sub.parentId || sub.categoryId;
+                            if (parentId) {
+                                if (!subcategoriesMap[parentId]) subcategoriesMap[parentId] = [];
+                                subcategoriesMap[parentId].push({ _id: sub.id || sub._id,
+                                    subcategoryName: sub.name || sub.subcategoryName || "Unknown" });
+                            }
+                        });
+                        subSubcategoriesMap = {};
+                        (subSubcategories || []).forEach(ss => {
+                            const subParentId = ss.subParentId || ss.subcategoryId;
+                            if (subParentId) {
+                                if (!subSubcategoriesMap[subParentId]) subSubcategoriesMap[
+                                    subParentId] = [];
+                                subSubcategoriesMap[subParentId].push({ _id: ss.id || ss._id,
+                                    sub_subcategoryName: ss.name || ss.sub_subcategoryName ||
+                                        "Unknown" });
+                            }
+                        });
+                    } else { fallbackCategory(); }
+                } catch (err) { console.warn("Category fetch failed:", err.message);
+                    fallbackCategory(); }
+                renderDesktopCategories();
+                buildSidebar();
+            }
+
+            function fallbackCategory() {
+                categoriesData = [
+                    { _id: "1", categoryName: "Electronics", icon: "fas fa-robot" },
+                    { _id: "2", categoryName: "Fashion", icon: "fas fa-tshirt" },
+                    { _id: "3", categoryName: "Home & Living", icon: "fas fa-home" },
+                    { _id: "4", categoryName: "Sports & Fitness", icon: "fas fa-running" },
+                    { _id: "5", categoryName: "Beauty", icon: "fas fa-spa" },
+                    { _id: "6", categoryName: "Books", icon: "fas fa-book" },
+                    { _id: "7", categoryName: "Toys & Games", icon: "fas fa-gamepad" },
+                    { _id: "8", categoryName: "Automotive", icon: "fas fa-car" },
+                    { _id: "9", categoryName: "Garden & Outdoor", icon: "fas fa-tree" },
+                    { _id: "10", categoryName: "Pet Supplies", icon: "fas fa-paw" }
+                ];
+                subcategoriesMap = {
+                    1: [{ _id: "101", subcategoryName: "Smartphones" }, { _id: "102",
+                        subcategoryName: "Laptops & Tablets" }, { _id: "103", subcategoryName: "Audio" }],
+                    2: [{ _id: "201", subcategoryName: "Men's Collection" }, { _id: "202",
+                        subcategoryName: "Women's Collection" }],
+                    3: [{ _id: "301", subcategoryName: "Furniture" }, { _id: "302",
+                    subcategoryName: "Lighting" }],
+                    4: [{ _id: "401", subcategoryName: "Equipment" }],
+                    5: [{ _id: "501", subcategoryName: "Skincare" }]
+                };
+                subSubcategoriesMap = {
+                    101: [{ _id: "1001", sub_subcategoryName: "Apple" }, { _id: "1002",
+                        sub_subcategoryName: "Samsung" }, { _id: "1003", sub_subcategoryName: "Google Pixel" }],
+                    201: [{ _id: "2001", sub_subcategoryName: "Shirts" }, { _id: "2002",
+                        sub_subcategoryName: "Jeans" }, { _id: "2003", sub_subcategoryName: "Jackets" }],
+                    301: [{ _id: "3001", sub_subcategoryName: "Sofas" }, { _id: "3002",
+                        sub_subcategoryName: "Tables" }]
+                };
+            }
+
+            // ========== Fetch Products ==========
+            async function fetchProducts() {
+                try {
+                    const res = await fetch(PRODUCT_API);
+                    const data = await res.json();
+                    if (data.success && data.data && data.data.length > 0) {
+                        allProducts = data.data.map(p => ({
+                            id: p._id || p.id,
+                            name: p.productName || p.name || "Product",
+                            brand: p.brand || "Premium",
+                            price: parseFloat(p.price) || 0,
+                            comparePrice: parseFloat(p.comparePrice) || 0,
+                            image: p.mainImage?.path ?
+                                `${BASE_URL}${p.mainImage.path}` :
+                                "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&fit=crop",
+                            stock: parseInt(p.stockQuantity || p.stock) ?? 10
+                        }));
+                    } else { fallbackProducts(); }
+                } catch (err) { console.warn("Product fetch failed:", err.message);
+                    fallbackProducts(); }
+                renderProductSections();
+            }
+
+            function fallbackProducts() {
+                allProducts = [
+                    { id: 1, name: "Wireless ANC Headphones", brand: "Sony", price: 299.99, comparePrice: 399.99,
+                        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&fit=crop",
+                        stock: 15 },
+                    { id: 2, name: "Ultra Smart Watch", brand: "Apple", price: 449.99, comparePrice: 499.99,
+                        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&fit=crop",
+                        stock: 8 },
+                    { id: 3, name: "Cloud Running Shoes", brand: "Nike", price: 129.99, comparePrice: 159.99,
+                        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&fit=crop",
+                        stock: 25 },
+                    { id: 4, name: "Vintage Leather Bag", brand: "Herschel", price: 89.99, comparePrice: 110.0,
+                        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&fit=crop",
+                    stock: 0 },
+                    { id: 5, name: "Minimalist Desk Lamp", brand: "Xiaomi", price: 59.99, comparePrice: 79.99,
+                        image: "https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=300&fit=crop",
+                        stock: 2 },
+                    { id: 6, name: "Portable Bluetooth Speaker", brand: "JBL", price: 79.99, comparePrice: 99.99,
+                        image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&fit=crop",
+                        stock: 20 }
+                ];
+            }
+
+            // ========== Fetch Reviews & Rating Counts ==========
+            async function fetchReviewsData() {
+                try {
+                    const [reviewsRes, ratingCountRes] = await Promise.all([
+                        fetch(REVIEWS_API),
+                        fetch(RATING_COUNT_API)
+                    ]);
+
+                    if (reviewsRes.ok) {
+                        const reviewsData = await reviewsRes.json();
+                        if (reviewsData.success && reviewsData.reviews) {
+                            allReviews = reviewsData.reviews;
+                        }
+                    } else {
+                        console.warn("Reviews fetch failed, status:", reviewsRes.status);
+                        allReviews = [];
+                    }
+
+                    if (ratingCountRes.ok) {
+                        const ratingData = await ratingCountRes.json();
+                        if (ratingData.success && ratingData.ratingCounts) {
+                            ratingCounts = ratingData.ratingCounts;
+                        }
+                    } else {
+                        console.warn("Rating counts fetch failed, status:", ratingCountRes.status);
+                        ratingCounts = {};
+                    }
+                } catch (err) {
+                    console.warn("Reviews data fetch failed:", err.message);
+                    allReviews = [];
+                    ratingCounts = {};
+                }
+
+                computeProductRatingsMap();
+                renderReviewsSection();
+                renderProductSections();
+            }
+
+            function computeProductRatingsMap() {
+                productRatingsMap = {};
+                if (!allReviews.length) return;
+
+                const productRatingAccum = {};
+
+                allReviews.forEach(review => {
+                    const reviewItems = review.reviewItems || [];
+                    reviewItems.forEach(item => {
+                        const productId = item.productId?._id || item.productId?.id || item.productId;
+                        if (!productId) return;
+                        const productIdStr = productId.toString();
+                        if (!productRatingAccum[productIdStr]) {
+                            productRatingAccum[productIdStr] = { totalRating: 0, count: 0 };
+                        }
+                        productRatingAccum[productIdStr].totalRating += (item.rating || 0);
+                        productRatingAccum[productIdStr].count += 1;
+                    });
+                });
+
+                Object.keys(productRatingAccum).forEach(pid => {
+                    const { totalRating, count } = productRatingAccum[pid];
+                    productRatingsMap[pid] = {
+                        averageRating: Math.round((totalRating / count) * 10) / 10,
+                        totalReviews: count
+                    };
+                });
+            }
+
+            function renderReviewsSection() {
+                if (!ratingSummaryCard || !reviewCardsGrid) return;
+
+                // Compute from ratingCounts
+                const count5 = ratingCounts[5] || ratingCounts["5"] || 0;
+                const count4 = ratingCounts[4] || ratingCounts["4"] || 0;
+                const count3 = ratingCounts[3] || ratingCounts["3"] || 0;
+                const count2 = ratingCounts[2] || ratingCounts["2"] || 0;
+                const count1 = ratingCounts[1] || ratingCounts["1"] || 0;
+                const totalCount = count5 + count4 + count3 + count2 + count1;
+
+                if (totalCount === 0) {
+                    avgRatingBig.textContent = "--";
+                    avgStarsBig.innerHTML = '<i class="far fa-star empty-big"></i><i class="far fa-star empty-big"></i><i class="far fa-star empty-big"></i><i class="far fa-star empty-big"></i><i class="far fa-star empty-big"></i>';
+                    totalReviewsText.textContent = "No reviews yet";
+                    ratingBarsContainer.innerHTML =
+                        '<p class="text-muted small text-center mt-2">Be the first to review!</p>';
+                } else {
+                    const avgRating = (count5 * 5 + count4 * 4 + count3 * 3 + count2 * 2 + count1 * 1) / totalCount;
+                    avgRatingBig.textContent = avgRating.toFixed(1);
+                    avgStarsBig.innerHTML = generateBigStarsHTML(avgRating);
+                    totalReviewsText.textContent = `Based on ${totalCount} review${totalCount !== 1 ? 's' : ''}`;
+
+                    const maxCount = Math.max(count5, count4, count3, count2, count1, 1);
+                    const bars = [
+                        { star: 5, count: count5 },
+                        { star: 4, count: count4 },
+                        { star: 3, count: count3 },
+                        { star: 2, count: count2 },
+                        { star: 1, count: count1 }
+                    ];
+                    ratingBarsContainer.innerHTML = bars.map(b => `
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">${b.star} <i class="fas fa-star"></i></span>
+                            <div class="rating-bar-track">
+                                <div class="rating-bar-fill" style="width: ${(b.count / maxCount) * 100}%;"></div>
+                            </div>
+                            <span class="rating-bar-count">${b.count}</span>
+                        </div>
+                    `).join("");
+                }
+
+                // Flatten review items for display
+                const allReviewItems = [];
+                allReviews.forEach((review, reviewIdx) => {
+                    const reviewItems = review.reviewItems || [];
+                    reviewItems.forEach((item, itemIdx) => {
+                        allReviewItems.push({
+                            reviewId: review._id || review.id,
+                            userId: review.userId,
+                            orderId: review.orderId,
+                            item: item,
+                            globalIndex: allReviewItems.length,
+                            reviewIdx: reviewIdx,
+                            itemIdx: itemIdx
+                        });
+                    });
+                });
+
+                // Sort by most recent first
+                allReviewItems.sort((a, b) => {
+                    const dateA = new Date(a.item.createdAt || 0);
+                    const dateB = new Date(b.item.createdAt || 0);
+                    return dateB - dateA;
+                });
+
+                if (allReviewItems.length === 0) {
+                    reviewCardsGrid.innerHTML = `
+                        <div class="empty-state col-12">
+                            <i class="fas fa-comment-dots fa-3x mb-3"></i>
+                            <h5>No reviews yet</h5>
+                            <p class="text-muted">Customer reviews will appear here once available.</p>
+                        </div>`;
+                } else {
+                    reviewCardsGrid.innerHTML = allReviewItems.slice(0, 12).map(ri => {
+                        const item = ri.item;
+                        const product = item.productId || {};
+                        const user = ri.userId || {};
+                        const userName = user.fullName || user.name || "Anonymous";
+                        const userInitial = userName.charAt(0).toUpperCase();
+                        const productName = product.productName || product.name || "Product";
+                        const productImage = product.mainImage?.path ?
+                            `${BASE_URL}${product.mainImage.path}` :
+                            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=60&fit=crop";
+                        const productId = product._id || product.id || "";
+                        const rating = item.rating || 0;
+                        const reviewTitle = item.title || "";
+                        const reviewText = item.reviewText || item.review || "";
+                        const createdAt = item.createdAt ? new Date(item.createdAt)
+                            .toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) :
+                            "";
+                        const reviewImages = item.images || [];
+                        const avatarClass = getAvatarClass(ri.globalIndex);
+
+                        return `
+                        <div class="review-card-premium" style="animation-delay:${ri.globalIndex * 0.08}s;">
+                            <div class="review-card-header">
+                                <div class="review-user-avatar ${avatarClass}">${userInitial}</div>
+                                <div class="review-user-info">
+                                    <div class="review-user-name">
+                                        ${escapeHtml(userName)}
+                                        <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                                    </div>
+                                    <div class="review-date">${createdAt}</div>
+                                </div>
+                            </div>
+                            <div class="review-stars-row">${generateReviewStarsHTML(rating)}</div>
+                            ${reviewTitle ? `<div class="review-title-text">${escapeHtml(reviewTitle)}</div>` : ''}
+                            ${reviewText ? `<div class="review-body-text">${escapeHtml(reviewText)}</div>` : ''}
+                            ${reviewImages.length > 0 ? `
+                            <div class="review-images-row">
+                                ${reviewImages.map(img => {
+                                    const imgPath = img.path || img;
+                                    const imgUrl = imgPath.startsWith('http') ? imgPath : `${BASE_URL}${imgPath}`;
+                                    return `<img src="${imgUrl}" class="review-image-thumb" alt="Review image" loading="lazy" onerror="this.style.display='none'">`;
+                                }).join("")}
+                            </div>` : ''}
+                            <a href="/singleproduct/${productId}" class="review-product-link">
+                                <img src="${productImage}" alt="${escapeHtml(productName)}" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=60&fit=crop'">
+                                <span>${escapeHtml(productName)}</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>`;
+                    }).join("");
+
+                    if (allReviewItems.length > 12) {
+                        reviewCardsGrid.innerHTML += `
+                        <div class="text-center w-100 mt-2" style="grid-column: 1 / -1;">
+                            <p class="text-muted small">Showing 12 of ${allReviewItems.length} reviews</p>
+                        </div>`;
+                    }
+                }
+            }
+
+            // ========== Render Product Card ==========
+            function renderProductCard(p, idx) {
+                const discount = p.comparePrice > p.price ? Math.round(((p.comparePrice - p.price) / p.comparePrice) *
+                    100) : 0;
+                const outOfStock = p.stock <= 0;
+                const lowStock = p.stock > 0 && p.stock <= 5;
+                const inWishlist = wishlistItemIds.has(p.id.toString());
+                const inCart = cartItemIds.has(p.id.toString());
+
+                // Product rating
+                const prodRating = productRatingsMap[p.id.toString()];
+                let ratingRowHTML = '';
+                if (prodRating && prodRating.totalReviews > 0) {
+                    ratingRowHTML = `
+                    <div class="product-rating-row">
+                        <span class="stars-inline">${generateStarsHTML(prodRating.averageRating, 'empty-inline')}</span>
+                        <span class="rating-count-text">(${prodRating.totalReviews})</span>
+                    </div>`;
+                }
+
+                // Stock badge
+                let stockBadgeHTML = '';
+                if (outOfStock) {
+                    stockBadgeHTML =
+                        '<span class="stock-badge out-of-stock"><i class="fas fa-times-circle"></i> Out of Stock</span>';
+                } else if (lowStock) {
+                    stockBadgeHTML =
+                        `<span class="stock-badge low-stock"><i class="fas fa-exclamation-circle"></i> Only ${p.stock} left</span>`;
+                } else {
+                    stockBadgeHTML =
+                        `<span class="stock-badge in-stock"><i class="fas fa-check-circle"></i> ${p.stock} in stock</span>`;
+                }
+
+                // Stock info row
+                let stockInfoRow = '';
+                if (outOfStock) {
+                    stockInfoRow =
+                        '<div class="stock-info-row text-danger"><span class="stock-dot red"></span> Out of Stock</div>';
+                } else if (lowStock) {
+                    stockInfoRow =
+                        `<div class="stock-info-row text-warning"><span class="stock-dot orange"></span> Only ${p.stock} left — Hurry!</div>`;
+                } else {
+                    stockInfoRow =
+                        `<div class="stock-info-row text-success"><span class="stock-dot green"></span> In Stock (${p.stock} available)</div>`;
+                }
+
+                return `
+                <div class="product-card" style="animation-delay:${idx * 0.1}s;" data-id="${p.id}">
+                    ${discount > 0 ? `<div class="discount-badge">-${discount}%</div>` : ""}
+                    <div class="product-img-wrap">
+                        <img src="${p.image}" loading="lazy" alt="${escapeHtml(p.name)}" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&fit=crop'">
+                        ${stockBadgeHTML}
+                        <button class="wishlist-btn ${inWishlist ? 'active' : ''}" data-wishlist="${p.id}">
+                            <i class="${inWishlist ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-brand">${escapeHtml(p.brand)}</div>
+                        <div class="product-title">${escapeHtml(p.name)}</div>
+                        ${ratingRowHTML}
+                        ${stockInfoRow}
+                        <div class="price-row">
+                            <span class="current-price">₹${p.price.toFixed(2)}</span>
+                            ${p.comparePrice > p.price ? `<span class="old-price">₹${p.comparePrice.toFixed(2)}</span>` : ""}
+                        </div>
+                        <button class="btn-add-cart ${inCart ? 'in-cart' : ''}" data-addcart="${p.id}" ${outOfStock && !inCart ? 'disabled' : ''}>
+                            ${outOfStock ? '<i class="fas fa-ban me-1"></i> Out of Stock' : (inCart ? '<i class="fas fa-shopping-cart me-1"></i> Go to Cart' : '<i class="fas fa-cart-plus me-1"></i> Add to Cart')}
+                        </button>
+                    </div>
+                </div>`;
+            }
+
+            // ========== Render Product Sections ==========
+            function renderProductSections() {
+                if (isSearchActive) return;
+                const featured = allProducts.slice(0, 12);
+                const more = allProducts.slice(12, 20);
+                const sale = allProducts.filter(p => p.comparePrice > p.price).slice(20, 28);
+
+                featuredGrid.innerHTML = featured.length ? featured.map((p, i) => renderProductCard(p, i)).join("") :
+                    '<div class="empty-state col-12"><i class="fas fa-box-open fa-3x mb-3"></i><h5>No featured products</h5><p class="text-muted">Check back soon for new arrivals</p></div>';
+                moreGrid.innerHTML = more.length ? more.map((p, i) => renderProductCard(p, i)).join("") :
+                    '<div class="empty-state col-12"><i class="fas fa-clock fa-3x mb-3"></i><h5>No new arrivals yet</h5><p class="text-muted">Fresh products coming soon</p></div>';
+                saleGrid.innerHTML = sale.length ? sale.map((p, i) => renderProductCard(p, i)).join("") :
+                    '<div class="empty-state col-12"><i class="fas fa-tag fa-3x mb-3"></i><h5>No deals available</h5><p class="text-muted">Exclusive deals will appear here</p></div>';
+
+                attachCardListeners();
+            }
+
+            function attachCardListeners() {
+                document.querySelectorAll(".product-card").forEach(card => {
+                    card.addEventListener("click", function(e) {
+                        if (e.target.closest("button")) return;
+                        const id = this.dataset.id;
+                        if (id) window.location.href = `/singleproduct/${id}`;
+                    });
+                });
+                document.querySelectorAll("[data-addcart]").forEach(btn => {
+                    btn.addEventListener("click", function(e) {
+                        e.stopPropagation();
+                        if (!isLoggedIn) {
+                            showModal('warning', 'Login Required',
+                                'Please login to add items to your cart.', {
+                                    autoHide: 2500,
+                                    primaryText: 'Login Now',
+                                    onPrimary: () => { window.location.href = "/login"; },
+                                    secondaryText: 'Later'
+                                });
+                            return;
+                        }
+                        const id = this.dataset.addcart;
+                        const product = allProducts.find(p => p.id.toString() === id);
+                        addToCart(id, product?.name, this);
+                    });
+                });
+                document.querySelectorAll("[data-wishlist]").forEach(btn => {
+                    btn.addEventListener("click", function(e) {
+                        e.stopPropagation();
+                        if (!isLoggedIn) {
+                            showModal('warning', 'Login Required',
+                                'Please login to manage your wishlist.', {
+                                    autoHide: 2500,
+                                    primaryText: 'Login Now',
+                                    onPrimary: () => { window.location.href = "/login"; },
+                                    secondaryText: 'Later'
+                                });
+                            return;
+                        }
+                        const id = this.dataset.wishlist;
+                        toggleWishlist(id, this);
+                    });
+                });
+            }
+
+            // ========== Particles ==========
+            const particlesContainer = document.getElementById("particlesContainer");
+            for (let i = 0; i < 35; i++) {
+                const p = document.createElement("div");
+                p.className = "particle";
+                const size = Math.random() * 40 + 5;
+                p.style.width = size + "px";
+                p.style.height = size + "px";
+                p.style.background = ["#ff6b6b", "#4ecdc4", "#ffe66d", "#a55eea", "#667eea"][Math.floor(Math.random() *
+                    5)];
+                p.style.left = Math.random() * 100 + "%";
+                p.style.top = Math.random() * 100 + "%";
+                p.style.animationDelay = Math.random() * 12 + "s";
+                p.style.animationDuration = (Math.random() * 18 + 8) + "s";
+                p.style.opacity = Math.random() * 0.3 + 0.1;
+                particlesContainer.appendChild(p);
+            }
+
+            // ========== Header scroll ==========
+            const header = document.getElementById("header");
+            window.addEventListener("scroll", () => header.classList.toggle("scrolled", window.scrollY > 50));
+
+            // ========== Init ==========
+            async function init() {
+                await checkAuth();
+                fetchCategorySystem();
+                fetchProducts();
+                fetchReviewsData();
+            }
+            init();
+        })();
+    </script>
+</body>
+
+</html>

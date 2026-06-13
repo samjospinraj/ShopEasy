@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>ShopMaster · Customer Detail 2026</title>
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        :root {
+            --bg-deep: #060b1f;
+            --bg-card: rgba(10, 16, 36, 0.65);
+            --bg-sidebar: rgba(7, 11, 28, 0.82);
+            --bg-header: rgba(9, 14, 32, 0.7);
+            --glass-blur: 20px;
+            --primary: #4dabf7;
+            --primary-glow: #339af0;
+            --accent-cyan: #38bdf8;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --accent-orange: #fb923c;
+            --text-primary: #e8ecf4;
+            --text-secondary: #b0bdd0;
+            --text-muted: #7b8ca6;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(77, 171, 247, 0.3);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+            --shadow-glow: 0 0 40px rgba(77, 171, 247, 0.18);
+            --radius-xl: 22px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(ellipse at 20% 20%, #0b1430 0%, #060b1f 45%, #04091a 70%, #020617 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+        }
+
+        #nuranCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-sidebar);
+            backdrop-filter: blur(26px);
+            -webkit-backdrop-filter: blur(26px);
+            color: var(--text-primary);
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            border-right: 1px solid var(--border-subtle);
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 18px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e8ecf4 0%, #a0c8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .logo-subtext {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+        .toggle-sidebar {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+        .toggle-sidebar:hover {
+            background: rgba(77, 171, 247, 0.15);
+            border-color: var(--border-glow);
+            color: var(--accent-cyan);
+        }
+        .sidebar-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 13px 20px;
+            margin: 3px 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: 0.2s;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 450;
+            border: 1px solid transparent;
+        }
+        .menu-item:hover {
+            background: rgba(77, 171, 247, 0.08);
+            color: var(--text-primary);
+            border-color: rgba(77, 171, 247, 0.2);
+        }
+        .menu-item.active-menu {
+            background: rgba(77, 171, 247, 0.13);
+            color: #fff;
+            border-color: rgba(77, 171, 247, 0.35);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.15);
+            position: relative;
+        }
+        .menu-item.active-menu::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 22px;
+            border-radius: 0 4px 4px 0;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 14px var(--accent-cyan);
+        }
+        .menu-item i {
+            width: 24px;
+            font-size: 1.15rem;
+            margin-right: 14px;
+            text-align: center;
+        }
+        .menu-text {
+            font-size: 0.95rem;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 22px 30px;
+            transition: margin-left 0.35s ease;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-header);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            padding: 14px 26px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 28px;
+            border: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .menu-toggle:hover {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.2);
+            color: var(--accent-cyan);
+        }
+        .back-btn {
+            background: transparent;
+            border: 2px solid var(--border-glow);
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background: rgba(77, 171, 247, 0.1);
+            color: #fff;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .notification-btn {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 10px 12px;
+            border-radius: 50%;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .notification-btn:hover {
+            background: rgba(77, 171, 247, 0.12);
+            border-color: var(--border-glow);
+            color: var(--accent-cyan);
+        }
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 3px;
+            background: var(--accent-red);
+            color: #fff;
+            font-size: 0.6rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 18px 5px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50px;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+        }
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(77, 171, 247, 0.5);
+            object-fit: cover;
+        }
+        .user-details h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        .user-details p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* ── DETAIL CONTAINER ── */
+        .detail-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-xl);
+            padding: 32px 28px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin-bottom: 30px;
+        }
+        .profile-section {
+            flex: 1 1 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 12px 0;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(77, 171, 247, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid var(--border-subtle);
+            margin-bottom: 16px;
+        }
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .profile-email {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.03);
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 30px;
+            margin: 8px 0 12px;
+            word-break: break-all;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+        .status-active-badge {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+        .status-inactive-badge {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+
+        .detail-grid {
+            flex: 2 1 300px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .detail-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 18px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .detail-item i {
+            font-size: 1.6rem;
+            color: var(--accent-cyan);
+            width: 36px;
+            text-align: center;
+        }
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .detail-value {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ── ORDER HISTORY SECTION ── */
+        .orders-section {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+
+        .order-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .order-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            transition: 0.35s;
+        }
+        .order-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-glow);
+            box-shadow: var(--shadow-glow);
+        }
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .order-card-total {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--accent-cyan);
+        }
+        .order-card-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        .order-item-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .order-item-details {
+            flex: 1;
+            min-width: 0;
+        }
+        .order-item-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-primary);
+        }
+        .order-item-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .order-item-price {
+            text-align: right;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .hidden-item { display: none; }
+
+        .show-more-btn {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-cyan);
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 8px;
+        }
+        .show-more-btn:hover {
+            background: rgba(77, 171, 247, 0.15);
+            border-color: var(--border-glow);
+        }
+
+        /* Table */
+        .table-view {
+            overflow-x: auto;
+        }
+        .table-view table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+            color: var(--text-primary);
+        }
+        .table-view th {
+            text-align: left;
+            padding: 16px 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 2px solid var(--border-subtle);
+        }
+        .table-view td {
+            padding: 16px 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            vertical-align: middle;
+        }
+        .table-view tr:last-child td { border: none; }
+        .table-product-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* View toggle */
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 6px;
+            border-radius: 48px;
+            border: 1px solid var(--border-subtle);
+        }
+        .view-btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .view-btn.active-view {
+            background: linear-gradient(135deg, #4dabf7, #339af0);
+            color: #fff;
+        }
+
+        /* ═══ MODAL POPUP 2026 ═══ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInOverlay 0.25s ease;
+        }
+        .modal-content {
+            background: linear-gradient(145deg, rgba(18,28,52,0.95), rgba(10,18,40,0.95));
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 32px 36px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(77,171,247,0.3);
+            animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        .modal-message {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .modal-btn {
+            background: linear-gradient(135deg, #4dabf7, #339af0);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(77,171,247,0.3);
+        }
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(77,171,247,0.4);
+        }
+
+        @keyframes fadeInOverlay { from { opacity:0; } to { opacity:1; } }
+        @keyframes scaleIn {
+            0% { transform: scale(0.7); opacity:0; }
+            100% { transform: scale(1); opacity:1; }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 992px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .menu-toggle { display: flex; }
+        }
+        @media (max-width: 768px) {
+            .detail-container { flex-direction: column; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .order-cards-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; align-items: flex-start; }
+            .back-btn { width: 100%; justify-content: center; }
+            .view-toggle { flex-wrap: wrap; }
+            .profile-section { margin-bottom: 20px; }
+        }
+        @media (max-width: 480px) {
+            .main-content { padding: 12px; }
+            .detail-container, .orders-section { padding: 16px; }
+            .table-view table { min-width: 100%; }
+            .table-view th, .table-view td { padding: 8px 4px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="nuranCanvas"></canvas>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div>
+                <div class="logo-text">ShopMaster</div>
+                <div class="logo-subtext">admin · 2026</div>
+            </div>
+            <button class="toggle-sidebar" id="toggleSidebarBtn"><i class="fas fa-chevron-left"></i></button>
+        </div>
+        <div class="sidebar-menu">
+            <a href="/Admin/dashboard" class="menu-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            <a href="/Admin/product" class="menu-item"><i class="fas fa-box"></i><span>Products</span></a>
+            <a href="/Admin/category" class="menu-item"><i class="fas fa-tags"></i><span>Categories</span></a>
+            <a href="/Admin/order" class="menu-item"><i class="fas fa-shopping-cart"></i><span>Orders</span></a>
+            <a href="/Admin/customer" class="menu-item active-menu"><i class="fas fa-users"></i><span>Customers</span></a>
+            <a href="/Admin/review" class="menu-item "><i class="fas fa-star"></i> Reviews</a>
+            <a href="/Admin/analytics" class="menu-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+            <a href="/Admin/profile" class="menu-item"><i class="fas fa-id-badge"></i><span>Profile</span></a>
+            <a href="/Admin/setting" class="menu-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        <!-- HEADER -->
+        <div class="header">
+            <button class="menu-toggle" id="mobileMenuToggle"><i class="fas fa-bars"></i></button>
+            <a href="/Admin/customer" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Customers</a>
+            <div class="header-actions">
+                <button class="notification-btn"><i class="fas fa-bell"></i><span class="notification-badge">5</span></button>
+                <button class="notification-btn"><i class="fas fa-envelope"></i><span class="notification-badge">3</span></button>
+                <div class="user-info">
+                    <a href="/Admin/profile"><img src="https://ui-avatars.com/api/?name=Admin+Master&background=4dabf7&color=fff&size=42" alt="admin" /></a>
+                    <div class="user-details">
+                        <h4>Alex Master</h4>
+                        <p>Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content injected here -->
+        <div id="detailContent">
+            <div class="text-center py-5 text-muted">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-3">Loading customer details…</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            // ═══════════ NURAN PARTICLE BACKGROUND ═══════════
+            const canvas = document.getElementById('nuranCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let mouseX = -999, mouseY = -999, targetMouseX = -999, targetMouseY = -999;
+            const SPLATTER_RADIUS = 190, CONNECTION_DIST = 140, PARTICLE_COUNT = window.innerWidth < 768 ? 80 : 140;
+            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+            resize(); window.addEventListener('resize', () => { resize(); const nc = window.innerWidth<768?80:140; while(particles.length<nc) particles.push(createParticle()); while(particles.length>nc) particles.pop(); });
+            function createParticle() {
+                const cols = ['rgba(77,171,247,','rgba(56,189,248,','rgba(167,139,250,','rgba(139,92,246,','rgba(45,212,191,','rgba(96,165,250,','rgba(192,132,252,','rgba(52,211,153,'];
+                const c = cols[Math.floor(Math.random()*cols.length)];
+                return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.7, vy:(Math.random()-0.5)*0.7, size:1.8+Math.random()*3.5, color:c, glowAlpha:0.5+Math.random()*0.5, pulsePhase:Math.random()*Math.PI*2, pulseSpeed:0.008+Math.random()*0.025, baseSize:1.8+Math.random()*3.5 };
+            }
+            for(let i=0;i<PARTICLE_COUNT;i++) particles.push(createParticle());
+            document.addEventListener('mousemove',e=>{ targetMouseX=e.clientX; targetMouseY=e.clientY; });
+            document.addEventListener('mouseleave',()=>{ targetMouseX=-999; targetMouseY=-999; });
+            document.addEventListener('touchmove',e=>{ if(e.touches.length>0){ targetMouseX=e.touches[0].clientX; targetMouseY=e.touches[0].clientY; } },{passive:true});
+            document.addEventListener('touchend',()=>{ targetMouseX=-999; targetMouseY=-999; });
+            function animate(ts) {
+                mouseX+=(targetMouseX-mouseX)*0.18; mouseY+=(targetMouseY-mouseY)*0.18;
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                const time=ts*0.001;
+                for(let p of particles) {
+                    p.vx+=Math.sin(time*0.7+p.pulsePhase)*0.025; p.vy+=Math.cos(time*0.6+p.pulsePhase+1.3)*0.025;
+                    if(mouseX>-500&&mouseY>-500){ const dx=p.x-mouseX,dy=p.y-mouseY,dist=Math.sqrt(dx*dx+dy*dy); if(dist<SPLATTER_RADIUS&&dist>0.5){ const force=(1-dist/SPLATTER_RADIUS)*4.5; p.vx+=(dx/dist)*force; p.vy+=(dy/dist)*force; p.glowAlpha=Math.min(1,p.glowAlpha+0.06); } }
+                    p.x+=p.vx; p.y+=p.vy; p.vx*=0.94; p.vy*=0.94;
+                    const sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy); if(sp>6){ p.vx=(p.vx/sp)*6; p.vy=(p.vy/sp)*6; }
+                    if(p.x<-30)p.x=canvas.width+30; if(p.x>canvas.width+30)p.x=-30; if(p.y<-30)p.y=canvas.height+30; if(p.y>canvas.height+30)p.y=-30;
+                    p.size=p.baseSize+Math.sin(time*p.pulseSpeed*10+p.pulsePhase)*0.7;
+                    p.glowAlpha+=(0.6-p.glowAlpha)*0.03;
+                }
+                for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++) {
+                    const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+                    if(dist<CONNECTION_DIST){ const alpha=(1-dist/CONNECTION_DIST)*0.28, pulse=Math.sin(ts*0.003+i*0.4+j*0.3)*0.5+0.5; ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.strokeStyle=`rgba(120,170,230,${alpha*(0.5+pulse*0.5)})`; ctx.lineWidth=0.6; ctx.stroke(); }
+                }
+                for(let p of particles) {
+                    const grad=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*3.5);
+                    grad.addColorStop(0,p.color+(p.glowAlpha*0.7)+')'); grad.addColorStop(0.35,p.color+(p.glowAlpha*0.25)+')'); grad.addColorStop(1,p.color+'0)');
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.size*3.5,0,Math.PI*2); ctx.fillStyle=grad; ctx.fill();
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.size*0.65,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${0.7+p.glowAlpha*0.3})`; ctx.fill();
+                }
+                if(mouseX>-500&&mouseY>-500){ const mg=ctx.createRadialGradient(mouseX,mouseY,0,mouseX,mouseY,SPLATTER_RADIUS*0.7); mg.addColorStop(0,'rgba(120,180,240,0.08)'); mg.addColorStop(0.5,'rgba(100,150,220,0.03)'); mg.addColorStop(1,'rgba(0,0,0,0)'); ctx.beginPath(); ctx.arc(mouseX,mouseY,SPLATTER_RADIUS*0.7,0,Math.PI*2); ctx.fillStyle=mg; ctx.fill(); }
+                requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+
+            // ═══════════ SIDEBAR TOGGLE ═══════════
+            const sidebar = document.getElementById('sidebar');
+            const mobileToggle = document.getElementById('mobileMenuToggle');
+            const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
+            function toggleSidebar() { sidebar.classList.toggle('active'); }
+            mobileToggle?.addEventListener('click', toggleSidebar);
+            toggleSidebarBtn?.addEventListener('click', () => { if(window.innerWidth<=992) sidebar.classList.toggle('active'); });
+
+            // ═══════════ MODAL POPUP 2026 ═══════════
+            function showModal(message, isSuccess = true) {
+                const existing = document.querySelector('.modal-overlay');
+                if(existing) existing.remove();
+                const overlay = document.createElement('div');
+                overlay.className = 'modal-overlay';
+                const iconClass = isSuccess ? 'fa-check-circle' : 'fa-exclamation-triangle';
+                const iconColor = isSuccess ? 'var(--accent-green)' : 'var(--accent-red)';
+                overlay.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-icon" style="color: ${iconColor};"><i class="fas ${iconClass}"></i></div>
+                        <div class="modal-message">${message}</div>
+                        <button class="modal-btn">OK</button>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+                const closeModal = () => {
+                    overlay.style.opacity = '0';
+                    overlay.style.transition = 'opacity 0.2s';
+                    setTimeout(() => overlay.remove(), 200);
+                };
+                overlay.querySelector('.modal-btn').addEventListener('click', closeModal);
+                overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
+                setTimeout(closeModal, 3500);
+            }
+
+            const detailContent = document.getElementById('detailContent');
+
+            // Get customer ID from URL
+            function getCustomerIdFromURL() {
+                const parts = window.location.pathname.split('/').filter(Boolean);
+                const last = parts[parts.length - 1];
+                return (last === "customerDetails") ? null : last;
+            }
+
+            const customerId = getCustomerIdFromURL();
+            if (!customerId) {
+                detailContent.innerHTML = `
+                    <div class="text-center py-5 bg-dark bg-opacity-25 rounded-4">
+                        <i class="fas fa-exclamation-triangle fa-2x text-danger"></i>
+                        <h3 class="mt-3">No customer ID provided</h3>
+                        <a href="/Admin/customer" class="btn btn-primary mt-3"><i class="fas fa-arrow-left"></i> Go to Customers</a>
+                    </div>`;
+                return;
+            }
+
+            async function fetchCustomerData(id) {
+                try {
+                    const res = await fetch(`/admin/customer/${id}`);
+                    if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+                    const data = await res.json();
+                    if (!data.success) throw new Error(data.message || 'Invalid API response');
+                    return data;
+                } catch (err) {
+                    console.error(err);
+                    showModal('Could not load customer details. Showing demo.', false);
+                    return {
+                        success: true,
+                        customer: {
+                            _id: id,
+                            name: 'Emily Clark',
+                            email: 'emily.c@example.com',
+                            address: 'New York',
+                            joinedAt: '2021-02-15',
+                            isVerified: true,
+                            phone: '+1 (555) 123-4567',
+                            orderCount: 1,
+                            totalOrdersAmount: 200,
+                            image: null
+                        },
+                        orders: [
+                            {
+                                _id: 'ord1',
+                                totals: { totalAmount: 200 },
+                                createdAt: '2025-01-15',
+                                items: [
+                                    { productId: { productName: 'Wireless Headphones', mainImage: { path: '/Uploads/mainProduct/headphones.jpg' }, brand: 'AudioMax', model: 'WH-1000', price: 100 }, quantity: 2 },
+                                    { productId: { productName: 'USB Cable', mainImage: { path: '/Uploads/mainProduct/cable.jpg' }, brand: 'Connect', model: 'USB-C', price: 10 }, quantity: 5 }
+                                ]
+                            }
+                        ]
+                    };
+                }
+            }
+
+            function normalizeCustomer(c) {
+                return {
+                    id: c._id,
+                    name: c.name || 'Unknown',
+                    email: c.email || '',
+                    location: c.address || '--',
+                    joinDate: c.joinedAt ? new Date(c.joinedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '--',
+                    phone: c.phone || '--',
+                    isVerified: !!c.isVerified,
+                    orders: typeof c.orderCount === 'number' ? c.orderCount : 0,
+                    spent: typeof c.totalOrdersAmount === 'number' ? c.totalOrdersAmount : 0,
+                    avatar: (c.image && c.image.filename) ? `/Uploads/Profile/${c.image.filename}` : null
+                };
+            }
+
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function getProductImageUrl(product) {
+                if (product?.mainImage?.path) {
+                    return `http://localhost:3000${product.mainImage.path}`;
+                }
+                return 'https://ui-avatars.com/api/?name=Product&background=ccc&color=fff&size=44';
+            }
+
+            function render(data) {
+                const customer = normalizeCustomer(data.customer);
+                const orders = data.orders || [];
+
+                const avatarUrl = customer.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(customer.name)}&background=2c6de9&color=fff&size=120`;
+                const statusClass = customer.isVerified ? 'status-active-badge' : 'status-inactive-badge';
+                const statusText = customer.isVerified ? 'Active' : 'Inactive';
+
+                const INITIAL_ITEMS = 2;
+                const cardsHtml = orders.map((order, index) => {
+                    const date = order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '--';
+                    const total = (order.totals?.totalAmount || 0).toLocaleString();
+                    const items = order.items || [];
+                    const hasMore = items.length > INITIAL_ITEMS;
+
+                    const itemsHtml = items.map((item, idx) => {
+                        const prod = item.productId || {};
+                        const img = getProductImageUrl(prod);
+                        const subtotal = (prod.price * (item.quantity || 1)).toLocaleString();
+                        const hiddenClass = (idx >= INITIAL_ITEMS) ? 'hidden-item' : '';
+                        return `
+                        <div class="order-item ${hiddenClass}" data-item-index="${idx}">
+                            <img class="order-item-img" src="${img}" alt="${escapeHtml(prod.productName || '')}">
+                            <div class="order-item-details">
+                                <div class="order-item-name">${escapeHtml(prod.productName || 'Unknown')}</div>
+                                <div class="order-item-meta">${escapeHtml(prod.brand || '')} ${escapeHtml(prod.model || '')} × ${item.quantity}</div>
+                            </div>
+                            <div class="order-item-price">$${subtotal}</div>
+                        </div>`;
+                    }).join('');
+
+                    const showMoreBtn = hasMore ? 
+                        `<button class="show-more-btn" data-order-card="${index}">
+                            <i class="fas fa-chevron-down"></i> Show all items (${items.length})
+                        </button>` : '';
+
+                    return `
+                    <div class="order-card" id="order-card-${index}">
+                        <div class="order-card-header">
+                            <span class="order-card-total">$${total}</span>
+                            <span class="order-card-date">${date}</span>
+                        </div>
+                        <div class="order-items-container">
+                            ${itemsHtml}
+                        </div>
+                        ${showMoreBtn}
+                    </div>`;
+                }).join('');
+
+                const tableRowsHtml = orders.map(order => {
+                    const date = order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '--';
+                    const total = (order.totals?.totalAmount || 0).toLocaleString();
+                    const firstItem = (order.items || [])[0];
+                    const prod = firstItem ? firstItem.productId : null;
+                    const img = getProductImageUrl(prod);
+                    const prodName = prod ? prod.productName : 'N/A';
+                    const itemCount = (order.items || []).length;
+                    return `
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <img class="table-product-img" src="${img}" alt="${escapeHtml(prodName)}">
+                                <span>${escapeHtml(prodName)}</span>
+                            </div>
+                        </td>
+                        <td>${itemCount}</td>
+                        <td>$${total}</td>
+                        <td>${date}</td>
+                    </tr>`;
+                }).join('');
+
+                detailContent.innerHTML = `
+                <div class="detail-container">
+                    <div class="profile-section">
+                        <div class="profile-avatar">
+                            <img src="${avatarUrl}" alt="${escapeHtml(customer.name)}">
+                        </div>
+                        <div class="profile-name">${escapeHtml(customer.name)}</div>
+                        <span class="profile-email">${escapeHtml(customer.email)}</span>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <div class="detail-label">Location</div>
+                                <div class="detail-value">${escapeHtml(customer.location)}</div>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <div class="detail-label">Phone</div>
+                                <div class="detail-value">${escapeHtml(customer.phone)}</div>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div>
+                                <div class="detail-label">Joined</div>
+                                <div class="detail-value">${customer.joinDate}</div>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            <div>
+                                <div class="detail-label">Total Orders</div>
+                                <div class="detail-value">${customer.orders}</div>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <div>
+                                <div class="detail-label">Total Spent</div>
+                                <div class="detail-value">$${customer.spent.toLocaleString()}</div>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-fingerprint"></i>
+                            <div>
+                                <div class="detail-label">Customer ID</div>
+                                <div class="detail-value" style="font-size:0.9rem;">${customer.id}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order History -->
+                <div class="orders-section">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                        <div class="section-title"><i class="fas fa-history" style="color: var(--accent-cyan);"></i> Order History</div>
+                        <div class="view-toggle">
+                            <button class="view-btn active-view" id="orderCardsViewBtn"><i class="fas fa-th-large"></i> Cards</button>
+                            <button class="view-btn" id="orderTableViewBtn"><i class="fas fa-table"></i> Table</button>
+                        </div>
+                    </div>
+
+                    <div id="orderCardsView">
+                        ${orders.length === 0 ? '<div class="text-center py-5 text-muted"><i class="fas fa-inbox fa-2x"></i><p>No orders found.</p></div>' : `<div class="order-cards-grid">${cardsHtml}</div>`}
+                    </div>
+
+                    <div id="orderTableView" class="d-none">
+                        ${orders.length === 0 ? '<div class="text-center py-5 text-muted"><i class="fas fa-inbox fa-2x"></i><p>No orders found.</p></div>' : `
+                        <div class="table-view">
+                            <table>
+                                <thead>
+                                    <tr><th>First Product</th><th>Items</th><th>Total</th><th>Date</th></tr>
+                                </thead>
+                                <tbody>${tableRowsHtml}</tbody>
+                            </table>
+                        </div>`}
+                    </div>
+                </div>`;
+
+                // View toggle
+                document.getElementById('orderCardsViewBtn').addEventListener('click', function() {
+                    document.getElementById('orderCardsView').classList.remove('d-none');
+                    document.getElementById('orderTableView').classList.add('d-none');
+                    this.classList.add('active-view');
+                    document.getElementById('orderTableViewBtn').classList.remove('active-view');
+                });
+                document.getElementById('orderTableViewBtn').addEventListener('click', function() {
+                    document.getElementById('orderTableView').classList.remove('d-none');
+                    document.getElementById('orderCardsView').classList.add('d-none');
+                    this.classList.add('active-view');
+                    document.getElementById('orderCardsViewBtn').classList.remove('active-view');
+                });
+
+                // Show more / less
+                document.querySelectorAll('.show-more-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const cardIndex = this.dataset.orderCard;
+                        const card = document.getElementById(`order-card-${cardIndex}`);
+                        if (!card) return;
+                        const hiddenItems = card.querySelectorAll('.order-item.hidden-item');
+                        const isExpanded = hiddenItems.length === 0 || !hiddenItems[0].classList.contains('hidden-item');
+                        
+                        if (isExpanded) {
+                            const allItems = card.querySelectorAll('.order-item');
+                            allItems.forEach((item, idx) => {
+                                if (idx >= 2) item.classList.add('hidden-item');
+                            });
+                            const totalItems = allItems.length;
+                            this.innerHTML = `<i class="fas fa-chevron-down"></i> Show all items (${totalItems})`;
+                        } else {
+                            hiddenItems.forEach(item => item.classList.remove('hidden-item'));
+                            this.innerHTML = `<i class="fas fa-chevron-up"></i> Show less`;
+                        }
+                    });
+                });
+            }
+
+            // Initialize
+            try {
+                fetchCustomerData(customerId).then(responseData => render(responseData));
+            } catch (err) {
+                console.error(err);
+                detailContent.innerHTML = `
+                    <div class="text-center py-5 bg-dark bg-opacity-25 rounded-4">
+                        <i class="fas fa-exclamation-circle fa-2x text-danger"></i>
+                        <h3 class="mt-3">Error loading customer</h3>
+                        <a href="/Admin/customer" class="btn btn-primary mt-3"><i class="fas fa-arrow-left"></i> Back to Customers</a>
+                    </div>`;
+            }
+        })();
+    </script>
+</body>
+</html>

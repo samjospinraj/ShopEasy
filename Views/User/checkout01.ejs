@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover, maximum-scale=1.0">
+    <title>Buy Now | Delivery & Payment | ShopEasy 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --accent: #ffe66d;
+            --dark: #2c3e50;
+            --light: #f7f9fc;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --gradient-1: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            --gradient-2: linear-gradient(135deg, #4ecdc4, #44bd32);
+            --gradient-3: linear-gradient(135deg, #a55eea, #8854d0);
+            --gradient-card: linear-gradient(135deg, #667eea, #764ba2);
+            --gradient-upi: linear-gradient(135deg, #11998e, #38ef7d);
+            --gradient-wallet: linear-gradient(135deg, #f093fb, #f5576c);
+            --gradient-bank: linear-gradient(135deg, #4facfe, #00f2fe);
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f3f8 0%, #e8ecf1 100%);
+            color: var(--dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: particleFloat 15s infinite ease-in-out;
+            opacity: 0.3;
+        }
+
+        @keyframes particleFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(80px, -60px) rotate(90deg);
+            }
+
+            50% {
+                transform: translate(-40px, 40px) rotate(180deg);
+            }
+
+            75% {
+                transform: translate(-70px, -30px) rotate(270deg);
+            }
+        }
+
+        .header-premium {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            transition: var(--transition);
+        }
+
+        .header-premium.scrolled {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+        }
+
+        .brand-premium {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-icon-premium {
+            position: relative;
+            color: #666;
+            font-size: 1.2rem;
+            margin-left: 18px;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: none;
+            outline: none;
+        }
+
+        .nav-icon-premium:hover {
+            color: var(--primary);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.2);
+        }
+
+        .cart-badge-premium {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gradient-1);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.65rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu-user {
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+            padding: 8px 0;
+            display: none;
+            z-index: 1050;
+            animation: dropdownIn 0.3s ease;
+        }
+
+        .dropdown-menu-user.show {
+            display: block;
+        }
+
+        @keyframes dropdownIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item-user:hover {
+            background: linear-gradient(90deg, rgba(255, 107, 107, 0.08), transparent);
+            color: var(--primary);
+            padding-left: 22px;
+        }
+
+        .dropdown-divider-user {
+            height: 1px;
+            background: #eee;
+            margin: 8px 0;
+        }
+
+        .checkout-container {
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .card-premium {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            border: 2px solid transparent;
+            transition: var(--transition);
+            margin-bottom: 20px;
+        }
+
+        .card-premium:hover {
+            border-color: rgba(255, 107, 107, 0.1);
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .form-control-custom {
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 11px 16px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            background: #fafbfc;
+            width: 100%;
+        }
+
+        .form-control-custom:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+            background: white;
+            outline: none;
+        }
+
+        /* Google Map Container Styles */
+        .world-map-wrapper {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            margin-top: 12px;
+            transition: var(--transition);
+            background: #e8f4f8;
+        }
+
+        .world-map-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+
+        #deliveryMap {
+            height: 350px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .map-overlay-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .map-btn {
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            transition: var(--transition);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .map-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.15);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .map-search-container {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+            max-width: 500px;
+        }
+
+        .map-search-input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .map-search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.2);
+        }
+
+        .map-search-btn {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .map-search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 107, 107, 0.5);
+        }
+
+        .map-location-badge {
+            position: absolute;
+            top: 80px;
+            left: 16px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 8px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--dark);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .map-location-badge i {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .payment-method-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+            background: white;
+            position: relative;
+        }
+
+        .payment-method-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.1);
+            transform: translateX(4px);
+        }
+
+        .payment-method-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.04), rgba(255, 107, 107, 0.01));
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.15);
+        }
+
+        .payment-method-card.selected::after {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .payment-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .payment-card-bg {
+            background: var(--gradient-card);
+        }
+
+        .payment-upi-bg {
+            background: var(--gradient-upi);
+        }
+
+        .payment-wallet-bg {
+            background: var(--gradient-wallet);
+        }
+
+        .payment-cod-bg {
+            background: var(--gradient-1);
+        }
+
+        .payment-bank-bg {
+            background: var(--gradient-bank);
+        }
+
+        .payment-detail-input {
+            display: none;
+            margin-top: 12px;
+            padding: 14px;
+            background: #f8fafc;
+            border-radius: 14px;
+            border: 1px dashed #e2e8f0;
+        }
+
+        .payment-detail-input.show {
+            display: block;
+        }
+
+        .product-summary-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .product-summary-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #f1f5f9;
+        }
+
+        .btn-premium {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 15px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-premium:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .delivery-info-box {
+            border-radius: 16px;
+            padding: 16px;
+            border-left: 4px solid #2ecc71;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+
+        .delivery-info-box.warning {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border-left-color: #f59e0b;
+        }
+
+        .toast-notify {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: white;
+            border-radius: 50px;
+            padding: 12px 24px;
+            box-shadow: var(--shadow-soft);
+            border-left: 5px solid var(--primary);
+            transform: translateX(400px);
+            transition: transform 0.4s ease;
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+        }
+
+        .toast-notify.show {
+            transform: translateX(0);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .checkout-steps {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .step-indicator {
+            flex: 1;
+            min-width: 80px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 14px;
+            background: #f1f5f9;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            transition: var(--transition);
+        }
+
+        .step-indicator.active {
+            background: var(--gradient-1);
+            color: white;
+        }
+
+        .checkout-type-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .badge-cart {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .badge-single {
+            background: #fce7f3;
+            color: #be185d;
+        }
+
+        @media (max-width: 768px) {
+            .brand-premium {
+                font-size: 1.6rem;
+            }
+
+            #deliveryMap {
+                height: 280px;
+            }
+
+            .map-search-container {
+                flex-direction: column;
+                right: 12px;
+                left: 12px;
+                top: 12px;
+            }
+
+            .map-search-btn {
+                text-align: center;
+            }
+
+            .map-location-badge {
+                top: 130px;
+                left: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles-container" id="particles"></div>
+
+    <header class="header-premium" id="header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="/" class="brand-premium">ShopEasy</a>
+                <div class="d-flex align-items-center">
+                    <div class="user-dropdown" id="userDropdown">
+                        <button class="nav-icon-premium" id="userIconBtn"><i class="fas fa-user-circle"></i></button>
+                        <div class="dropdown-menu-user" id="userDropdownMenu">
+                            <a href="/my-orders" class="dropdown-item-user"><i class="fas fa-box"></i> My Orders</a>
+                            <a href="/profile" class="dropdown-item-user"><i class="fas fa-user-cog"></i> Profile</a>
+                            <div class="dropdown-divider-user"></div>
+                            <a href="/logout" class="dropdown-item-user" id="menuLogout"><i
+                                    class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                    <a href="/wishlist" class="nav-icon-premium"><i class="fas fa-heart"></i></a>
+                    <div class="nav-icon-premium position-relative" onclick="window.location.href='/cart'"
+                        style="cursor:pointer;">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-badge-premium" id="cartCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container checkout-container">
+        <!-- Checkout Type Indicator -->
+        <div id="checkoutTypeIndicator" class="text-center mb-2"></div>
+
+        <!-- Checkout Steps -->
+        <div class="checkout-steps">
+            <div class="step-indicator active"><i class="fas fa-map-marker-alt me-1"></i> Delivery</div>
+            <div class="step-indicator"><i class="fas fa-credit-card me-1"></i> Payment</div>
+            <div class="step-indicator"><i class="fas fa-check-circle me-1"></i> Confirm</div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Column -->
+            <div class="col-lg-7">
+                <!-- Delivery Section -->
+                <div class="card-premium">
+                    <div class="section-title"><i class="fas fa-map-marker-alt"></i> Delivery Address</div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-12">
+                            <label class="fw-semibold small text-muted">Full Address <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" id="deliveryAddress" class="form-control-custom"
+                                placeholder="Click on the map or search for your address" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold small text-muted">City <span class="text-danger">*</span></label>
+                            <input type="text" id="city" class="form-control-custom" placeholder="City" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold small text-muted">Postal Code <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" id="postalCode" class="form-control-custom" placeholder="Postal code"
+                                required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold small text-muted">State/Province</label>
+                            <input type="text" id="state" class="form-control-custom" placeholder="State">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold small text-muted">Country <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" id="country" class="form-control-custom" placeholder="Country" required>
+                        </div>
+                    </div>
+
+                    <!-- Google Map Section -->
+                    <div class="world-map-wrapper">
+                        <div class="map-search-container">
+                            <input type="text" class="map-search-input" id="mapSearchInput"
+                                placeholder="🔍 Search any location...">
+                            <button class="map-search-btn" id="mapSearchBtn"><i class="fas fa-search me-1"></i>
+                                Search</button>
+                        </div>
+                        <div class="map-location-badge" id="locationBadge">
+                            <i class="fas fa-map-pin"></i>
+                            <span id="locationText">Click anywhere on the map</span>
+                        </div>
+                        <div id="deliveryMap"></div>
+                        <div class="map-overlay-controls">
+                            <button class="map-btn" id="locateMeBtn" title="Use my current location">
+                                <i class="fas fa-location-arrow"></i>
+                            </button>
+                            <button class="map-btn" id="resetMapBtn" title="Reset to default">
+                                <i class="fas fa-home"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <small class="text-muted mt-2 d-block">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Navigate the map, click to set your delivery location, or search for any address
+                    </small>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="card-premium">
+                    <div class="section-title"><i class="fas fa-user"></i> Contact Information</div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="fw-semibold small text-muted">Full Name <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" id="customerName" class="form-control-custom"
+                                placeholder="Your full name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold small text-muted">Phone <span class="text-danger">*</span></label>
+                            <input type="text" id="customerPhone" class="form-control-custom" placeholder="Phone number"
+                                required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Section -->
+                <div class="card-premium">
+                    <div class="section-title"><i class="fas fa-credit-card"></i> Payment Method</div>
+
+                    <!-- Online Payments -->
+                    <h6 class="fw-bold small text-muted mb-3"><i class="fas fa-wifi me-2"></i>ONLINE PAYMENTS</h6>
+
+                    <div class="payment-method-card selected" data-payment="card" onclick="selectPayment('card')">
+                        <div class="payment-icon-wrapper payment-card-bg"><i class="fas fa-credit-card"></i></div>
+                        <div>
+                            <strong class="d-block">Credit / Debit Card</strong>
+                            <small class="text-muted">Visa, Mastercard, Amex, Discover</small>
+                        </div>
+                    </div>
+                    <div class="payment-detail-input show" id="cardDetail">
+                        <div class="row g-2">
+                            <div class="col-12"><input type="text" class="form-control-custom" placeholder="Card Number"
+                                    id="cardNumber"></div>
+                            <div class="col-md-6"><input type="text" class="form-control-custom" placeholder="MM/YY"
+                                    id="cardExpiry"></div>
+                            <div class="col-md-6"><input type="text" class="form-control-custom" placeholder="CVV"
+                                    id="cardCvv"></div>
+                            <div class="col-12"><input type="text" class="form-control-custom"
+                                    placeholder="Cardholder Name" id="cardName"></div>
+                        </div>
+                    </div>
+
+                    <div class="payment-method-card" data-payment="upi" onclick="selectPayment('upi')">
+                        <div class="payment-icon-wrapper payment-upi-bg"><i class="fas fa-mobile-alt"></i></div>
+                        <div>
+                            <strong class="d-block">UPI / QR Code</strong>
+                            <small class="text-muted">Google Pay, PhonePe, Paytm, BHIM</small>
+                        </div>
+                    </div>
+                    <div class="payment-detail-input" id="upiDetail">
+                        <input type="text" class="form-control-custom" placeholder="Enter UPI ID (e.g., name@upi)"
+                            id="upiId">
+                    </div>
+
+                    <div class="payment-method-card" data-payment="wallet" onclick="selectPayment('wallet')">
+                        <div class="payment-icon-wrapper payment-wallet-bg"><i class="fas fa-wallet"></i></div>
+                        <div>
+                            <strong class="d-block">Digital Wallet</strong>
+                            <small class="text-muted">PayPal, Apple Pay, Amazon Pay, ShopEasy Wallet</small>
+                        </div>
+                    </div>
+                    <div class="payment-detail-input" id="walletDetail">
+                        <select class="form-control-custom" id="walletType">
+                            <option value="">Select Wallet</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="apple">Apple Pay</option>
+                            <option value="amazon">Amazon Pay</option>
+                            <option value="shopeasy">ShopEasy Wallet ($25.00 available)</option>
+                        </select>
+                    </div>
+
+                    <hr class="my-3">
+
+                    <!-- Offline Payments -->
+                    <h6 class="fw-bold small text-muted mb-3"><i class="fas fa-store me-2"></i>OFFLINE PAYMENTS</h6>
+
+                    <div class="payment-method-card" data-payment="cod" onclick="selectPayment('cod')">
+                        <div class="payment-icon-wrapper payment-cod-bg"><i class="fas fa-money-bill-wave"></i></div>
+                        <div>
+                            <strong class="d-block">Cash on Delivery (COD)</strong>
+                            <small class="text-muted">Pay when you receive your order</small>
+                        </div>
+                    </div>
+                    <div class="payment-detail-input" id="codDetail">
+                        <div class="delivery-info-box">
+                            <small><i class="fas fa-info-circle me-1"></i> Additional $2.99 COD fee applies. Please have
+                                exact change ready.</small>
+                        </div>
+                    </div>
+
+                    <div class="payment-method-card" data-payment="bank" onclick="selectPayment('bank')">
+                        <div class="payment-icon-wrapper payment-bank-bg"><i class="fas fa-university"></i></div>
+                        <div>
+                            <strong class="d-block">Bank Transfer / NEFT</strong>
+                            <small class="text-muted">Direct bank deposit · Manual verification</small>
+                        </div>
+                    </div>
+                    <div class="payment-detail-input" id="bankDetail">
+                        <div class="delivery-info-box warning">
+                            <small><strong>Bank Details:</strong><br>
+                                Account: ShopEasy Inc · 1234567890<br>
+                                IFSC: SHOP0001234 · Bank: Premium Bank<br>
+                                <span class="text-danger">Upload receipt after transfer for faster
+                                    verification.</span></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Order Summary -->
+            <div class="col-lg-5">
+                <div class="card-premium">
+                    <div class="section-title"><i class="fas fa-shopping-bag"></i> Order Summary</div>
+                    <div id="orderItems">
+                        <div class="text-center py-4" id="orderItemsLoading">
+                            <div class="loading-spinner"
+                                style="border-color: rgba(0,0,0,0.1); border-top-color: var(--primary);"></div>
+                            <p class="text-muted mt-2">Loading items...</p>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3">
+                        <div class="d-flex justify-content-between mb-2 small"><span
+                                class="text-muted">Subtotal</span><span id="subtotalAmount">$0.00</span></div>
+                        <div class="d-flex justify-content-between mb-2 small"><span
+                                class="text-muted">Shipping</span><span id="shippingAmount">Free</span></div>
+                        <div class="d-flex justify-content-between mb-2 small"><span class="text-muted">Tax
+                                (8%)</span><span id="taxAmount">$0.00</span></div>
+                        <div class="d-flex justify-content-between fw-bold"><span>Total</span><span id="totalAmount"
+                                class="text-primary fs-5">$0.00</span></div>
+                    </div>
+                    <div id="paymentSummary" class="mt-2"></div>
+                    <button class="btn-premium mt-3" id="placeOrderBtn"><i class="fas fa-lock me-2"></i>Place
+                        Order</button>
+                    <p class="text-muted small text-center mt-2"><i class="fas fa-shield-alt text-primary"></i> Secure
+                        checkout · 256-bit SSL encrypted</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toastMsg" class="toast-notify"><i class="fas fa-check-circle me-2"></i><span id="toastText">Success!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Google Maps JavaScript API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initMap" async defer></script>
+    <script>
+        // Replace YOUR_GOOGLE_MAPS_API_KEY with your actual Google Maps API key
+        const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY'; // ← INSERT YOUR API KEY HERE
+
+        (function () {
+            const API_BASE = 'http://localhost:3000';
+            let isAuthenticated = false;
+            let selectedPayment = 'card';
+            let checkoutData = null;
+            let checkoutType = 'cart';
+            let singleProductId = null;
+            let shippingCost = 0;
+
+            // Google Map variables
+            let map = null;
+            let marker = null;
+            let geocoder = null;
+            let autocomplete = null;
+            let defaultLat = 40.7128; // New York City
+            let defaultLng = -74.0060;
+            let defaultZoom = 12;
+            let mapInitialized = false;
+
+            function getCheckoutType() {
+                const urlParams = new URLSearchParams(window.location.search);
+                singleProductId = urlParams.get('productId');
+                checkoutType = singleProductId ? 'single' : 'cart';
+
+                const indicator = document.getElementById('checkoutTypeIndicator');
+                if (checkoutType === 'single') {
+                    indicator.innerHTML = '<span class="checkout-type-badge badge-single"><i class="fas fa-bolt me-1"></i>Buy Now - Single Product</span>';
+                } else {
+                    indicator.innerHTML = '<span class="checkout-type-badge badge-cart"><i class="fas fa-shopping-cart me-1"></i>Cart Checkout</span>';
+                }
+
+                console.log('Checkout type:', checkoutType, 'Product ID:', singleProductId);
+            }
+
+            // Particles
+            const pc = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const s = Math.random() * 25 + 5;
+                p.style.cssText = `width:${s}px;height:${s}px;background:hsl(${Math.random() * 360},70%,65%);left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${Math.random() * 15}s;`;
+                pc.appendChild(p);
+            }
+
+            window.addEventListener('scroll', () => document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50));
+
+            function toast(msg) {
+                const t = document.getElementById('toastMsg');
+                document.getElementById('toastText').innerText = msg;
+                t.classList.add('show');
+                setTimeout(() => t.classList.remove('show'), 2800);
+            }
+
+            function updateCartBadge(count = 0) {
+                document.getElementById('cartCount').innerText = count;
+            }
+
+            function redirectToLogin() {
+                window.location.href = `/login?returnTo=${encodeURIComponent(window.location.href)}`;
+            }
+
+            async function checkAuth() {
+                try {
+                    const res = await fetch(`${API_BASE}/api/check-auth`, { credentials: 'include' });
+                    if (res.ok) {
+                        const json = await res.json();
+                        isAuthenticated = json.loggedIn === true;
+                    }
+                    else { isAuthenticated = false; }
+                } catch (e) {
+                    console.error('Auth check error:', e);
+                    isAuthenticated = false;
+                }
+                updateLoginUI();
+                if (!isAuthenticated) {
+                    redirectToLogin();
+                    return false;
+                }
+                return true;
+            }
+
+            function updateLoginUI() {
+                const menuLogout = document.getElementById('menuLogout');
+                const userIconBtn = document.getElementById('userIconBtn');
+                if (menuLogout) menuLogout.style.display = isAuthenticated ? 'flex' : 'none';
+                if (userIconBtn) userIconBtn.style.color = isAuthenticated ? '#4ecdc4' : '#666';
+            }
+
+            async function fetchCartCount() {
+                if (!isAuthenticated) {
+                    updateCartBadge(0);
+                    return 0;
+                }
+                try {
+                    const res = await fetch(`${API_BASE}/carts`, { credentials: 'include' });
+                    if (res.ok) {
+                        const json = await res.json();
+                        if (json.success) {
+                            const count = json.count || (json.data ? json.data.length : 0);
+                            updateCartBadge(count);
+                            console.log('Cart count fetched:', count);
+                            return count;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Failed to fetch cart count:', e);
+                }
+                return 0;
+            }
+
+            // Initialize Google Map
+            window.initMap = function () {
+                if (mapInitialized) return;
+                
+                geocoder = new google.maps.Geocoder();
+                
+                // Create map
+                map = new google.maps.Map(document.getElementById('deliveryMap'), {
+                    center: { lat: defaultLat, lng: defaultLng },
+                    zoom: defaultZoom,
+                    zoomControl: false,
+                    mapTypeControl: true,
+                    streetViewControl: false,
+                    fullscreenControl: false,
+                    styles: [
+                        {
+                            featureType: "all",
+                            elementType: "geometry",
+                            stylers: [{ color: "#f5f5f5" }]
+                        },
+                        {
+                            featureType: "water",
+                            elementType: "geometry",
+                            stylers: [{ color: "#c9c9c9" }]
+                        },
+                        {
+                            featureType: "water",
+                            elementType: "labels.text.fill",
+                            stylers: [{ color: "#9e9e9e" }]
+                        }
+                    ]
+                });
+
+                // Add zoom control
+                const zoomControlDiv = document.createElement('div');
+                const zoomControl = new google.maps.ZoomControl();
+                zoomControlDiv.index = 1;
+                map.controls[google.maps.ControlPosition.RIGHT_TOP].push(zoomControlDiv);
+                zoomControlDiv.appendChild(zoomControl);
+
+                // Create custom marker
+                marker = new google.maps.Marker({
+                    position: { lat: defaultLat, lng: defaultLng },
+                    map: map,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    icon: {
+                        url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff6b6b" width="32px" height="32px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>',
+                        scaledSize: new google.maps.Size(40, 40),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(20, 40)
+                    }
+                });
+
+                // Marker drag event
+                marker.addListener('dragend', function () {
+                    const position = marker.getPosition();
+                    reverseGeocode(position.lat(), position.lng());
+                    updateLocationBadge(position.lat(), position.lng());
+                });
+
+                // Map click event
+                map.addListener('click', function (e) {
+                    marker.setPosition(e.latLng);
+                    reverseGeocode(e.latLng.lat(), e.latLng.lng());
+                    updateLocationBadge(e.latLng.lat(), e.latLng.lng());
+                });
+
+                // Initialize search autocomplete
+                initAutocomplete();
+                
+                // Update location badge
+                updateLocationBadge(defaultLat, defaultLng);
+                
+                mapInitialized = true;
+            };
+
+            // Initialize Google Places Autocomplete
+            function initAutocomplete() {
+                const searchInput = document.getElementById('mapSearchInput');
+                
+                autocomplete = new google.maps.places.Autocomplete(searchInput, {
+                    types: ['geocode']
+                });
+                
+                autocomplete.addListener('place_changed', function () {
+                    const place = autocomplete.getPlace();
+                    
+                    if (!place.geometry) {
+                        toast('Location not found. Please try a different search.');
+                        return;
+                    }
+                    
+                    // Update map and marker
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(15);
+                    marker.setPosition(place.geometry.location);
+                    
+                    // Fill address fields
+                    fillAddressFromPlace(place);
+                    
+                    // Update location badge
+                    updateLocationBadge(
+                        place.geometry.location.lat(),
+                        place.geometry.location.lng()
+                    );
+                    
+                    toast(`📍 Found: ${place.formatted_address.substring(0, 50)}...`);
+                });
+            }
+
+            // Fill address fields from Google Place
+            function fillAddressFromPlace(place) {
+                const addressComponents = place.address_components;
+                let streetNumber = '';
+                let route = '';
+                let city = '';
+                let state = '';
+                let country = '';
+                let postalCode = '';
+                
+                addressComponents.forEach(component => {
+                    const types = component.types;
+                    
+                    if (types.includes('street_number')) {
+                        streetNumber = component.long_name;
+                    } else if (types.includes('route')) {
+                        route = component.long_name;
+                    } else if (types.includes('locality')) {
+                        city = component.long_name;
+                    } else if (types.includes('administrative_area_level_1')) {
+                        state = component.short_name;
+                    } else if (types.includes('country')) {
+                        country = component.long_name;
+                    } else if (types.includes('postal_code')) {
+                        postalCode = component.long_name;
+                    }
+                });
+                
+                // Set form fields
+                document.getElementById('deliveryAddress').value = 
+                    streetNumber && route ? `${streetNumber} ${route}` : place.formatted_address.split(',')[0];
+                document.getElementById('city').value = city;
+                document.getElementById('state').value = state;
+                document.getElementById('country').value = country;
+                document.getElementById('postalCode').value = postalCode;
+            }
+
+            // Update location badge text
+            function updateLocationBadge(lat, lng) {
+                const locationText = document.getElementById('locationText');
+                if (locationText) {
+                    locationText.innerHTML = `📍 ${lat.toFixed(4)}°, ${lng.toFixed(4)}° - Getting address...`;
+                }
+            }
+
+            // Reverse geocode using Google Maps Geocoder
+            function reverseGeocode(lat, lng) {
+                const latlng = { lat: lat, lng: lng };
+                
+                geocoder.geocode({ location: latlng }, (results, status) => {
+                    if (status === 'OK' && results[0]) {
+                        const place = results[0];
+                        fillAddressFromPlace(place);
+                        
+                        // Update location badge with address
+                        const locationText = document.getElementById('locationText');
+                        if (locationText) {
+                            const address = place.formatted_address;
+                            locationText.innerHTML = `📍 ${address.substring(0, 40)}...`;
+                        }
+                        
+                        toast('📍 Location updated from map');
+                    } else {
+                        const locationText = document.getElementById('locationText');
+                        if (locationText) {
+                            locationText.innerHTML = `📍 Coordinates: ${lat.toFixed(4)}°, ${lng.toFixed(4)}°`;
+                        }
+                    }
+                });
+            }
+
+            // Search location using Google Geocoder
+            function searchLocation(query) {
+                if (!query || query.trim() === '') {
+                    toast('Please enter a location to search');
+                    return;
+                }
+
+                geocoder.geocode({ address: query }, (results, status) => {
+                    if (status === 'OK' && results[0]) {
+                        const location = results[0].geometry.location;
+                        
+                        map.setCenter(location);
+                        map.setZoom(15);
+                        marker.setPosition(location);
+                        fillAddressFromPlace(results[0]);
+                        updateLocationBadge(location.lat(), location.lng());
+                        
+                        toast(`📍 Found: ${results[0].formatted_address.substring(0, 50)}...`);
+                    } else {
+                        toast('Location not found. Please try a different search.');
+                    }
+                });
+            }
+
+            // Get user's current location
+            function locateUser() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            
+                            map.setCenter(pos);
+                            map.setZoom(16);
+                            marker.setPosition(pos);
+                            reverseGeocode(pos.lat, pos.lng);
+                            updateLocationBadge(pos.lat, pos.lng);
+                            
+                            toast('📍 Using your current location');
+                        },
+                        (error) => {
+                            toast('Unable to get location. Please enable GPS or select manually on the map.');
+                            console.error('Geolocation error:', error);
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        }
+                    );
+                } else {
+                    toast('Geolocation not supported. Please use the map to select your location.');
+                }
+            }
+
+            // Reset map to default
+            function resetMapToDefault() {
+                map.setCenter({ lat: defaultLat, lng: defaultLng });
+                map.setZoom(defaultZoom);
+                marker.setPosition({ lat: defaultLat, lng: defaultLng });
+                document.getElementById('mapSearchInput').value = '';
+                document.getElementById('locationText').innerHTML = '📍 Click anywhere on the map';
+                toast('🗺️ Map reset to default location');
+            }
+
+            // Map event listeners
+            document.getElementById('mapSearchBtn').addEventListener('click', () => {
+                const query = document.getElementById('mapSearchInput').value.trim();
+                searchLocation(query);
+            });
+
+            document.getElementById('mapSearchInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const query = e.target.value.trim();
+                    searchLocation(query);
+                }
+            });
+
+            document.getElementById('locateMeBtn').addEventListener('click', locateUser);
+            document.getElementById('resetMapBtn').addEventListener('click', resetMapToDefault);
+
+            async function fetchCheckoutData() {
+                try {
+                    let endpoint = `${API_BASE}/checkout-data`;
+
+                    if (checkoutType === 'single' && singleProductId) {
+                        endpoint = `${API_BASE}/checkout-data/${singleProductId}`;
+                    }
+
+                    console.log('Fetching checkout data from:', endpoint);
+
+                    const response = await fetch(endpoint, {
+                        credentials: 'include',
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Failed to fetch checkout data');
+                    }
+
+                    const result = await response.json();
+                    console.log('Checkout data response:', result);
+
+                    if (result.success) {
+                        checkoutData = result.data;
+                        populateUserProfile(result.data.userProfile);
+
+                        if (checkoutType === 'single') {
+                            console.log('Single product data:', result.data.product);
+                            populateSingleProduct(result.data.product);
+                        } else {
+                            console.log('Cart products data:', result.data.productsInCart);
+                            populateCartItems(result.data.productsInCart);
+                        }
+
+                        await fetchCartCount();
+                    } else {
+                        toast('Failed to load checkout data: ' + (result.message || 'Unknown error'));
+                    }
+                } catch (error) {
+                    console.error('Error fetching checkout data:', error);
+                    toast('Error loading checkout data: ' + error.message);
+                }
+            }
+
+            function populateUserProfile(userProfile) {
+                if (!userProfile) {
+                    console.log('No user profile data');
+                    return;
+                }
+
+                console.log('Populating user profile:', userProfile);
+
+                document.getElementById('customerName').value = userProfile.fullName || '';
+                document.getElementById('customerPhone').value = userProfile.phone || '';
+
+                if (userProfile.address) {
+                    if (typeof userProfile.address === 'string') {
+                        document.getElementById('deliveryAddress').value = userProfile.address;
+                    } else if (typeof userProfile.address === 'object') {
+                        document.getElementById('deliveryAddress').value = userProfile.address.street ||
+                            userProfile.address.full || '';
+                        document.getElementById('city').value = userProfile.address.city || '';
+                        document.getElementById('postalCode').value = userProfile.address.postalCode ||
+                            userProfile.address.zip || '';
+                        document.getElementById('state').value = userProfile.address.state || '';
+                        document.getElementById('country').value = userProfile.address.country || '';
+                    }
+                }
+            }
+
+            function populateSingleProduct(product) {
+                const orderItemsContainer = document.getElementById('orderItems');
+                const loadingDiv = document.getElementById('orderItemsLoading');
+
+                console.log('Rendering single product:', product);
+
+                if (!product || !product.productId) {
+                    orderItemsContainer.innerHTML = '<div class="text-center py-3"><p class="text-muted">Product not found</p></div>';
+                    return;
+                }
+
+                if (loadingDiv) loadingDiv.remove();
+
+                const item = product.productId;
+                const quantity = product.quantity || 1;
+                const price = item.price || 0;
+                const itemTotal = price * quantity;
+
+                shippingCost = Number(item.dimensions?.shippingCost || product.shippingCost || 0);
+                const shippingText = shippingCost === 0 ? 'Free' : `$${shippingCost.toFixed(2)}`;
+                document.getElementById('shippingAmount').innerText = shippingText;
+
+                const productName = item.productName || item.name || 'Product';
+                const brand = item.brand || '';
+                const model = item.model || '';
+
+                let imageUrl = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=150&h=150&fit=crop';
+                if (item.mainImage) {
+                    if (typeof item.mainImage === 'string') {
+                        imageUrl = item.mainImage;
+                    } else if (item.mainImage.path || item.mainImage.url || item.mainImage.secure_url) {
+                        imageUrl = item.mainImage.path || item.mainImage.url || item.mainImage.secure_url;
+                    }
+                }
+
+                orderItemsContainer.innerHTML = `
+                <div class="product-summary-item">
+                    <img src="${imageUrl}" alt="${productName}" class="product-summary-img" onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=150&h=150&fit=crop'">
+                    <div class="flex-fill">
+                        <h6 class="mb-0 fw-bold">${productName}</h6>
+                        <small class="text-muted">Qty: ${quantity} | Unit Price: $${price.toFixed(2)}</small>
+                        ${brand ? '<br><small class="text-muted">' + brand + (model ? ' - ' + model : '') + '</small>' : ''}
+                        ${item.stockQuantity !== undefined ? '<br><small class="text-muted">Stock: ' + item.stockQuantity + ' available</small>' : ''}
+                    </div>
+                    <span class="fw-bold">$${itemTotal.toFixed(2)}</span>
+                </div>
+            `;
+
+                const tax = itemTotal * 0.08;
+                window.cartTotals = {
+                    subtotal: itemTotal,
+                    tax: tax
+                };
+
+                document.getElementById('subtotalAmount').textContent = `$${itemTotal.toFixed(2)}`;
+                document.getElementById('taxAmount').textContent = `$${tax.toFixed(2)}`;
+                updateTotalAmount();
+
+                console.log('Single product totals:', { subtotal: itemTotal, tax, shipping: shippingCost, total: itemTotal + tax + shippingCost });
+            }
+
+            function populateCartItems(productsInCart) {
+                const orderItemsContainer = document.getElementById('orderItems');
+                const loadingDiv = document.getElementById('orderItemsLoading');
+
+                console.log('Rendering cart items:', productsInCart);
+
+                if (!productsInCart || productsInCart.length === 0) {
+                    orderItemsContainer.innerHTML = '<div class="text-center py-3"><p class="text-muted">No items in cart</p></div>';
+                    shippingCost = 0;
+                    document.getElementById('shippingAmount').innerText = 'Free';
+                    return;
+                }
+
+                if (loadingDiv) loadingDiv.remove();
+
+                let subtotal = 0;
+                let itemsHTML = '';
+                let itemCount = 0;
+                let totalShipping = 0;
+
+                productsInCart.forEach(cart => {
+                    console.log('Processing cart document:', cart);
+
+                    if (cart.items && Array.isArray(cart.items)) {
+                        cart.items.forEach(item => {
+                            console.log('Processing cart item:', item);
+
+                            if (item.productId) {
+                                const product = item.productId;
+                                const quantity = item.quantity || 1;
+                                const price = product.price || 0;
+                                const itemTotal = price * quantity;
+                                subtotal += itemTotal;
+                                itemCount++;
+
+                                const itemShipping = Number(product.dimensions?.shippingCost || 0);
+                                totalShipping += itemShipping;
+
+                                const productName = product.productName || product.name || 'Product';
+                                const brand = product.brand || '';
+                                const model = product.model || '';
+
+                                let imageUrl = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=150&h=150&fit=crop';
+                                if (product.mainImage) {
+                                    if (typeof product.mainImage === 'string') {
+                                        imageUrl = product.mainImage;
+                                    } else if (product.mainImage.path || product.mainImage.url || product.mainImage.secure_url) {
+                                        imageUrl = product.mainImage.path || product.mainImage.url || product.mainImage.secure_url;
+                                    }
+                                }
+
+                                itemsHTML += `
+                                <div class="product-summary-item">
+                                    <img src="${imageUrl}" alt="${productName}" class="product-summary-img" onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=150&h=150&fit=crop'">
+                                    <div class="flex-fill">
+                                        <h6 class="mb-0 fw-bold">${productName}</h6>
+                                        <small class="text-muted">Qty: ${quantity} | Price: $${price.toFixed(2)}</small>
+                                        ${brand ? '<br><small class="text-muted">' + brand + (model ? ' - ' + model : '') + '</small>' : ''}
+                                    </div>
+                                    <span class="fw-bold">$${itemTotal.toFixed(2)}</span>
+                                </div>
+                            `;
+                            }
+                        });
+                    }
+                });
+
+                if (itemsHTML === '') {
+                    orderItemsContainer.innerHTML = '<div class="text-center py-3"><p class="text-muted">No items found in cart</p></div>';
+                } else {
+                    orderItemsContainer.innerHTML = itemsHTML;
+                }
+
+                shippingCost = totalShipping;
+                const shippingText = shippingCost === 0 ? 'Free' : `$${shippingCost.toFixed(2)}`;
+                document.getElementById('shippingAmount').innerText = shippingText;
+
+                const tax = subtotal * 0.08;
+                window.cartTotals = {
+                    subtotal: subtotal,
+                    tax: tax
+                };
+
+                document.getElementById('subtotalAmount').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('taxAmount').textContent = `$${tax.toFixed(2)}`;
+                updateTotalAmount();
+
+                console.log('Cart totals:', { subtotal, tax, shipping: shippingCost, itemCount, total: subtotal + tax + shippingCost });
+            }
+
+            window.selectPayment = function (method) {
+                selectedPayment = method;
+
+                document.querySelectorAll('.payment-method-card').forEach(card => card.classList.remove('selected'));
+                document.querySelector(`[data-payment="${method}"]`).classList.add('selected');
+
+                document.querySelectorAll('.payment-detail-input').forEach(detail => detail.classList.remove('show'));
+
+                const detailMap = { card: 'cardDetail', upi: 'upiDetail', wallet: 'walletDetail', cod: 'codDetail', bank: 'bankDetail' };
+                if (detailMap[method]) {
+                    document.getElementById(detailMap[method]).classList.add('show');
+                }
+
+                updateTotalAmount();
+                updatePaymentSummary();
+            };
+
+            function updatePaymentSummary() {
+                const summaryEl = document.getElementById('paymentSummary');
+                const paymentNames = {
+                    card: '<i class="fas fa-credit-card me-1"></i> Credit/Debit Card',
+                    upi: '<i class="fas fa-mobile-alt me-1"></i> UPI Payment',
+                    wallet: '<i class="fas fa-wallet me-1"></i> Digital Wallet',
+                    cod: '<i class="fas fa-money-bill-wave me-1"></i> Cash on Delivery',
+                    bank: '<i class="fas fa-university me-1"></i> Bank Transfer'
+                };
+                summaryEl.innerHTML = '<small class="text-muted">Payment: <strong>' + (paymentNames[selectedPayment] || '') + '</strong></small>';
+            }
+
+            function updateTotalAmount() {
+                const totalEl = document.getElementById('totalAmount');
+
+                const subtotal = window.cartTotals?.subtotal || 0;
+                const tax = window.cartTotals?.tax || 0;
+                const shipping = shippingCost || 0;
+
+                let total = subtotal + tax + shipping;
+                if (selectedPayment === 'cod') total += 2.99;
+
+                totalEl.textContent = `$${total.toFixed(2)}`;
+            }
+
+            document.getElementById('placeOrderBtn').addEventListener('click', async () => {
+                const name = document.getElementById('customerName').value.trim();
+                const phone = document.getElementById('customerPhone').value.trim();
+                const address = document.getElementById('deliveryAddress').value.trim();
+
+                if (!name || !phone || !address) {
+                    toast('Please fill in all required fields');
+                    return;
+                }
+
+                const btn = document.getElementById('placeOrderBtn');
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loading-spinner me-2"></span>Processing...';
+
+                const orderData = {
+                    fullName: name,
+                    phone,
+                    address: address,
+                    city: document.getElementById('city').value,
+                    postalCode: document.getElementById('postalCode').value,
+                    state: document.getElementById('state').value,
+                    country: document.getElementById('country').value,
+                    paymentMethod: selectedPayment,
+                    checkoutType: checkoutType,
+                    productId: checkoutType === 'single' ? singleProductId : null
+                };
+
+                try {
+                    const res = await fetch(`${API_BASE}/order`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify(orderData)
+                    });
+
+                    if (res.ok) {
+                        toast('🎉 Order placed successfully!');
+                        updateCartBadge(0);
+                        setTimeout(() => window.location.href = '/my-orders', 1500);
+                    } else {
+                        const errorData = await res.json();
+                        toast(errorData.message || 'Failed to place order');
+                    }
+                } catch (e) {
+                    toast('Network error. Please try again.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            });
+
+            document.getElementById('userIconBtn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!isAuthenticated) { redirectToLogin(); return; }
+                document.getElementById('userDropdownMenu').classList.toggle('show');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#userDropdown'))
+                    document.getElementById('userDropdownMenu').classList.remove('show');
+            });
+
+            document.getElementById('menuLogout').addEventListener('click', async (e) => {
+                e.preventDefault();
+                await fetch('/logout', { method: 'GET', credentials: 'include' });
+                isAuthenticated = false;
+                updateLoginUI();
+                updateCartBadge(0);
+                toast('Logged out 🚪');
+                setTimeout(() => redirectToLogin(), 800);
+            });
+
+            // Initialize everything
+            (async () => {
+                getCheckoutType();
+                if (await checkAuth()) {
+                    await fetchCheckoutData();
+                    updatePaymentSummary();
+                    updateTotalAmount();
+                    // Note: Google Map will be initialized via callback
+                }
+            })();
+        })();
+    </script>
+</body>
+
+</html>

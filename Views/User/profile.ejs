@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover, maximum-scale=1.0">
+  <title>My Profile | ShopEasy 2026</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    :root {
+      --primary: #ff6b6b;
+      --secondary: #4ecdc4;
+      --accent: #ffe66d;
+      --dark: #2c3e50;
+      --light: #f7f9fc;
+      --white: #ffffff;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.3);
+      --gradient-1: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      --gradient-2: linear-gradient(135deg, #4ecdc4, #44bd32);
+      --gradient-3: linear-gradient(135deg, #a55eea, #8854d0);
+      --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 20px 50px rgba(0, 0, 0, 0.1);
+      --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0f3f8 0%, #e8ecf1 100%);
+      color: var(--dark);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .particles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: particleFloat 15s infinite ease-in-out;
+      opacity: 0.25;
+    }
+
+    @keyframes particleFloat {
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      25% {
+        transform: translate(80px, -60px) rotate(90deg);
+      }
+      50% {
+        transform: translate(-40px, 40px) rotate(180deg);
+      }
+      75% {
+        transform: translate(-70px, -30px) rotate(270deg);
+      }
+    }
+
+    .header-premium {
+      background: var(--glass-bg);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 12px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      transition: var(--transition);
+    }
+
+    .header-premium.scrolled {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      padding: 8px 0;
+    }
+
+    .brand-premium {
+      font-size: 2rem;
+      font-weight: 900;
+      background: var(--gradient-1);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-icon-premium {
+      position: relative;
+      color: #666;
+      font-size: 1.2rem;
+      margin-left: 18px;
+      transition: var(--transition);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      background: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      border: none;
+      outline: none;
+    }
+
+    .nav-icon-premium:hover {
+      color: var(--primary);
+      transform: translateY(-3px) scale(1.08);
+      box-shadow: 0 10px 25px rgba(255, 107, 107, 0.2);
+    }
+
+    .cart-badge-premium {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--gradient-1);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .user-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-menu-user {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      min-width: 200px;
+      padding: 8px 0;
+      display: none;
+      z-index: 1050;
+      animation: dropdownIn 0.3s ease;
+    }
+
+    .dropdown-menu-user.show {
+      display: block;
+    }
+
+    @keyframes dropdownIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .dropdown-item-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .dropdown-item-user:hover {
+      background: linear-gradient(90deg, rgba(255, 107, 107, 0.08), transparent);
+      color: var(--primary);
+      padding-left: 22px;
+    }
+
+    .dropdown-divider-user {
+      height: 1px;
+      background: #eee;
+      margin: 8px 0;
+    }
+
+    .profile-container {
+      max-width: 800px;
+      margin: 40px auto;
+    }
+
+    .profile-card {
+      background: white;
+      border-radius: 32px;
+      padding: 36px 32px;
+      box-shadow: var(--shadow-soft);
+      border: 2px solid transparent;
+      transition: var(--transition);
+      margin-bottom: 28px;
+    }
+
+    .avatar-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--gradient-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+      object-fit: cover;
+      border: 3px solid white;
+    }
+
+    .profile-image-wrapper {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .profile-image-overlay {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: var(--gradient-1);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: var(--transition);
+    }
+
+    .profile-image-overlay:hover {
+      transform: scale(1.1);
+    }
+
+    .form-label-clean {
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 6px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control-custom {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      background: #fafbfc;
+      width: 100%;
+    }
+
+    .form-control-custom:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.12);
+      background: white;
+      outline: none;
+    }
+
+    .form-control-custom.is-invalid {
+      border-color: #ff4757;
+      box-shadow: 0 0 0 4px rgba(255, 71, 87, 0.08);
+    }
+
+    .form-control-custom[readonly] {
+      background: #f3f4f6;
+      color: #64748b;
+      cursor: not-allowed;
+    }
+
+    .invalid-feedback-custom {
+      color: #ff4757;
+      font-size: 0.75rem;
+      margin-top: 5px;
+      display: none;
+      font-weight: 500;
+    }
+
+    .invalid-feedback-custom.show {
+      display: block;
+    }
+
+    /* Upload Button Style */
+    .upload-btn {
+      background: var(--gradient-1);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .upload-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+    }
+
+    .file-input-hidden {
+      display: none;
+    }
+
+    .btn-save {
+      background: var(--gradient-1);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
+    }
+
+    .btn-save:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-outline-muted {
+      background: white;
+      border: 2px solid #e5e7eb;
+      color: var(--dark);
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-outline-muted:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Premium Pop-up Modal */
+    .modal-premium { z-index: 3500 !important; }
+    .modal-premium + .modal-backdrop { z-index: 3499 !important; }
+    .modal-premium .modal-content {
+      border-radius: 28px;
+      border: none;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+      animation: modalBounceIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    @keyframes modalBounceIn {
+      from { opacity: 0; transform: scale(0.85) translateY(-30px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-premium .modal-header {
+      border-bottom: none;
+      padding: 25px 24px 5px;
+      text-align: center;
+      display: block;
+    }
+    .modal-icon-circle {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 12px;
+      color: white;
+    }
+    .modal-icon-circle.success { background: var(--gradient-2); }
+    .modal-icon-circle.error { background: var(--gradient-1); }
+    .modal-icon-circle.warning { background: linear-gradient(135deg, #f39c12, #e67e22); }
+    .modal-icon-circle.info { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .modal-premium .modal-body {
+      padding: 5px 24px 18px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #555;
+    }
+    .modal-message-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--dark);
+      margin-bottom: 5px;
+    }
+    .modal-premium .modal-footer {
+      border-top: none;
+      padding: 0 24px 22px;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-modal-action {
+      padding: 10px 26px;
+      border-radius: 50px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .btn-modal-primary { background: var(--gradient-1); color: white; }
+    .btn-modal-primary:hover { filter: brightness(1.1); }
+    .btn-modal-secondary { background: #f0f0f0; color: #333; }
+    .btn-modal-secondary:hover { background: #e0e0e0; }
+
+    /* Footer */
+    .footer-premium {
+      background: #1a1a2e;
+      color: #aab;
+      padding: 60px 0 25px;
+      margin-top: 60px;
+    }
+    .footer-premium h6 { color: white; font-weight: 800; margin-bottom: 20px; }
+    .footer-premium a { color: #889; text-decoration: none; display: block; margin-bottom: 12px; transition: all 0.3s ease; }
+    .footer-premium a:hover { color: var(--primary); padding-left: 8px; }
+    .social-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px; height: 45px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+      margin-right: 12px;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .social-circle:hover {
+      background: var(--gradient-1);
+      transform: translateY(-5px) rotate(360deg);
+    }
+
+    @media (max-width: 768px) {
+      .brand-premium { font-size: 1.6rem; }
+      .nav-icon-premium { margin-left: 10px; width: 38px; height: 38px; font-size: 1.1rem; }
+      .profile-card { padding: 28px 20px; }
+      .upload-btn, .btn-outline-muted { padding: 8px 18px; font-size: 0.85rem; }
+    }
+    @media (max-width: 575px) {
+      .brand-premium { font-size: 1.3rem; }
+      .nav-icon-premium { margin-left: 6px; width: 34px; height: 34px; font-size: 1rem; }
+      .profile-card { padding: 24px 16px; border-radius: 24px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="particles-container" id="particles"></div>
+
+  <!-- NOTIFICATION MODAL (Premium Pop-up) -->
+  <div class="modal fade modal-premium" id="notificationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-icon-circle" id="modalIconCircle"></div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-message-title" id="modalTitle"></div>
+          <p class="mb-0" id="modalMessage"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-modal-action btn-modal-primary" id="modalPrimaryBtn" data-bs-dismiss="modal">OK</button>
+          <button type="button" class="btn-modal-action btn-modal-secondary" id="modalSecondaryBtn" style="display:none;" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="header-premium" id="header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="/" class="brand-premium">ShopEasy</a>
+        <div class="d-flex align-items-center">
+          <div class="user-dropdown" id="userDropdown">
+            <button class="nav-icon-premium" id="userIconBtn"><i class="fas fa-user-circle"></i></button>
+            <div class="dropdown-menu-user" id="userDropdownMenu">
+              <a href="/my-orders" class="dropdown-item-user"><i class="fas fa-box"></i> My Orders</a>
+              <a href="/profile" class="dropdown-item-user"><i class="fas fa-user-cog"></i> Profile</a>
+              <div class="dropdown-divider-user"></div>
+              <a href="/logout" class="dropdown-item-user" id="menuLogout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+          <a href="/wishlist" class="nav-icon-premium"><i class="fas fa-heart"></i></a>
+          <div class="nav-icon-premium position-relative" onclick="window.location.href='/cart'"
+            style="cursor:pointer;">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="cart-badge-premium" id="cartCount">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container profile-container">
+    <div class="profile-card">
+      <!-- Avatar Section -->
+      <div class="text-center mb-5">
+        <div class="profile-image-wrapper" id="profileImageWrapper">
+          <img id="profilePreview" src="" alt="Profile Image" class="avatar-circle"
+            style="width:110px;height:110px; display:none;"
+            onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';">
+          <div id="avatarFallback" class="avatar-circle" style="width:110px; height:110px; font-size:2.6rem;">U</div>
+          <div class="profile-image-overlay" onclick="document.getElementById('profileImageInput').click();">
+            <i class="fas fa-camera"></i>
+          </div>
+        </div>
+        <div class="mt-3">
+          <input type="file" id="profileImageInput" name="profileImage" accept="image/*" class="file-input-hidden">
+          <button type="button" class="upload-btn" onclick="document.getElementById('profileImageInput').click();">
+            <i class="fas fa-cloud-upload-alt"></i> Choose Photo
+          </button>
+          <button type="button" class="btn-outline-muted ms-2" id="removePhotoBtn"
+            style="display:none; padding:10px 20px;">
+            <i class="fas fa-trash-alt"></i> Remove
+          </button>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="profileForm" enctype="multipart/form-data" novalidate>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label-clean">Full Name <span class="text-danger">*</span></label>
+            <input type="text" id="fullName" name="fullName" class="form-control-custom"
+              placeholder="John Doe" minlength="2" maxlength="50" required>
+            <div class="invalid-feedback-custom" id="fullNameError"></div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label-clean">Phone <span class="text-danger">*</span></label>
+            <input type="text" id="phone" name="phone" class="form-control-custom"
+              placeholder="+1 234 567 890" required>
+            <div class="invalid-feedback-custom" id="phoneError"></div>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label-clean">Email</label>
+            <input type="email" id="email" name="email" class="form-control-custom" readonly>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label-clean">Joined Date</label>
+            <input type="text" id="createdAt" name="createdAt" class="form-control-custom" readonly>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label-clean">Address <span class="text-danger">*</span></label>
+          <textarea class="form-control-custom" id="address" name="address" rows="2"
+            placeholder="Shipping address (max 200 characters)" maxlength="200" required></textarea>
+          <div class="invalid-feedback-custom" id="addressError"></div>
+        </div>
+
+        <div class="d-flex gap-3 flex-wrap justify-content-end">
+          <button type="button" class="btn-outline-muted" onclick="window.location.reload();">
+            <i class="fas fa-undo me-2"></i>Reset
+          </button>
+          <button type="submit" class="btn-save" id="submitBtn">
+            <i class="fas fa-save me-2"></i>Update Profile
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer-premium">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-3 col-6">
+          <h6>ShopEasy</h6>
+          <a href="#">Our Story</a><a href="#">Careers</a><a href="#">Press</a>
+        </div>
+        <div class="col-md-3 col-6">
+          <h6>Support</h6>
+          <a href="#">Help Center</a><a href="#">Shipping Info</a><a href="#">Returns</a>
+        </div>
+        <div class="col-md-3 col-6">
+          <h6>Account</h6>
+          <a href="/orders">My Orders</a><a href="/wishlist">Wishlist</a><a href="/profile">Profile</a>
+        </div>
+        <div class="col-md-3 col-6">
+          <h6>Connect</h6>
+          <div>
+            <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-circle"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-5 pt-4 border-top border-secondary">
+        © 2026 ShopEasy Premium. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const API_BASE = 'http://localhost:3000';
+      let isAuthenticated = false;
+      let currentUser = null;
+      let selectedImageFile = null;
+
+      // ========== PREMIUM POP-UP MODAL ==========
+      const notifModal = document.getElementById('notificationModal');
+      const bsNotifModal = notifModal ? new bootstrap.Modal(notifModal, { backdrop: 'static' }) : null;
+      function showModal(type, title, msg, opts = {}) {
+        if (!bsNotifModal) return;
+        const map = {
+          success: { cls: 'success', icon: 'fa-check-circle' },
+          error: { cls: 'error', icon: 'fa-times-circle' },
+          warning: { cls: 'warning', icon: 'fa-exclamation-triangle' },
+          info: { cls: 'info', icon: 'fa-info-circle' }
+        };
+        const cfg = map[type] || map.info;
+        document.getElementById('modalIconCircle').className = 'modal-icon-circle ' + cfg.cls;
+        document.getElementById('modalIconCircle').innerHTML = `<i class="fas ${cfg.icon}"></i>`;
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalMessage').textContent = msg;
+
+        const pri = document.getElementById('modalPrimaryBtn');
+        pri.textContent = opts.primaryText || 'OK';
+        pri.style.display = 'inline-block';
+        pri.onclick = () => { opts.onPrimary?.(); bsNotifModal.hide(); };
+
+        const sec = document.getElementById('modalSecondaryBtn');
+        let secondaryText = opts.secondaryText;
+        if (secondaryText === undefined) secondaryText = 'Cancel';
+        if (secondaryText) {
+          sec.textContent = secondaryText;
+          sec.style.display = 'inline-block';
+          sec.onclick = () => { opts.onSecondary?.(); bsNotifModal.hide(); };
+        } else {
+          sec.style.display = 'none';
+        }
+        bsNotifModal.show();
+        if (opts.autoHide) setTimeout(() => bsNotifModal.hide(), opts.autoHide);
+      }
+
+      // Particles
+      const pc = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const s = Math.random() * 25 + 5;
+        p.style.cssText = `width:${s}px;height:${s}px;background:hsl(${Math.random() * 360},70%,65%);left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${Math.random() * 15}s;`;
+        pc.appendChild(p);
+      }
+
+      window.addEventListener('scroll', () => document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50));
+
+      function updateCartBadge(count = 0) { document.getElementById('cartCount').innerText = count; }
+
+      function redirectToLogin() { window.location.href = `/login?returnTo=${encodeURIComponent(window.location.href)}`; }
+
+      async function checkAuth() {
+        try {
+          const res = await fetch(`${API_BASE}/api/check-auth`, { credentials: 'include' });
+          if (res.ok) { const json = await res.json(); isAuthenticated = json.loggedIn === true; }
+          else { isAuthenticated = false; }
+        } catch (e) { isAuthenticated = false; }
+        updateLoginUI();
+        if (!isAuthenticated) { redirectToLogin(); return false; }
+        return true;
+      }
+
+      function updateLoginUI() {
+        const menuLogout = document.getElementById('menuLogout');
+        const userIconBtn = document.getElementById('userIconBtn');
+        if (menuLogout) menuLogout.style.display = isAuthenticated ? 'flex' : 'none';
+        if (userIconBtn) userIconBtn.style.color = isAuthenticated ? '#4ecdc4' : '#666';
+      }
+
+      async function fetchProfile() {
+        try {
+          const res = await fetch(`${API_BASE}/profiles`, { credentials: 'include' });
+          if (res.ok) {
+            const json = await res.json();
+            if (json.success && json.data) {
+              currentUser = json.data;
+              populateForm(currentUser);
+              updateAvatar(currentUser);
+              return;
+            }
+          }
+          if (res.status === 401) { redirectToLogin(); return; }
+          throw new Error('Unexpected response');
+        } catch (e) {
+          console.warn('Profile fetch failed, using demo', e);
+          const demoUser = { fullName: 'Jane Doe', email: 'jane@example.com', phone: '+15551234', address: '123 Premium Street, CA', createdAt: '2026-01-15T00:00:00.000Z', profileImage: null };
+          currentUser = demoUser;
+          populateForm(demoUser);
+          updateAvatar(demoUser);
+        }
+      }
+
+      async function fetchCartCount() {
+        if (!isAuthenticated) return;
+        try {
+          const res = await fetch(`${API_BASE}/carts`, { credentials: 'include' });
+          if (res.ok) { const json = await res.json(); if (json.success && json.data) updateCartBadge(json.data.length); }
+        } catch (e) { }
+      }
+
+      function populateForm(user) {
+        document.getElementById('fullName').value = user.fullName || '';
+        document.getElementById('email').value = user.email || '';
+        document.getElementById('phone').value = user.phone || '';
+        document.getElementById('address').value = user.address || '';
+        document.getElementById('createdAt').value = user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
+        clearAllErrors();
+      }
+
+      function updateAvatar(user) {
+        const preview = document.getElementById('profilePreview');
+        const fallback = document.getElementById('avatarFallback');
+        const removeBtn = document.getElementById('removePhotoBtn');
+        const fullName = user.fullName || 'User';
+        const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        let imageUrl = null;
+        if (user.profileImage) {
+          if (typeof user.profileImage === 'string') imageUrl = user.profileImage;
+          else if (user.profileImage.path) imageUrl = user.profileImage.path;
+        }
+        if (imageUrl && imageUrl.length > 5) {
+          preview.src = imageUrl; preview.style.display = 'block'; fallback.style.display = 'none';
+          if (removeBtn) removeBtn.style.display = 'inline-flex';
+        } else {
+          fallback.innerText = initials; fallback.style.display = 'flex'; preview.style.display = 'none';
+          if (removeBtn) removeBtn.style.display = 'none';
+        }
+      }
+
+      function showFieldError(fieldId, message) {
+        const input = document.getElementById(fieldId); const errorEl = document.getElementById(fieldId + 'Error');
+        if (input) input.classList.add('is-invalid');
+        if (errorEl) { errorEl.textContent = message; errorEl.classList.add('show'); }
+      }
+
+      function clearFieldError(fieldId) {
+        const input = document.getElementById(fieldId); const errorEl = document.getElementById(fieldId + 'Error');
+        if (input) input.classList.remove('is-invalid');
+        if (errorEl) { errorEl.textContent = ''; errorEl.classList.remove('show'); }
+      }
+
+      function clearAllErrors() { ['fullName', 'phone', 'address'].forEach(id => clearFieldError(id)); }
+
+      function validateFullName() {
+        const value = document.getElementById('fullName').value.trim();
+        if (!value) { showFieldError('fullName', 'Full name is required'); return false; }
+        if (value.length < 2) { showFieldError('fullName', 'Full name must be at least 2 characters'); return false; }
+        if (value.length > 50) { showFieldError('fullName', 'Full name cannot exceed 50 characters'); return false; }
+        clearFieldError('fullName'); return true;
+      }
+
+      function validatePhone() {
+        const value = document.getElementById('phone').value.trim();
+        if (!value) { showFieldError('phone', 'Phone is required'); return false; }
+        if (value.length < 10) { showFieldError('phone', 'Phone must be at least 10 digits'); return false; }
+        if (value.length > 15) { showFieldError('phone', 'Phone cannot exceed 15 digits'); return false; }
+        if (!/^[0-9+\-\s]*$/.test(value)) { showFieldError('phone', 'Invalid phone number'); return false; }
+        clearFieldError('phone'); return true;
+      }
+
+      function validateAddress() {
+        const value = document.getElementById('address').value.trim();
+        if (!value) { showFieldError('address', 'Address is required'); return false; }
+        if (value.length > 200) { showFieldError('address', 'Address cannot exceed 200 characters'); return false; }
+        clearFieldError('address'); return true;
+      }
+
+      function validateForm() { return [validateFullName(), validatePhone(), validateAddress()].every(v => v === true); }
+
+      document.getElementById('fullName').addEventListener('blur', validateFullName);
+      document.getElementById('phone').addEventListener('blur', validatePhone);
+      document.getElementById('address').addEventListener('blur', validateAddress);
+
+      document.getElementById('profileImageInput').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) { showModal('warning', 'Image Too Large', 'Image size must be less than 5MB'); this.value = ''; return; }
+        selectedImageFile = file;
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          document.getElementById('profilePreview').src = ev.target.result;
+          document.getElementById('profilePreview').style.display = 'block';
+          document.getElementById('avatarFallback').style.display = 'none';
+          document.getElementById('removePhotoBtn').style.display = 'inline-flex';
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById('removePhotoBtn').addEventListener('click', function () {
+        selectedImageFile = null;
+        document.getElementById('profileImageInput').value = '';
+        document.getElementById('profilePreview').style.display = 'none';
+        document.getElementById('avatarFallback').style.display = 'flex';
+        this.style.display = 'none';
+        const fullName = currentUser?.fullName || 'User';
+        document.getElementById('avatarFallback').innerText = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+      });
+
+      document.getElementById('profileForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!validateForm()) {
+          showModal('warning', 'Validation Error', 'Please fix the errors in the form');
+          const firstError = document.querySelector('.is-invalid');
+          if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        const submitBtn = document.getElementById('submitBtn');
+        const originalHTML = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+
+        const formData = new FormData();
+        formData.append('fullName', document.getElementById('fullName').value.trim());
+        formData.append('phone', document.getElementById('phone').value.trim());
+        formData.append('address', document.getElementById('address').value.trim());
+        if (selectedImageFile) { formData.append('profileImage', selectedImageFile); }
+
+        try {
+          const res = await fetch(`${API_BASE}/profile`, { method: 'PUT', credentials: 'include', body: formData });
+          const json = await res.json();
+          if (res.ok && json.success) {
+            currentUser = json.data || currentUser;
+            if (currentUser) { populateForm(currentUser); updateAvatar(currentUser); }
+            showModal('success', 'Profile Updated', 'Your profile has been updated successfully ✨');
+            selectedImageFile = null;
+            document.getElementById('profileImageInput').value = '';
+          } else {
+            showModal('error', 'Update Failed', json.message || 'Could not update profile');
+          }
+        } catch (err) {
+          showModal('error', 'Network Error', 'Please check your connection and try again.');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+        }
+      });
+
+      document.getElementById('userIconBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!isAuthenticated) { redirectToLogin(); return; }
+        document.getElementById('userDropdownMenu').classList.toggle('show');
+      });
+
+      document.addEventListener('click', (e) => { if (!e.target.closest('#userDropdown')) document.getElementById('userDropdownMenu').classList.remove('show'); });
+
+      document.getElementById('menuLogout').addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await fetch('/logout', { method: 'GET', credentials: 'include' });
+          isAuthenticated = false;
+          updateLoginUI();
+          showModal('info', 'Logged Out', 'You have been logged out successfully 🚪');
+          setTimeout(() => redirectToLogin(), 1000);
+        } catch (err) {
+          showModal('error', 'Logout Failed', 'Something went wrong. Please try again.');
+        }
+      });
+
+      (async () => { const auth = await checkAuth(); if (auth) await Promise.all([fetchProfile(), fetchCartCount()]); })();
+    })();
+  </script>
+</body>
+
+</html>

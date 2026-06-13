@@ -6,7 +6,7 @@ const router = express.Router();
 // HOME PAGE 
 router.get('/', async (req, res, next) => {
     try {
-        return res.render('products/home');
+        return res.render('Products/home');
     } catch (error) {
         console.error("HOME route error:", error);
         return next(error);

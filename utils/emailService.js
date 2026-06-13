@@ -217,22 +217,4 @@ const sendOTPEmail = async (email, otp, purpose = 'verification') => {
     }
 };
 
-const sendEmail = async (to, subject, html) => {
-    const mailOptions = {
-        from: `"ShopEasy" <${process.env.EMAIL}>`,
-        to,
-        subject,
-        html
-    };
-
-    try {
-        await transporter.sendMail(mailOptions);
-        console.log(`Email sent successfully to ${to}`);
-        return true;
-    } catch (error) {
-        console.error(`Failed to send email to ${to}:`, error.message);
-        return false;
-    }
-};
-
-module.exports = { sendOTPEmail, sendEmail };
+module.exports = sendOTPEmail;

@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const rateLimit = require('express-rate-limit');
 const { Otp, User } = require('../../Model/User/otp');
 const { Signup } = require('../../Model/User/userAuther');
-const { sendOTPEmail } = require('../../utils/emailService');
+const sendOTPEmail = require('../../utils/emailService');
 const { render } = require('ejs');
 const router = express.Router();
 

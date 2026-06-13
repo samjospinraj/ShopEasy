@@ -8,7 +8,7 @@ const Order = require('../../Model/User/orderModel');
 const { render } = require('ejs');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const { sendOTPEmail } = require('../../utils/emailService');
+const sendOTPEmail = require('../../utils/emailService');
 const Review = require('../../Model/User/reviewModel');
 require('dotenv').config();
 

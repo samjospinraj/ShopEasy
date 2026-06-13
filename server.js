@@ -34,7 +34,7 @@ app.use(session({
 
 // Engine Setup
 app.set('view engine' , 'ejs' );
-app.set('views' , path.resolve(__dirname , 'views'));
+app.set('views' , path.resolve(__dirname , 'Views'));
 
 // Required to parse JSON bodies
 app.use(bodyParser.json());

@@ -2,7 +2,7 @@ const cron = require("node-cron");
 const { Product } = require("../Model/Admin/productModel");
 const Order = require("../Model/User/orderModel");
 
-const deliveryTime_cron = cron.schedule("0 0 0 * *", async () => {
+const deliveryTime_cron = cron.schedule("0 0 * * *", async () => {
   try {
     const products = await Product.find();
 
@@ -28,7 +28,7 @@ const deliveryTime_cron = cron.schedule("0 0 0 * *", async () => {
   }
 });
 
-const productQuantityCron = cron.schedule("*/5 * * * * ", async () => {
+const productQuantityCron = cron.schedule("*/5 * * * *", async () => {
   try {
 
     const orders = await Order.find();

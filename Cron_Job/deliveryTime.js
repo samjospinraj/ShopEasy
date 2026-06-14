@@ -1,6 +1,7 @@
 const cron = require("node-cron");
 const { Product } = require("../Model/Admin/productModel");
 const Order = require("../Model/User/orderModel");
+const { model } = require("mongoose");
 
 const deliveryTime_cron = cron.schedule("0 0 * * *", async () => {
   try {
@@ -112,3 +113,5 @@ const productQuantityCron = cron.schedule("*/5 * * * *", async () => {
     console.error("Cron Error:", error);
   }
 });
+
+module.exports = { deliveryTime_cron ,  productQuantityCron  }
